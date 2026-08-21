@@ -152,6 +152,11 @@ bool run_matmul(const std::vector<float>& a, const std::vector<float>& b,
         return false;
     }
 
+    // Declared before any goto so the jump to cleanup never bypasses
+    // initialization.
+    dim3 threads(TILE, TILE);
+    dim3 blocks((n + TILE - 1) / TILE, (n + TILE - 1) / TILE);
+
     if (!check_cuda(
             cudaMemcpy(device_a, a.data(), elements * sizeof(float),
                        cudaMemcpyHostToDevice),
@@ -167,8 +172,6 @@ bool run_matmul(const std::vector<float>& a, const std::vector<float>& b,
         goto cleanup;
     }
 
-    dim3 threads(TILE, TILE);
-    dim3 blocks((n + TILE - 1) / TILE, (n + TILE - 1) / TILE);
     matmul_tiled<<<blocks, threads>>>(device_a, device_b, device_c, n, faulty);
     if (!check_cuda(cudaDeviceSynchronize(), "matmul_tiled")) {
         ok = false;

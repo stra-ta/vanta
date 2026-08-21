@@ -307,8 +307,12 @@ def main(argv: list[str] | None = None) -> int:
         print(f"classification: {classification}")
         print(f"mismatch: {mismatch}")
         print(f"recorded actual: {output['recorded_actual']}")
-        print(f"replayed actual: {output['replayed_actual']}")
-        print(f"replayed expected: {output['replayed_expected']}")
+        if artifact.get("kernel") == "matmul":
+            print(f"replayed max error: {output['replayed_max_error']}")
+            print(f"reference scale: {output['reference_scale']}")
+        else:
+            print(f"replayed actual: {output['replayed_actual']}")
+            print(f"replayed expected: {output['replayed_expected']}")
 
     return 0 if classification == "same_failure" else 1
 

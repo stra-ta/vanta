@@ -273,6 +273,24 @@ def test_matmul_tolerance_scales_with_k():
     assert 1e-6 < tight
 
 
+def test_main_matmul_same_failure_text(tmp_path, monkeypatch, capsys):
+    art = _write(tmp_path, MATMUL_ARTIFACT)
+    exe = tmp_path / "fake"
+    exe.write_text("")
+    actual = _matmul_faulty_actual(MATMUL_ARTIFACT)
+
+    def fake_run(cmd, **kwargs):
+        return _FakeProcess(0, json.dumps({"n": 4, "actual": actual}))
+
+    monkeypatch.setattr(rf.subprocess, "run", fake_run)
+    rc = rf.main([str(art), "--executable", str(exe)])
+    assert rc == 0
+    out = capsys.readouterr().out
+    assert "same_failure" in out
+    assert "replayed max error" in out
+    assert "reference scale" in out
+
+
 class _FakeProcess:
     def __init__(self, returncode, stdout, stderr=""):
         self.returncode = returncode
