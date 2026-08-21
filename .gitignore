@@ -1,0 +1,15 @@
+# Build artifacts
+build/
+*.o
+*.out
+
+# Local replays / scratch (keep committed campaign evidence)
+results/local/
+
+# Python
+__pycache__/
+*.pyc
+
+# Allow committed campaign logs under results/
+!results/first-campaign/*.log
+!results/first-campaign/*.json

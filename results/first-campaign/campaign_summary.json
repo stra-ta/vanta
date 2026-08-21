@@ -1,0 +1,11 @@
+{
+  "status": "pass",
+  "steps": {
+    "environment": "pass",
+    "compile": "pass",
+    "correct_campaign": "pass",
+    "faulty_campaign": "pass",
+    "replay": "pass",
+    "memcheck": "pass"
+  }
+}
