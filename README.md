@@ -114,18 +114,28 @@ On Colab, clone this repository and run the complete entrypoint:
 
 The first minimizer narrows a `reduce_sum` failure to the shortest input prefix
 that still diverges from the CPU expectation. Its first target is the historical
-multi-block grid-stride overlap bug fixed in `1c4b097`, introduced in `54bad3f`.
+multi-block grid-stride overlap bug: the load loop used `i += blockDim.x`
+instead of `i += gridDim.x * blockDim.x`. It was introduced in `33a491d`,
+revealed by the correct campaign recorded at `54bad3f` (expected 255, actual
+1144), and fixed in `1c4b097`.
 
-The minimizer runs against a **pre-fix binary**, so it must execute where CUDA
+The bug lives in the **correct** implementation, not the faulty one, so the
+seed is replayed as `correct`. `54bad3f` upstream only accepted `faulty_tail`
+replay, and `main` already carries the fix, so neither can reproduce the defect.
+The `repro/grid-overlap` branch is a reproduction harness: it starts from
+`54bad3f`, keeps the overlap defect, and adds `correct` replay acceptance. It is
+not merged into `main`.
+
+The minimizer runs against that pre-fix binary, so it must execute where CUDA
 is available. It does not touch `main` and leaves the current sources intact.
 
-On Colab, check out the buggy revision, build only the reduction binary, and
-minimize the seed:
+On Colab, check out the reproduction branch, build only the reduction binary,
+and minimize the seed:
 
 ```bash
 !git clone https://github.com/wheevu/vanta.git
 %cd vanta
-!git checkout 54bad3f
+!git checkout repro/grid-overlap
 !nvcc -std=c++20 -O0 -lineinfo -arch=sm_75 \
     cuda/reduction_proof.cu -o build/reduction_sum
 !python3 tools/minimize_failure.py \
@@ -135,10 +145,13 @@ minimize the seed:
 ```
 
 The seed (`failures/reduction-grid-overlap-seed-v0.json`) is 255 ones with
-`block_threads=32`, which on the pre-fix binary overlaps tiles and diverges
-from the expected 255. The minimizer performs a linear prefix search and writes
-the shortest still-failing case plus a `minimization` provenance block to the
-output artifact.
+`block_threads=32` and `implementation: correct`. On the reproduction binary the
+single-block cases (`n <= 32`) sum correctly, while multi-block cases overlap
+tiles and diverge from the expected 255. The minimizer performs a linear prefix
+search and converges to the smallest multi-block case (`n = 33`), isolating the
+overlap defect free of the tail-drop artifact. It writes the shortest
+still-failing case plus a `minimization` provenance block to the output
+artifact.
 
 The search is intentionally linear, not binary: for arbitrary kernels a
 mismatch predicate is not assumed monotonic. Fewer GPU launches matters less

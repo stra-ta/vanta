@@ -3,7 +3,9 @@
 This report records how Vanta moved from a CUDA validation idea to a tested
 two-kernel proof with replayable failure artifacts.
 
-The report describes the repository at commit `832589b` on `main`.
+The report describes the repository through the failure-minimization milestone
+on `main`, with the historical overlap bug isolated on the `repro/grid-overlap`
+branch.
 
 ## Executive summary
 
@@ -385,7 +387,7 @@ python3 -m pytest tests/ -q
 The final host result is:
 
 ```text
-21 passed
+27 passed
 ```
 
 The host-only CTest configuration passes with:
@@ -449,7 +451,10 @@ kernel computes the right answer.
 
 ## Known limits
 
-The project does not yet minimize failures.
+The project minimizes `reduce_sum` prefix failures through
+`tools/minimize_failure.py`. Other kernels and structured (non-prefix)
+reductions are out of scope for the first tool. The historical overlap bug is
+reproduced on the `repro/grid-overlap` branch; `main` carries the fix.
 
 The project does not yet benchmark kernel performance.
 
@@ -499,8 +504,10 @@ The final Colab campaign passed for both kernels.
 ## Failure minimization (reduce prefix)
 
 The first minimizer targets a real historical defect rather than an invented
-one: the multi-block grid-stride overlap bug introduced in `54bad3f` and fixed
-in `1c4b097`. At `N=255` with `block_threads=32`, the broken stride
+one: the multi-block grid-stride overlap bug. The load loop used
+`i += blockDim.x` instead of `i += gridDim.x * blockDim.x`. It was introduced
+in `33a491d`, revealed by the correct campaign recorded at `54bad3f` (expected
+255, actual 1144), and fixed in `1c4b097`. At `N=255` with `block_threads=32`, the broken stride
 (`i += blockDim.x`) overlaps tiles, so the correct campaign reported expected
 255 against actual 1144, while memcheck stayed clean (legal memory, wrong
 result).
