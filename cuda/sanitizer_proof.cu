@@ -100,7 +100,11 @@ int main(int argc, char **argv) {
         return 2;
     }
 
-    cudaDeviceSynchronize();
+    if (cudaDeviceSynchronize() != cudaSuccess) {
+        fprintf(stderr, "cudaDeviceSynchronize failed\n");
+        cudaFree(d);
+        return 2;
+    }
     cudaFree(d);
     return 0;
 }

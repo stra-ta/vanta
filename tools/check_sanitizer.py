@@ -61,7 +61,7 @@ def run_sanitizer(executable: str, mode: str, tool: str):
         return None, f"failed to launch compute-sanitizer: {exc}"
     combined = process.stdout + process.stderr
     detected = parse_detected(combined)
-    return detected, combined.strip()
+    return detected, combined.strip(), process.returncode
 
 
 def main(argv=None):
@@ -93,9 +93,15 @@ def main(argv=None):
                           "error": result[1]}))
         return 2
 
-    detected, combined = result
+    detected, combined, returncode = result
     expect = args.expect_detected
-    match = (detected == expect)
+    # A crash (nonzero exit, no reported error) is neither a clean run nor a
+    # real detection, so it must never green a `correct` baseline or count as a
+    # broken-mode catch.
+    if expect:
+        match = detected
+    else:
+        match = (returncode == 0 and not detected)
     report = {
         "ok": True,
         "executable": exe,
@@ -103,6 +109,7 @@ def main(argv=None):
         "tool": args.tool,
         "expected_detected": expect,
         "detected": detected,
+        "returncode": returncode,
         "verdict": "match" if match else "mismatch",
     }
     print(json.dumps(report))

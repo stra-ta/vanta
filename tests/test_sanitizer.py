@@ -75,7 +75,7 @@ def test_check_racecheck_format_detected(exe, monkeypatch, capsys):
     assert json.loads(capsys.readouterr().out)["verdict"] == "match"
 
 
-def test_check_crash_without_error_text_is_not_a_match(exe, monkeypatch, capsys):
+def test_check_crash_without_error_text_is_not_a_detection(exe, monkeypatch, capsys):
     # A nonzero exit with no ERROR text must not masquerade as a detection.
     monkeypatch.setattr(cs.shutil, "which", lambda tool: "/usr/bin/compute-sanitizer")
     monkeypatch.setattr(cs.subprocess, "run",
@@ -84,6 +84,16 @@ def test_check_crash_without_error_text_is_not_a_match(exe, monkeypatch, capsys)
                   "--expect-detected"])
     assert rc == 1
     assert json.loads(capsys.readouterr().out)["detected"] is False
+
+
+def test_check_crash_on_correct_baseline_is_not_a_match(exe, monkeypatch, capsys):
+    # A sanitizer crash on the clean baseline must not green the run.
+    monkeypatch.setattr(cs.shutil, "which", lambda tool: "/usr/bin/compute-sanitizer")
+    monkeypatch.setattr(cs.subprocess, "run",
+                        lambda *a, **k: _FakeProcess(7, stderr="segfault"))
+    rc = cs.main([str(exe), "--mode", "correct", "--tool", "memcheck"])
+    assert rc == 1
+    assert json.loads(capsys.readouterr().out)["verdict"] == "mismatch"
 
 
 def test_check_missing_executable(tmp_path, monkeypatch, capsys):
