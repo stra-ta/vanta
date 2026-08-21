@@ -470,8 +470,9 @@ yet.
 
 The current artifacts use one captured failure per kernel.
 
-The campaign still contains deliberate blind spots where the dropped final
-value is zero.
+The campaign no longer contains blind spots: pattern 2 was re-anchored at
+`(i % 7) + 1` so the dropped final value is never zero, and every injected
+defect is now observable across all tested sizes.
 
 Those blind spots are documented, but a future campaign should add patterns
 that make every injected defect observable.
@@ -489,6 +490,9 @@ that make every injected defect observable.
 | `1c4b097` | Fixed grid-stride loading in the multi-block reduction. |
 | `3f81a51` | Added the passing second-campaign aggregate evidence. |
 | `832589b` | Added nested per-kernel logs and generated failure artifacts. |
+| `repro/grid-overlap` | Reproduction harness for the grid-stride overlap bug. |
+| `1ddd18c` | Added tiled matmul proof with operation-aware tolerance. |
+| `06752e1` | Closed the campaign blind spot (pattern 2 re-anchored at +1). |
 
 ## Current conclusion
 

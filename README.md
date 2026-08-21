@@ -208,10 +208,6 @@ that is a defect in Vanta, not in the kernel.
 
 - Minimization covers `reduce_sum` 1D prefixes only. Other kernels and
   structured (non-prefix) reductions are out of scope for the first tool.
-- Blind spots remain in the campaign: pattern 2 (`(i%7)-3`) at `N=32` and
-  `N=256` injects a defect on a zero-valued tail element, so the faulty
-  variant passes for 8 cases per kernel. The campaign needs redesign so every
-  injected defect is observable.
 - No softmax or general GEMM yet. Matmul is a square, tiled proof only.
 - No benchmarking or performance claims.
 - No GPU CI. Colab is the execution target, not an authority for

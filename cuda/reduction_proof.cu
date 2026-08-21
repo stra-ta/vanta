@@ -112,7 +112,10 @@ std::vector<float> make_input(int n, int pattern) {
         } else if (pattern == 1) {
             values[i] = (i % 2 == 0) ? 1.0f : -1.0f;
         } else {
-            values[i] = static_cast<float>((i % 7) - 3);
+            // Anchored at +1 so the tail index is never zero; this keeps the
+            // faulty_tail defect observable at every tested size (the old
+            // (i%7)-3 form produced a zero at N=32 and N=256).
+            values[i] = static_cast<float>((i % 7) + 1);
         }
     }
     return values;
