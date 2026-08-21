@@ -217,7 +217,7 @@ They cover:
 - `infrastructure_failure` from nonzero executable exit.
 - Compile-failure summary generation in the Colab runner.
 
-The final host test result is 21 passing tests.
+The final host test result is 27 passing tests.
 
 ### 7. The build boundary became explicit
 

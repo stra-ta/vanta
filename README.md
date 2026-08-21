@@ -81,6 +81,7 @@ ctest --test-dir build --output-on-failure
 For a direct reduction-only run:
 
 ```bash
+mkdir -p build
 nvcc -std=c++20 -O0 -lineinfo -arch=sm_75 \
     cuda/reduction_proof.cu -o build/reduction_proof
 
@@ -136,6 +137,7 @@ and minimize the seed:
 !git clone https://github.com/wheevu/vanta.git
 %cd vanta
 !git checkout repro/grid-overlap
+!mkdir -p build
 !nvcc -std=c++20 -O0 -lineinfo -arch=sm_75 \
     cuda/reduction_proof.cu -o build/reduction_sum
 !python3 tools/minimize_failure.py \

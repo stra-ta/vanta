@@ -308,18 +308,19 @@ def test_replay_candidate_raises_on_bad_output(tmp_path, monkeypatch):
 
 
 def test_main_minimizes_grid_overlap(tmp_path, monkeypatch):
-    # Simulate the pre-fix 54bad3f binary: single-block cases (n <= block 32)
-    # are correct, multi-block cases (n > 32) reproduce the overlap bug.
+    # Simulate the repro/grid-overlap binary replayed as "correct": single-block
+    # cases (n <= block 32) sum correctly, multi-block cases (n > 32) reproduce
+    # the grid-stride overlap bug.
     seed = {
         "schema": "vanta.failure.v0",
         "kernel": "reduce_sum",
-        "implementation": "faulty_tail",
+        "implementation": "correct",
         "input": {"dtype": "float32", "shape": [255],
                   "values": [1.0] * 255},
         "launch": {"block_threads": 32, "grid_blocks": 8},
         "environment": {"gpu": "Tesla T4", "compute_capability": "7.5"},
         "observed": {"kind": "correctness_mismatch", "expected": 255.0,
-                     "actual": 8.0},
+                     "actual": 1144.0},
     }
     art = _write(tmp_path, seed)
     runner = tmp_path / "fake"
@@ -328,6 +329,7 @@ def test_main_minimizes_grid_overlap(tmp_path, monkeypatch):
     def fake_run(cmd, **kwargs):
         payload = kwargs["input"]
         lines = payload.strip().split("\n")
+        assert lines[0] == "correct"
         n = int(lines[1])
         expected = float(n)
         # bug surfaces only when more than one block is needed
