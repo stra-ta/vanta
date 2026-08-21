@@ -1,7 +1,7 @@
 {
   "schema": "vanta.failure.v0",
   "kernel": "reduce_sum",
-  "implementation": "faulty_tail",
+  "implementation": "correct",
   "input": {
     "dtype": "float32",
     "shape": [
@@ -277,15 +277,15 @@
     "kind": "correctness_mismatch",
     "pattern": 0,
     "expected": 255.0,
-    "actual": 8.0,
-    "note": "seed placeholder; observed recomputed by minimize_failure.py against the pre-fix binary at revision 54bad3f"
+    "actual": 1144.0,
+    "note": "seed placeholder; observed recomputed by minimize_failure.py against a pre-fix binary that accepts the 'correct' replay and retains the grid-stride overlap defect"
   },
   "seed_context": {
-    "origin": "historical grid-stride overlap bug, revision 54bad3f",
-    "pre_fix_revision": "54bad3f",
-    "recorded_correct_campaign": {
-      "expected": 255.0,
-      "actual": 1144.0
-    }
+    "origin": "historical grid-stride overlap bug (i += blockDim.x)",
+    "bug_introduced": "33a491d",
+    "bug_revealed_by_correct_campaign": "54bad3f",
+    "bug_fixed": "1c4b097",
+    "replay_mode": "correct (no tail drop) so the only defect is overlap",
+    "repro_branch": "repro/grid-overlap"
   }
 }
