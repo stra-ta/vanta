@@ -1,11 +1,12 @@
 {
-  "status": "pass",
-  "steps": {
-    "environment": "pass",
-    "compile": "pass",
-    "correct_campaign": "pass",
-    "faulty_campaign": "pass",
-    "replay": "pass",
-    "memcheck": "pass"
-  }
+  "schema": "vanta.campaign.v0",
+  "source": "cuda/reduction_proof.cu",
+  "artifact": "failures/reduction-tail-v0.json",
+  "recorded_at_utc": "2026-08-21T16:17:13.915748+00:00",
+  "compile_ok": true,
+  "correct_campaign_ok": true,
+  "faulty_campaign_detected": true,
+  "replay_classification": "same_failure",
+  "memcheck_ok": true,
+  "status": "pass"
 }

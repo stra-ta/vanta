@@ -75,5 +75,3 @@ PASS n=257 pattern=2 block=256
 pass_count=72
 mismatch_count=0
 correct kernel: PASS
-
---- stderr ---

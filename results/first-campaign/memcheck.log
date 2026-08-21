@@ -77,5 +77,3 @@ pass_count=72
 mismatch_count=0
 correct kernel: PASS
 ========= ERROR SUMMARY: 0 errors
-
---- stderr ---
