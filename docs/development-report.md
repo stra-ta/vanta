@@ -463,9 +463,10 @@ There is no GPU CI job.
 Colab provides the current GPU execution environment, but the repository does
 not yet enforce a scheduled or hosted GPU regression run.
 
-The campaign covers two small proofs rather than a broad kernel library.
+The campaign covers three small proofs rather than a broad kernel library.
 
-There is no matrix multiplication or softmax proof yet.
+Matmul exists as a square, tiled proof; there is no softmax or general GEMM
+yet.
 
 The current artifacts use one captured failure per kernel.
 
@@ -491,7 +492,7 @@ that make every injected defect observable.
 
 ## Current conclusion
 
-Vanta now demonstrates a complete validation loop for two CUDA proofs.
+Vanta now demonstrates a complete validation loop for three CUDA proofs.
 
 The loop begins with a CPU reference and a structured launch matrix.
 
@@ -499,7 +500,8 @@ It detects a deliberately broken implementation, writes a counterexample,
 replays that counterexample through the same CUDA implementation, and checks
 the correct implementation with Compute Sanitizer.
 
-The final Colab campaign passed for both kernels.
+The final Colab campaign passed for both the reduction and vector-add kernels,
+and the matmul proof is exercised by the third campaign.
 
 ## Failure minimization (reduce prefix)
 
@@ -530,6 +532,37 @@ Host tests cover the minimizer without a GPU by monkeypatching the replay
 subprocess. One simulation reproduces the pre-fix behavior (single-block cases
 correct, multi-block cases wrong) and asserts the minimizer converges to a 33
 element prefix (the smallest multi-block case, `N=33`, `block_threads=32`).
+
+## Matrix multiplication and operation-aware tolerance
+
+The third proof is a tiled square matrix multiplication. `cuda/matmul_proof.cu`
+keeps the same mode structure (correct / faulty_tile / replay) and a tiled
+shared-memory kernel. The deliberate defect drops the final inner product term
+(`k == N - 1`), so every output element misses `A[i][N-1] * B[N-1][j]`. Like
+the earlier defects it is a logical error, not an out-of-bounds access, so
+Compute Sanitizer memcheck stays clean while differential validation catches
+it.
+
+Adding matmul forced the tolerance model to become operation-aware. A tiled
+matmul adds K products per output element; the worst-case float32 rounding
+over K serial additions is bounded by `K * epsilon * |result|`. Vanta now uses:
+
+```text
+reduce_sum / vector_add:  tol = 1e-5 * max(1.0, |expected|)
+matmul:                   tol = max(1.0, |expected|) * K * 3 * epsilon_32
+```
+
+The matmul bound carries a small 3x safety margin rather than a tuned knob.
+The same formula is mirrored in the CUDA campaign gate and the Python replay
+classifier, so the correct kernel passes and a structural defect fails by a
+wide margin. The replay path computes the CPU reference in Python and compares
+the full output matrix element-wise; the artifact records the reference scale
+(`observed.expected`) and the maximal per-element error of the captured faulty
+run (`observed.actual`) so replay can confirm it reproduces the same defect.
+
+The captured matmul case is `failures/matmul-tile-v0.json` (N=32). Its values
+are computed with the same drop-last-term defect the kernel uses, so a GPU
+replay reproduces `same_failure` without a live CUDA run on the Mac.
 
 The next useful extension is a GPU CI path that reruns the campaign without
 manual Colab steps.

@@ -32,6 +32,10 @@ KERNELS = {
         "source": Path("cuda/vector_add_proof.cu"),
         "artifact": Path("failures/vector_add-tail-v0.json"),
     },
+    "matmul": {
+        "source": Path("cuda/matmul_proof.cu"),
+        "artifact": Path("failures/matmul-tile-v0.json"),
+    },
 }
 
 

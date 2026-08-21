@@ -27,6 +27,7 @@ if(VANTA_ENABLE_CUDA)
 
     add_executable(reduction_proof cuda/reduction_proof.cu)
     add_executable(vector_add_proof cuda/vector_add_proof.cu)
+    add_executable(matmul_proof cuda/matmul_proof.cu)
 
     add_test(
         NAME reduction_correct
@@ -48,6 +49,16 @@ if(VANTA_ENABLE_CUDA)
         COMMAND $<TARGET_FILE:vector_add_proof> faulty
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
+    add_test(
+        NAME matmul_correct
+        COMMAND $<TARGET_FILE:matmul_proof> correct
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    )
+    add_test(
+        NAME matmul_faulty
+        COMMAND $<TARGET_FILE:matmul_proof> faulty
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    )
 
     add_test(
         NAME reduction_replay
@@ -63,6 +74,13 @@ if(VANTA_ENABLE_CUDA)
                 --executable $<TARGET_FILE:vector_add_proof> --json
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
+    add_test(
+        NAME matmul_replay
+        COMMAND ${Python3_EXECUTABLE} tools/replay_failure.py
+                ${CMAKE_SOURCE_DIR}/failures/matmul-tile-v0.json
+                --executable $<TARGET_FILE:matmul_proof> --json
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    )
 
     find_program(COMPUTE_SANITIZER_EXECUTABLE compute-sanitizer)
     if(COMPUTE_SANITIZER_EXECUTABLE)
@@ -76,6 +94,12 @@ if(VANTA_ENABLE_CUDA)
             NAME vector_add_memcheck
             COMMAND ${COMPUTE_SANITIZER_EXECUTABLE} --tool memcheck
                     --error-exitcode 1 $<TARGET_FILE:vector_add_proof> correct
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        )
+        add_test(
+            NAME matmul_memcheck
+            COMMAND ${COMPUTE_SANITIZER_EXECUTABLE} --tool memcheck
+                    --error-exitcode 1 $<TARGET_FILE:matmul_proof> correct
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         )
     endif()

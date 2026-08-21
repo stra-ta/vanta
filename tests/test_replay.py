@@ -58,6 +58,40 @@ def _write(tmp_path, data):
     return p
 
 
+MATMUL_ARTIFACT = {
+    "schema": "vanta.failure.v0",
+    "kernel": "matmul",
+    "implementation": "faulty_tile",
+    "input": {
+        "dtype": "float32",
+        "shape": [4, 4, 4],
+        "a": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+        "b": [1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1],
+    },
+    "meta": {"n": 4, "k": 4},
+    "launch": {"block_threads": 16, "grid_blocks": 1},
+    "environment": {"gpu": "Tesla T4", "compute_capability": "7.5"},
+    "observed": {
+        "kind": "correctness_mismatch",
+        "expected": 34.0,
+        "actual": 16.0,
+    },
+}
+
+
+def _matmul_faulty_actual(artifact):
+    # Mirror the faulty_tile kernel: drop the final inner product term.
+    n = artifact["meta"]["n"]
+    a = artifact["input"]["a"]
+    b = artifact["input"]["b"]
+    ref = rf.reference_matmul(a, b, n)
+    actual = list(ref)
+    for i in range(n):
+        for j in range(n):
+            actual[i * n + j] -= a[i * n + (n - 1)] * b[(n - 1) * n + j]
+    return actual
+
+
 def test_load_artifact_ok(tmp_path):
     assert rf.load_artifact(_write(tmp_path, ARTIFACT))["kernel"] == "reduce_sum"
 
@@ -160,6 +194,83 @@ def test_build_vector_add_payload_shape():
 def test_classify_vector_add_same_failure():
     result = {"expected": 3.0, "actual": 0.0}
     assert rf.classify(VECTOR_ADD_ARTIFACT, result) == "same_failure"
+
+
+# --- matmul ---------------------------------------------------------------
+
+def test_load_matmul_artifact_ok(tmp_path):
+    assert rf.load_artifact(_write(tmp_path, MATMUL_ARTIFACT))["kernel"] == "matmul"
+
+
+def test_load_matmul_requires_a_and_b(tmp_path):
+    bad = dict(MATMUL_ARTIFACT)
+    bad["input"] = dict(MATMUL_ARTIFACT["input"])
+    del bad["input"]["b"]
+    with pytest.raises(ValueError):
+        rf.load_artifact(_write(tmp_path, bad))
+
+
+def test_load_matmul_shape_mismatch(tmp_path):
+    bad = dict(MATMUL_ARTIFACT)
+    bad["input"] = dict(MATMUL_ARTIFACT["input"])
+    bad["input"]["shape"] = [4, 4, 3]
+    with pytest.raises(ValueError):
+        rf.load_artifact(_write(tmp_path, bad))
+
+
+def test_reference_matmul_matches_naive():
+    a = MATMUL_ARTIFACT["input"]["a"]
+    b = MATMUL_ARTIFACT["input"]["b"]
+    ref = rf.reference_matmul(a, b, 4)
+    assert len(ref) == 16
+    # C[0][0] = a[0]*b[0] + a[1]*b[4] + a[2]*b[8] + a[3]*b[12]
+    expected = a[0] * b[0] + a[1] * b[4] + a[2] * b[8] + a[3] * b[12]
+    assert ref[0] == expected
+
+
+def test_build_matmul_payload_shape():
+    payload = rf.build_payload(MATMUL_ARTIFACT)
+    lines = payload.strip().split("\n")
+    assert lines[0] == "faulty_tile"
+    assert lines[1] == "4"
+    assert lines[2] == "16"
+    assert len(lines[3].split(" ")) == 16
+    assert len(lines[4].split(" ")) == 16
+
+
+def test_classify_matmul_same_failure():
+    actual = _matmul_faulty_actual(MATMUL_ARTIFACT)
+    result = {"actual": actual}
+    classification, mismatch, _ = rf.classify_matmul(MATMUL_ARTIFACT, result)
+    assert classification == "same_failure"
+    assert mismatch is True
+
+
+def test_classify_matmul_resolved():
+    a = MATMUL_ARTIFACT["input"]["a"]
+    b = MATMUL_ARTIFACT["input"]["b"]
+    ref = rf.reference_matmul(a, b, 4)
+    result = {"actual": ref}
+    classification, mismatch, _ = rf.classify_matmul(MATMUL_ARTIFACT, result)
+    assert classification == "resolved"
+    assert mismatch is False
+
+
+def test_classify_matmul_different_failure():
+    n = MATMUL_ARTIFACT["meta"]["n"]
+    result = {"actual": [100.0] * (n * n)}
+    classification, mismatch, _ = rf.classify_matmul(MATMUL_ARTIFACT, result)
+    assert classification == "different_failure"
+    assert mismatch is True
+
+
+def test_matmul_tolerance_scales_with_k():
+    # larger inner dimension yields a looser but still bounded tolerance
+    tight = rf.tolerance_for(10.0, "matmul", k=4)
+    loose = rf.tolerance_for(10.0, "matmul", k=256)
+    assert loose > tight
+    # a small correct-kernel error must sit under the bound
+    assert 1e-6 < tight
 
 
 class _FakeProcess:
