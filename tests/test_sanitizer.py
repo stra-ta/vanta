@@ -19,6 +19,13 @@ class _FakeProcess:
 
 CLEAN = "========= ERROR SUMMARY: 0 errors"
 DETECTED = "========= ERROR: Race reported\n========= ERROR SUMMARY: 1 errors"
+# Realistic Compute Sanitizer racecheck output (mixed case banner, tool-specific
+# summary label).
+RACECHECK_OUTPUT = (
+    "========= Error: Race reported\n"
+    "    at some_location\n"
+    "========= RACECHECK SUMMARY: 1 hazard displayed (1 error, 0 warnings)"
+)
 
 
 @pytest.fixture
@@ -53,6 +60,17 @@ def test_check_correct_clean_passes(exe, monkeypatch, capsys):
     monkeypatch.setattr(cs.subprocess, "run",
                         lambda *a, **k: _FakeProcess(0, stdout=CLEAN))
     rc = cs.main([str(exe), "--mode", "correct", "--tool", "memcheck"])
+    assert rc == 0
+    assert json.loads(capsys.readouterr().out)["verdict"] == "match"
+
+
+def test_check_racecheck_format_detected(exe, monkeypatch, capsys):
+    # Realistic racecheck output uses a mixed-case banner and RACECHECK SUMMARY.
+    monkeypatch.setattr(cs.shutil, "which", lambda tool: "/usr/bin/compute-sanitizer")
+    monkeypatch.setattr(cs.subprocess, "run",
+                        lambda *a, **k: _FakeProcess(1, stdout=RACECHECK_OUTPUT))
+    rc = cs.main([str(exe), "--mode", "broken_race", "--tool", "racecheck",
+                  "--expect-detected"])
     assert rc == 0
     assert json.loads(capsys.readouterr().out)["verdict"] == "match"
 

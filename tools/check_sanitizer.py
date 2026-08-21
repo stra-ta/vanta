@@ -19,6 +19,7 @@ Usage:
 
 import argparse
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -27,20 +28,22 @@ import sys
 def parse_detected(output: str) -> bool:
     """Return True if Compute Sanitizer reported at least one error.
 
-    Compute Sanitizer prints individual errors as `========= ERROR: ...` and a
-    trailing `========= ERROR SUMMARY: N errors`. We treat either as a detection
-    so a crash that returns nonzero without error text does not masquerade as a
+    Compute Sanitizer prints individual errors as `========= ERROR: ...` (the
+    case varies across tools, e.g. `========= Error: Race reported`) and a
+    trailing summary whose label depends on the tool: `ERROR SUMMARY`,
+    `RACECHECK SUMMARY`, `SYNCCHECK SUMMARY`, or `MEMCHECK SUMMARY`. We match the
+    individual error banner case-insensitively and any nonzero tool summary, so
+    a crash that returns nonzero without error text does not masquerade as a
     successful catch.
     """
-    if "========= ERROR:" in output:
+    if re.search(r"=========\s+error\s*:", output, re.IGNORECASE):
         return True
-    # Match "ERROR SUMMARY: <nonzero> errors".
-    idx = output.find("ERROR SUMMARY:")
-    if idx != -1:
-        tail = output[idx:idx + 64]
-        digits = "".join(ch for ch in tail.split("errors")[0] if ch.isdigit())
-        if digits and int(digits) > 0:
-            return True
+    m = re.search(
+        r"(?:ERROR|RACECHECK|SYNCCHECK|MEMCHECK)\s+SUMMARY:\s*(\d+)",
+        output, re.IGNORECASE,
+    )
+    if m and int(m.group(1)) > 0:
+        return True
     return False
 
 

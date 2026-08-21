@@ -18,6 +18,7 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 
 #ifndef N
 #define N 256
@@ -84,22 +85,17 @@ int main(int argc, char **argv) {
     int grid = 1;
     int threads = BLOCK;
 
-    if (mode[0] == 'c' && mode[1] == 'o') {  // correct
+    if (strcmp(mode, "correct") == 0) {
         k_correct<<<grid, threads>>>(d);
-    } else if (mode[0] == 'b' && mode[1] == 'r') {
-        if (mode[2] == 'o') {                // broken_oob
-            k_oob<<<grid, threads>>>(d);
-        } else if (mode[2] == 's') {         // broken_sync
-            k_sync<<<grid, threads>>>(d);
-        } else if (mode[2] == 'r') {         // broken_race
-            k_race<<<grid, threads>>>(d);
-        } else {
-            fprintf(stderr, "unknown broken mode: %s\n", mode);
-            cudaFree(d);
-            return 2;
-        }
+    } else if (strcmp(mode, "broken_oob") == 0) {
+        k_oob<<<grid, threads>>>(d);
+    } else if (strcmp(mode, "broken_sync") == 0) {
+        k_sync<<<grid, threads>>>(d);
+    } else if (strcmp(mode, "broken_race") == 0) {
+        k_race<<<grid, threads>>>(d);
     } else {
-        fprintf(stderr, "unknown mode: %s\n", mode);
+        fprintf(stderr, "unknown mode: %s (expected correct, broken_oob, "
+                        "broken_sync, or broken_race)\n", mode);
         cudaFree(d);
         return 2;
     }
