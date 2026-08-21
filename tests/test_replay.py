@@ -97,6 +97,13 @@ def test_load_artifact_empty_values(tmp_path):
         rf.load_artifact(_write(tmp_path, bad))
 
 
+def test_load_artifact_top_level_not_object(tmp_path):
+    p = tmp_path / "artifact.json"
+    p.write_text("null")
+    with pytest.raises(ValueError):
+        rf.load_artifact(p)
+
+
 def test_compute_mismatch_true():
     assert rf.compute_mismatch(31.0, 30.0) is True
 
@@ -305,6 +312,17 @@ def test_replay_candidate_raises_on_bad_output(tmp_path, monkeypatch):
     monkeypatch.setattr(mf.subprocess, "run", fake_run)
     with pytest.raises(RuntimeError):
         mf.replay_candidate(exe, ARTIFACT, [1.0] * 5)
+
+
+def test_main_rejects_non_object_artifact(tmp_path, capsys):
+    art = tmp_path / "artifact.json"
+    art.write_text("null")
+    exe = tmp_path / "fake"
+    exe.write_text("")
+    rc = mf.main([str(art), "--executable", str(exe),
+                  "--out", str(tmp_path / "out.json")])
+    assert rc == 1
+    assert "minimization failed" in capsys.readouterr().err
 
 
 def test_main_minimizes_grid_overlap(tmp_path, monkeypatch):

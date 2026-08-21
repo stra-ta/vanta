@@ -40,6 +40,8 @@ def tolerance_for(expected: float) -> float:
 
 def load_artifact(path: Path) -> dict:
     data = json.loads(path.read_text())
+    if not isinstance(data, dict):
+        raise ValueError("artifact top level must be a JSON object")
     for field, expected in REQUIRED_FIELDS:
         if field not in data:
             raise ValueError(f"artifact missing field: {field}")

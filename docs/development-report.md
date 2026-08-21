@@ -166,7 +166,7 @@ the result.
 
 This behavior is documented rather than hidden.
 
-The first campaign is preserved under
+The first campaign is preserved under `results/first-campaign/`.
 
 It is historical evidence for the original reduction implementation.
 
@@ -321,7 +321,7 @@ memcheck.
 
 ## Final campaign
 
-The final evidence is under
+The final evidence is under `results/second-campaign/`.
 
 The aggregate summary reports:
 

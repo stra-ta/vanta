@@ -143,7 +143,8 @@ def main(argv: list[str] | None = None) -> int:
             "actual": final_result["actual"],
         }, indent=2))
         return 0
-    except (OSError, RuntimeError, ValueError, json.JSONDecodeError) as exc:
+    except (OSError, RuntimeError, ValueError, TypeError,
+            json.JSONDecodeError) as exc:
         print(f"minimization failed: {exc}", file=sys.stderr)
         return 1
 
