@@ -474,9 +474,6 @@ The campaign no longer contains blind spots: pattern 2 was re-anchored at
 `(i % 7) + 1` so the dropped final value is never zero, and every injected
 defect is now observable across all tested sizes.
 
-Those blind spots are documented, but a future campaign should add patterns
-that make every injected defect observable.
-
 ## Commit milestones
 
 | Commit | Milestone |
@@ -492,7 +489,8 @@ that make every injected defect observable.
 | `832589b` | Added nested per-kernel logs and generated failure artifacts. |
 | `repro/grid-overlap` | Reproduction harness for the grid-stride overlap bug. |
 | `1ddd18c` | Added tiled matmul proof with operation-aware tolerance. |
-| `06752e1` | Closed the campaign blind spot (pattern 2 re-anchored at +1). |
+| `06752e1` | Corrected matmul artifact grid_blocks provenance. |
+| `d3a5213` | Closed the campaign blind spot (pattern 2 re-anchored at +1). |
 
 ## Current conclusion
 
