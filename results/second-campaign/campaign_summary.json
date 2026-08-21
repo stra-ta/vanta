@@ -1,0 +1,31 @@
+{
+  "schema": "vanta.campaign.v1",
+  "recorded_at_utc": "2026-08-21T17:17:10.743820+00:00",
+  "kernels": {
+    "reduce_sum": {
+      "source": "cuda/reduction_proof.cu",
+      "artifact": "failures/reduction-tail-v0.json",
+      "compile_ok": true,
+      "correct_campaign_ok": true,
+      "faulty_campaign_detected": true,
+      "replay_classification": "same_failure",
+      "memcheck_ok": true,
+      "status": "pass"
+    },
+    "vector_add": {
+      "source": "cuda/vector_add_proof.cu",
+      "artifact": "failures/vector_add-tail-v0.json",
+      "compile_ok": true,
+      "correct_campaign_ok": true,
+      "faulty_campaign_detected": true,
+      "replay_classification": "same_failure",
+      "memcheck_ok": true,
+      "status": "pass"
+    }
+  },
+  "compile_ok": true,
+  "correct_campaign_ok": true,
+  "faulty_campaign_detected": true,
+  "memcheck_ok": true,
+  "status": "pass"
+}
