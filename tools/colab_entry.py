@@ -99,7 +99,7 @@ def run_memcheck(binary: Path, log: Path) -> bool:
     return process.returncode == 0
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path,
                         default=Path("cuda/reduction_proof.cu"))
@@ -107,7 +107,7 @@ def main() -> int:
                         default=Path("failures/reduction-tail-v0.json"))
     parser.add_argument("--out", type=Path,
                         default=Path("results/first-campaign"))
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     if shutil.which("nvidia-smi") is None:
         print("ERROR: nvidia-smi not found. Select a GPU runtime in Colab.",
@@ -123,6 +123,25 @@ def main() -> int:
 
     compile_ok = compile_source(require("nvcc"), args.source, binary,
                                 out / "build.log")
+
+    if not compile_ok or not binary.exists():
+        summary = {
+            "schema": "vanta.campaign.v0",
+            "source": str(args.source),
+            "artifact": str(args.artifact),
+            "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
+            "compile_ok": compile_ok,
+            "correct_campaign_ok": False,
+            "faulty_campaign_detected": False,
+            "replay_classification": None,
+            "memcheck_ok": False,
+            "status": "fail",
+        }
+        (out / "campaign_summary.json").write_text(
+            json.dumps(summary, indent=2))
+        print("Vanta first-campaign status: fail (compile)")
+        return 1
+
     correct_ok = run_campaign(binary, "correct", out / "correct.log")
     faulty_ok = run_campaign(binary, "faulty", out / "faulty.log")
     replay_ok, replay_class = replay_failure(binary, args.artifact,

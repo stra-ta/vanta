@@ -103,3 +103,77 @@ def test_build_payload_shape():
     assert lines[1] == "31"
     assert lines[2] == "32"
     assert len(lines[3].split(" ")) == 31
+
+
+class _FakeProcess:
+    def __init__(self, returncode, stdout, stderr=""):
+        self.returncode = returncode
+        self.stdout = stdout
+        self.stderr = stderr
+
+
+def test_main_same_failure_rc0(tmp_path, monkeypatch, capsys):
+    art = _write(tmp_path, ARTIFACT)
+    exe = tmp_path / "fake"
+    exe.write_text("")
+
+    def fake_run(cmd, **kwargs):
+        return _FakeProcess(0, '{"expected": 31.0, "actual": 30.0}')
+
+    monkeypatch.setattr(rf.subprocess, "run", fake_run)
+    rc = rf.main([str(art), "--executable", str(exe), "--json"])
+    assert rc == 0
+    out = json.loads(capsys.readouterr().out)
+    assert out["classification"] == "same_failure"
+    assert out["mismatch"] is True
+
+
+def test_main_infrastructure_failure_on_bad_json(tmp_path, monkeypatch, capsys):
+    art = _write(tmp_path, ARTIFACT)
+    exe = tmp_path / "fake"
+    exe.write_text("")
+
+    def fake_run(cmd, **kwargs):
+        return _FakeProcess(0, "this is not json")
+
+    monkeypatch.setattr(rf.subprocess, "run", fake_run)
+    rc = rf.main([str(art), "--executable", str(exe), "--json"])
+    assert rc == 1
+    out = json.loads(capsys.readouterr().out)
+    assert out["classification"] == "infrastructure_failure"
+
+
+def test_main_infrastructure_failure_on_nonzero(tmp_path, monkeypatch, capsys):
+    art = _write(tmp_path, ARTIFACT)
+    exe = tmp_path / "fake"
+    exe.write_text("")
+
+    def fake_run(cmd, **kwargs):
+        return _FakeProcess(1, "", "cuda crashed")
+
+    monkeypatch.setattr(rf.subprocess, "run", fake_run)
+    rc = rf.main([str(art), "--executable", str(exe), "--json"])
+    assert rc == 1
+    out = json.loads(capsys.readouterr().out)
+    assert out["classification"] == "infrastructure_failure"
+
+
+import colab_entry as ce  # noqa: E402
+
+
+def test_colab_entry_compile_fail_writes_summary(tmp_path, monkeypatch):
+    monkeypatch.setattr(ce.shutil, "which", lambda tool: "/usr/bin/" + tool)
+    monkeypatch.setattr(ce, "compile_source", lambda *a, **k: False)
+    monkeypatch.setattr(ce, "probe_environment", lambda: {"gpu": "x"})
+
+    out = tmp_path / "out"
+    rc = ce.main([
+        "--source", "x.cu",
+        "--artifact", "f.json",
+        "--out", str(out),
+    ])
+    assert rc == 1
+    summary = json.loads((out / "campaign_summary.json").read_text())
+    assert summary["status"] == "fail"
+    assert summary["compile_ok"] is False
+    assert summary["correct_campaign_ok"] is False

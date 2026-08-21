@@ -91,7 +91,7 @@ def classify(artifact: dict, result: dict) -> str:
     return "different_failure"
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("artifact", type=Path)
     parser.add_argument(
@@ -105,7 +105,7 @@ def main() -> int:
         action="store_true",
         help="emit machine-readable result instead of human text",
     )
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     if not args.artifact.exists():
         print(f"artifact not found: {args.artifact}", file=sys.stderr)
@@ -133,9 +133,19 @@ def main() -> int:
         print(json.dumps(result, indent=2))
         return 1
 
-    result = json.loads(process.stdout)
-    replayed_expected = float(result["expected"])
-    replayed_actual = float(result["actual"])
+    try:
+        result = json.loads(process.stdout.strip())
+        replayed_expected = float(result["expected"])
+        replayed_actual = float(result["actual"])
+    except (json.JSONDecodeError, KeyError, ValueError, TypeError) as exc:
+        result = {
+            "artifact": str(args.artifact),
+            "classification": "infrastructure_failure",
+            "stderr": f"replay output unparseable: {exc}",
+        }
+        print(json.dumps(result, indent=2))
+        return 1
+
     mismatch = compute_mismatch(replayed_expected, replayed_actual)
     classification = classify(artifact, result)
 

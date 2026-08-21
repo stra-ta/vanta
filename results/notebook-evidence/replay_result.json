@@ -1,0 +1,9 @@
+{
+  "artifact": "failure.json",
+  "classification": "same_failure",
+  "recorded_actual": 30,
+  "replayed_actual": 30,
+  "replayed_expected": 31,
+  "block_threads": 32,
+  "n": 31
+}
