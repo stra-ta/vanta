@@ -2068,7 +2068,7 @@
   },
   "launch": {
     "block_threads": 16,
-    "grid_blocks": 1
+    "grid_blocks": 4
   },
   "environment": {
     "gpu": "Tesla T4",
