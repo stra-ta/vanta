@@ -6,7 +6,7 @@ Each kernel gets an isolated output directory under ``--out``. The aggregate
 result. A nonzero exit status means at least one required step failed.
 
 Usage on Colab:
-    !python3 tools/colab_entry.py --out results/second-campaign
+    !python3 tools/colab_entry.py --out results/third-campaign
 
 The legacy ``--source`` and ``--artifact`` options still override the
 reduction proof. Use ``--kernel reduce_sum`` to run only that proof.
@@ -37,6 +37,17 @@ KERNELS = {
         "artifact": Path("failures/matmul-tile-v0.json"),
     },
 }
+
+# Sanitizer proof: each (mode, tool, expect_detected) pair. A correct kernel
+# must stay clean; each broken mode must be caught by its tool.
+SANITIZER_CASES = [
+    ("correct", "memcheck", False),
+    ("correct", "racecheck", False),
+    ("correct", "synccheck", False),
+    ("broken_oob", "memcheck", True),
+    ("broken_race", "racecheck", True),
+    ("broken_sync", "synccheck", True),
+]
 
 
 def run(command, **kwargs) -> subprocess.CompletedProcess:
@@ -125,8 +136,49 @@ def run_memcheck(binary: Path, log: Path) -> bool:
     return process.returncode == 0
 
 
+def run_sanitizer_proof(nvcc: str, out: Path) -> dict:
+    """Build the sanitizer proof and run every (mode, tool) verdict check."""
+    kernel_out = out / "sanitizer"
+    kernel_out.mkdir(parents=True, exist_ok=True)
+    binary = kernel_out / "sanitizer_proof"
+    compile_ok = compile_source(
+        nvcc, Path("cuda/sanitizer_proof.cu"), binary,
+        kernel_out / "build.log")
+
+    cases = []
+    all_ok = compile_ok
+    if compile_ok and binary.exists():
+        for mode, tool, expect in SANITIZER_CASES:
+            cmd = [
+                sys.executable, "tools/check_sanitizer.py",
+                "--executable", str(binary.resolve()),
+                "--mode", mode, "--tool", tool,
+            ]
+            if expect:
+                cmd.append("--expect-detected")
+            process = run(cmd)
+            (kernel_out / f"{mode}_{tool}.log").write_text(
+                process.stdout + process.stderr)
+            ok = process.returncode == 0
+            all_ok = all_ok and ok
+            cases.append({
+                "mode": mode, "tool": tool,
+                "expect_detected": expect,
+                "returncode": process.returncode, "ok": ok,
+            })
+    else:
+        all_ok = False
+
+    return {
+        "source": "cuda/sanitizer_proof.cu",
+        "compile_ok": compile_ok,
+        "cases": cases,
+        "status": "pass" if all_ok else "fail",
+    }
+
+
 def failed_kernel_result(name: str, config: dict, out: Path,
-                         error: str) -> dict:
+                          error: str) -> dict:
     kernel_out = out / name
     kernel_out.mkdir(parents=True, exist_ok=True)
     (kernel_out / "build.log").write_text(f"FAILED: {error}\n")
@@ -233,11 +285,28 @@ def main(argv: list[str] | None = None) -> int:
             name: failed_kernel_result(name, config, out, error)
             for name, config in configs.items()
         }
+        sanitizer_result = {
+            "source": "cuda/sanitizer_proof.cu",
+            "compile_ok": False, "cases": [], "status": "fail",
+            "error": error,
+        }
     else:
         kernel_results = {
             name: run_kernel(name, config, out)
             for name, config in configs.items()
         }
+        try:
+            nvcc = require("nvcc")
+            sanitizer_result = run_sanitizer_proof(nvcc, out)
+        except RuntimeError as exc:
+            sanitizer_result = {
+                "source": "cuda/sanitizer_proof.cu",
+                "compile_ok": False, "cases": [], "status": "fail",
+                "error": str(exc),
+            }
+    (out / "sanitizer_summary.json").write_text(
+        json.dumps(sanitizer_result, indent=2))
+
     compile_ok = all(result["compile_ok"] for result in kernel_results.values())
     correct_ok = all(result["correct_campaign_ok"]
                      for result in kernel_results.values())
@@ -245,17 +314,22 @@ def main(argv: list[str] | None = None) -> int:
                     for result in kernel_results.values())
     memcheck_ok = all(result["memcheck_ok"]
                       for result in kernel_results.values())
-    status = "pass" if all(result["status"] == "pass"
-                            for result in kernel_results.values()) else "fail"
+    sanitizer_ok = sanitizer_result["status"] == "pass"
+    status = ("pass" if (all(result["status"] == "pass"
+                            for result in kernel_results.values())
+                         and sanitizer_ok)
+              else "fail")
 
     summary = {
         "schema": "vanta.campaign.v1",
         "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
         "kernels": kernel_results,
+        "sanitizer": sanitizer_result,
         "compile_ok": compile_ok,
         "correct_campaign_ok": correct_ok,
         "faulty_campaign_detected": faulty_ok,
         "memcheck_ok": memcheck_ok,
+        "sanitizer_ok": sanitizer_ok,
         "status": status,
     }
     (out / "campaign_summary.json").write_text(json.dumps(summary, indent=2))
