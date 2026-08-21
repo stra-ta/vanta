@@ -1,0 +1,77 @@
+GPU: Tesla T4
+Compute capability: 7.5
+MISMATCH n=31 pattern=0 block=32 index=30 expected=3 actual=0
+MISMATCH n=31 pattern=0 block=64 index=30 expected=3 actual=0
+MISMATCH n=31 pattern=0 block=128 index=30 expected=3 actual=0
+MISMATCH n=31 pattern=0 block=256 index=30 expected=3 actual=0
+MISMATCH n=31 pattern=1 block=32 index=30 expected=3 actual=0
+MISMATCH n=31 pattern=1 block=64 index=30 expected=3 actual=0
+MISMATCH n=31 pattern=1 block=128 index=30 expected=3 actual=0
+MISMATCH n=31 pattern=1 block=256 index=30 expected=3 actual=0
+MISMATCH n=31 pattern=2 block=32 index=30 expected=-3 actual=0
+MISMATCH n=31 pattern=2 block=64 index=30 expected=-3 actual=0
+MISMATCH n=31 pattern=2 block=128 index=30 expected=-3 actual=0
+MISMATCH n=31 pattern=2 block=256 index=30 expected=-3 actual=0
+MISMATCH n=32 pattern=0 block=32 index=31 expected=3 actual=0
+MISMATCH n=32 pattern=0 block=64 index=31 expected=3 actual=0
+MISMATCH n=32 pattern=0 block=128 index=31 expected=3 actual=0
+MISMATCH n=32 pattern=0 block=256 index=31 expected=3 actual=0
+MISMATCH n=32 pattern=1 block=32 index=31 expected=-3 actual=0
+MISMATCH n=32 pattern=1 block=64 index=31 expected=-3 actual=0
+MISMATCH n=32 pattern=1 block=128 index=31 expected=-3 actual=0
+MISMATCH n=32 pattern=1 block=256 index=31 expected=-3 actual=0
+PASS n=32 pattern=2 block=32
+PASS n=32 pattern=2 block=64
+PASS n=32 pattern=2 block=128
+PASS n=32 pattern=2 block=256
+MISMATCH n=33 pattern=0 block=32 index=32 expected=3 actual=0
+MISMATCH n=33 pattern=0 block=64 index=32 expected=3 actual=0
+MISMATCH n=33 pattern=0 block=128 index=32 expected=3 actual=0
+MISMATCH n=33 pattern=0 block=256 index=32 expected=3 actual=0
+MISMATCH n=33 pattern=1 block=32 index=32 expected=3 actual=0
+MISMATCH n=33 pattern=1 block=64 index=32 expected=3 actual=0
+MISMATCH n=33 pattern=1 block=128 index=32 expected=3 actual=0
+MISMATCH n=33 pattern=1 block=256 index=32 expected=3 actual=0
+MISMATCH n=33 pattern=2 block=32 index=32 expected=3 actual=0
+MISMATCH n=33 pattern=2 block=64 index=32 expected=3 actual=0
+MISMATCH n=33 pattern=2 block=128 index=32 expected=3 actual=0
+MISMATCH n=33 pattern=2 block=256 index=32 expected=3 actual=0
+MISMATCH n=255 pattern=0 block=32 index=254 expected=3 actual=0
+MISMATCH n=255 pattern=0 block=64 index=254 expected=3 actual=0
+MISMATCH n=255 pattern=0 block=128 index=254 expected=3 actual=0
+MISMATCH n=255 pattern=0 block=256 index=254 expected=3 actual=0
+MISMATCH n=255 pattern=1 block=32 index=254 expected=3 actual=0
+MISMATCH n=255 pattern=1 block=64 index=254 expected=3 actual=0
+MISMATCH n=255 pattern=1 block=128 index=254 expected=3 actual=0
+MISMATCH n=255 pattern=1 block=256 index=254 expected=3 actual=0
+MISMATCH n=255 pattern=2 block=32 index=254 expected=-3 actual=0
+MISMATCH n=255 pattern=2 block=64 index=254 expected=-3 actual=0
+MISMATCH n=255 pattern=2 block=128 index=254 expected=-3 actual=0
+MISMATCH n=255 pattern=2 block=256 index=254 expected=-3 actual=0
+MISMATCH n=256 pattern=0 block=32 index=255 expected=3 actual=0
+MISMATCH n=256 pattern=0 block=64 index=255 expected=3 actual=0
+MISMATCH n=256 pattern=0 block=128 index=255 expected=3 actual=0
+MISMATCH n=256 pattern=0 block=256 index=255 expected=3 actual=0
+MISMATCH n=256 pattern=1 block=32 index=255 expected=-3 actual=0
+MISMATCH n=256 pattern=1 block=64 index=255 expected=-3 actual=0
+MISMATCH n=256 pattern=1 block=128 index=255 expected=-3 actual=0
+MISMATCH n=256 pattern=1 block=256 index=255 expected=-3 actual=0
+PASS n=256 pattern=2 block=32
+PASS n=256 pattern=2 block=64
+PASS n=256 pattern=2 block=128
+PASS n=256 pattern=2 block=256
+MISMATCH n=257 pattern=0 block=32 index=256 expected=3 actual=0
+MISMATCH n=257 pattern=0 block=64 index=256 expected=3 actual=0
+MISMATCH n=257 pattern=0 block=128 index=256 expected=3 actual=0
+MISMATCH n=257 pattern=0 block=256 index=256 expected=3 actual=0
+MISMATCH n=257 pattern=1 block=32 index=256 expected=3 actual=0
+MISMATCH n=257 pattern=1 block=64 index=256 expected=3 actual=0
+MISMATCH n=257 pattern=1 block=128 index=256 expected=3 actual=0
+MISMATCH n=257 pattern=1 block=256 index=256 expected=3 actual=0
+MISMATCH n=257 pattern=2 block=32 index=256 expected=3 actual=0
+MISMATCH n=257 pattern=2 block=64 index=256 expected=3 actual=0
+MISMATCH n=257 pattern=2 block=128 index=256 expected=3 actual=0
+MISMATCH n=257 pattern=2 block=256 index=256 expected=3 actual=0
+pass_count=8
+mismatch_count=64
+faulty kernel correctly detected: PASS

@@ -1,0 +1,10 @@
+{
+  "artifact": "failures/reduction-tail-v0.json",
+  "classification": "same_failure",
+  "mismatch": true,
+  "recorded_actual": 30.0,
+  "replayed_actual": 30.0,
+  "replayed_expected": 31.0,
+  "block_threads": 32,
+  "n": 31
+}
