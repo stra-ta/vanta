@@ -1,156 +1,110 @@
-// Vanta sanitizer proof: deliberately broken kernels whose defects are caught
-// by Compute Sanitizer, contrasted with a correct kernel that stays clean.
+// Sanitizer proof kernels for the Vanta GPU validation lab.
 //
-// This is NOT a product kernel. It exists to prove the sanitizer workflow
-// itself: a correct implementation passes memcheck/racecheck/synccheck, while
-// each broken variant is flagged by the tool that targets its defect class.
+// This file is not a product kernel. It proves the sanitizer workflow: a
+// `correct` mode passes memcheck, racecheck, and synccheck, while three
+// deliberately broken modes are each caught by the tool that targets their
+// defect class:
 //
-// Modes:
-//   sanitizer_proof correct       clean vector add
-//   sanitizer_proof broken_oob    out-of-bounds global write   -> memcheck
-//   sanitizer_proof broken_sync   divergent __syncthreads       -> synccheck
-//   sanitizer_proof broken_race   unsynchronized shared memory  -> racecheck
+//   correct      clean baseline, passes memcheck + racecheck + synccheck
+//   broken_oob   one thread writes one element past the allocation -> memcheck
+//   broken_sync  one thread hits __syncthreads alone (divergent barrier) -> synccheck
+//   broken_race  one thread writes a shared variable, others read it without
+//                synchronization                                   -> racecheck
 //
-// The Python checker (tools/check_sanitizer.py) owns the pass/fail decision.
+// Run with a single argument: the mode name.
+// Optional second argument is a tool hint (memcheck/racecheck/synccheck) that
+// only selects which kernel to launch; the verdict is decided by
+// tools/check_sanitizer.py against the actual sanitizer output.
 
-#include <cuda_runtime.h>
-
+#include <cstdio>
 #include <cstdlib>
-#include <iostream>
-#include <vector>
 
-namespace {
+#ifndef N
+#define N 256
+#endif
+#ifndef BLOCK
+#define BLOCK 128
+#endif
 
-__global__ void k_correct(const float* a, const float* b, float* out, int n) {
-    const int i = blockIdx.x * blockDim.x + threadIdx.x;
-    if (i < n) {
-        out[i] = a[i] + b[i];
-    }
+__global__ void k_correct(int *g) {
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i >= N) return;
+    g[i] = i;
 }
 
-__global__ void k_oob(const float* a, const float* b, float* out, int n) {
-    const int i = blockIdx.x * blockDim.x + threadIdx.x;
-    if (i < n) {
-        // Off-by-one write past the allocated output buffer.
-        out[i + 1] = a[i] + b[i];
-    }
-}
-
-__global__ void k_sync(const float* a, int n, float* out) {
-    const int i = blockIdx.x * blockDim.x + threadIdx.x;
-    if (i < n) {
-        // Divergent __syncthreads: only even threads synchronize, so the
-        // barrier is not reached by all threads in the block.
-        if (threadIdx.x % 2 == 0) {
-            __syncthreads();
-        }
-        out[i] = a[i];
-        if (threadIdx.x % 2 == 1) {
-            __syncthreads();
-        }
-    }
-}
-
-__global__ void k_race(const float* a, const float* b, float* out, int n) {
-    __shared__ float shared_value;
-    const int i = blockIdx.x * blockDim.x + threadIdx.x;
+__global__ void k_oob(int *g) {
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i >= N) return;
+    // One out-of-bounds write: thread 0 stamps one element past the
+    // allocation. memcheck must flag it.
     if (threadIdx.x == 0) {
-        shared_value = a[0];
+        g[N] = -1;
     }
-    // Read the shared value without a barrier: a race between the writing
-    // thread and every reading thread.
-    const float x = shared_value;
-    if (i < n) {
-        out[i] = x + b[i];
-    }
+    g[i] = i;
 }
 
-bool check_cuda(cudaError_t status, const char* operation) {
-    if (status == cudaSuccess) {
-        return true;
+__global__ void k_sync(int *g) {
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i >= N) return;
+    g[i] = i;
+    // Divergent barrier: only thread 0 reaches __syncthreads while the rest of
+    // the block continue. synccheck must flag the unsynchronized barrier.
+    if (threadIdx.x == 0) {
+        __syncthreads();
     }
-    std::cerr << operation << ": " << cudaGetErrorString(status) << '\n';
-    return false;
+    g[i] = g[i] + 1;
 }
 
-int run(const char* mode) {
-    const int n = 256;
-    const int block = 128;
-    const int grid = (n + block - 1) / block;
-
-    std::vector<float> a(n, 1.0f);
-    std::vector<float> b(n, 2.0f);
-    std::vector<float> out(n, 0.0f);
-    for (int i = 0; i < n; ++i) {
-        a[i] = static_cast<float>(i);
+__global__ void k_race(int *g) {
+    __shared__ int shared_value;
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    if (i >= N) return;
+    // Thread 0 writes shared_value; every other thread reads it with no
+    // __syncthreads between the write and the read. racecheck must flag the
+    // unsynchronized shared-memory hazard.
+    if (threadIdx.x == 0) {
+        shared_value = 7;
     }
-
-    float* device_a = nullptr;
-    float* device_b = nullptr;
-    float* device_out = nullptr;
-    if (!check_cuda(cudaMalloc(&device_a, n * sizeof(float)), "cudaMalloc(a)")) {
-        return 1;
-    }
-    if (!check_cuda(cudaMalloc(&device_b, n * sizeof(float)), "cudaMalloc(b)")) {
-        cudaFree(device_a);
-        return 1;
-    }
-    if (!check_cuda(cudaMalloc(&device_out, n * sizeof(float)),
-                    "cudaMalloc(out)")) {
-        cudaFree(device_a);
-        cudaFree(device_b);
-        return 1;
-    }
-    if (!check_cuda(
-            cudaMemcpy(device_a, a.data(), n * sizeof(float),
-                       cudaMemcpyHostToDevice),
-            "cudaMemcpy(a)")) {
-        cudaFree(device_a);
-        cudaFree(device_b);
-        cudaFree(device_out);
-        return 1;
-    }
-    if (!check_cuda(
-            cudaMemcpy(device_b, b.data(), n * sizeof(float),
-                       cudaMemcpyHostToDevice),
-            "cudaMemcpy(b)")) {
-        cudaFree(device_a);
-        cudaFree(device_b);
-        cudaFree(device_out);
-        return 1;
-    }
-
-    const std::string selected(mode);
-    if (selected == "correct") {
-        k_correct<<<grid, block>>>(device_a, device_b, device_out, n);
-    } else if (selected == "broken_oob") {
-        k_oob<<<grid, block>>>(device_a, device_b, device_out, n);
-    } else if (selected == "broken_sync") {
-        k_sync<<<grid, block>>>(device_a, n, device_out);
-    } else if (selected == "broken_race") {
-        k_race<<<grid, block>>>(device_a, device_b, device_out, n);
-    }
-
-    const bool ok = check_cuda(cudaDeviceSynchronize(), "kernel");
-    cudaFree(device_a);
-    cudaFree(device_b);
-    cudaFree(device_out);
-    return ok ? 0 : 1;
+    int v = shared_value;
+    g[i] = i + v;
 }
 
-}  // namespace
+int main(int argc, char **argv) {
+    const char *mode = (argc > 1) ? argv[1] : "correct";
+    (void)(argc > 2 ? argv[2] : nullptr);  // tool hint, unused by the kernel
 
-int main(int argc, char** argv) {
-    if (argc != 2) {
-        std::cerr << "Usage: ./sanitizer_proof correct|broken_oob|broken_sync|"
-                     "broken_race\n";
+    int *d = nullptr;
+    if (cudaMalloc(&d, N * sizeof(int)) != cudaSuccess) {
+        fprintf(stderr, "cudaMalloc failed\n");
         return 2;
     }
-    const std::string mode = argv[1];
-    if (mode != "correct" && mode != "broken_oob" && mode != "broken_sync" &&
-        mode != "broken_race") {
-        std::cerr << "Unknown mode: " << mode << '\n';
+
+    // Single block so every broken-mode defect is exercised in one launch and
+    // the divergent/unsynchronized constructs are well defined within the block.
+    int grid = 1;
+    int threads = BLOCK;
+
+    if (mode[0] == 'c' && mode[1] == 'o') {  // correct
+        k_correct<<<grid, threads>>>(d);
+    } else if (mode[0] == 'b' && mode[1] == 'r') {
+        if (mode[2] == 'o') {                // broken_oob
+            k_oob<<<grid, threads>>>(d);
+        } else if (mode[2] == 's') {         // broken_sync
+            k_sync<<<grid, threads>>>(d);
+        } else if (mode[2] == 'r') {         // broken_race
+            k_race<<<grid, threads>>>(d);
+        } else {
+            fprintf(stderr, "unknown broken mode: %s\n", mode);
+            cudaFree(d);
+            return 2;
+        }
+    } else {
+        fprintf(stderr, "unknown mode: %s\n", mode);
+        cudaFree(d);
         return 2;
     }
-    return run(mode.c_str());
+
+    cudaDeviceSynchronize();
+    cudaFree(d);
+    return 0;
 }

@@ -124,7 +124,7 @@ nvcc -std=c++20 -O0 -lineinfo -arch=sm_75 \
     cuda/matmul_proof.cu -o build/matmul_proof
 
 ./build/matmul_proof correct
-./build/…… (etc.)
+./build/matmul_proof faulty
 
 python3 tools/replay_failure.py \
     failures/matmul-tile-v0.json \
@@ -136,10 +136,10 @@ compute-sanitizer --tool memcheck --error-exitcode 1 \
 
 ## Sanitizer proof
 
-`cuda/sanitizer_proof.cu` is not a product kernel. It proves the sanitizer
-workflow: a `correct` mode passes memcheck, racecheck, and synccheck, while
-three deliberately broken modes are each caught by the tool that targets their
-defect class:
+`cuda/sanitizer_proof.cu` is not a product kernel. It runs a single 128-thread
+block over a 256-element buffer and proves the sanitizer workflow: a `correct`
+mode passes memcheck, racecheck, and synccheck, while three deliberately broken
+modes are each caught by the tool that targets their defect class:
 
 ```text
 broken_oob    out-of-bounds global write   -> memcheck

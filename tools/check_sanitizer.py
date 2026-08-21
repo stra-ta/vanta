@@ -1,17 +1,15 @@
-#!/usr/bin/env python3
-"""Check that Compute Sanitizer detects (or cleanly passes) a kernel mode.
+"""Decide whether a Compute Sanitizer run produced the expected verdict.
 
-Vanta treats the sanitizer verdict as data, not as pass/fail by itself. This
-tool runs `compute-sanitizer --tool <tool> --error-exitcode 1 <executable>
-<mode>` and decides whether the result matches the expected verdict:
+CUDA owns execution. Python owns the verdict. This wraps
+`compute-sanitizer --tool X --error-exitcode 1 <exe> <mode>` and decides whether
+the outcome matches the expectation:
 
-- `--expect-detected` (broken modes): the tool must return nonzero, i.e. it
-  found a hazard of the targeted defect class.
-- without it (correct mode): the tool must return zero, i.e. clean.
+- a `correct` kernel must stay clean (no sanitizer errors)
+- a `broken_*` kernel must be detected (`--expect-detected`)
 
-This mirrors `replay_failure.py`: CUDA owns execution, Python owns the
-interpretation of the result. It exits 0 only when the observed verdict
-matches the expectation, so it can drive CTest directly.
+It emits a single JSON line and exits 0 only on a match, so it drives CTest
+directly. Exit 2 means the run could not be attempted (missing sanitizer binary
+or missing target executable).
 
 Usage:
     python3 tools/check_sanitizer.py \
@@ -19,75 +17,95 @@ Usage:
         --mode broken_race --tool racecheck --expect-detected
 """
 
-from __future__ import annotations
-
 import argparse
 import json
 import shutil
 import subprocess
 import sys
-from pathlib import Path
 
 
-def main(argv: list[str] | None = None) -> int:
+def parse_detected(output: str) -> bool:
+    """Return True if Compute Sanitizer reported at least one error.
+
+    Compute Sanitizer prints individual errors as `========= ERROR: ...` and a
+    trailing `========= ERROR SUMMARY: N errors`. We treat either as a detection
+    so a crash that returns nonzero without error text does not masquerade as a
+    successful catch.
+    """
+    if "========= ERROR:" in output:
+        return True
+    # Match "ERROR SUMMARY: <nonzero> errors".
+    idx = output.find("ERROR SUMMARY:")
+    if idx != -1:
+        tail = output[idx:idx + 64]
+        digits = "".join(ch for ch in tail.split("errors")[0] if ch.isdigit())
+        if digits and int(digits) > 0:
+            return True
+    return False
+
+
+def run_sanitizer(executable: str, mode: str, tool: str):
+    sanitizer = shutil.which("compute-sanitizer")
+    if not sanitizer:
+        return None, "compute-sanitizer not found on PATH"
+    try:
+        process = subprocess.run(
+            [sanitizer, "--tool", tool, "--error-exitcode", "1",
+             executable, mode],
+            capture_output=True, text=True,
+        )
+    except OSError as exc:
+        return None, f"failed to launch compute-sanitizer: {exc}"
+    combined = process.stdout + process.stderr
+    detected = parse_detected(combined)
+    return detected, combined.strip()
+
+
+def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("executable", type=Path)
-    parser.add_argument(
-        "--mode",
-        required=True,
-        choices=["correct", "broken_oob", "broken_sync", "broken_race"],
-    )
-    parser.add_argument(
-        "--tool",
-        required=True,
-        choices=["memcheck", "racecheck", "synccheck"],
-    )
-    parser.add_argument(
-        "--expect-detected",
-        action="store_true",
-        help="the sanitizer must report a hazard (nonzero exit)",
-    )
+    parser.add_argument("exe", nargs="?", help="target executable (positional)")
+    parser.add_argument("--executable", dest="exe_opt", help="target executable")
+    parser.add_argument("--mode", required=True)
+    parser.add_argument("--tool", required=True,
+                        choices=["memcheck", "racecheck", "synccheck"])
+    parser.add_argument("--expect-detected", action="store_true",
+                        help="the kernel under test is deliberately broken")
     args = parser.parse_args(argv)
 
-    if not args.executable.exists():
-        print(json.dumps({
-            "executable": str(args.executable),
-            "mode": args.mode,
-            "tool": args.tool,
-            "error": "executable not found",
-        }))
+    exe = args.exe or args.exe_opt
+    if not exe:
+        print(json.dumps({"ok": False,
+                          "error": "missing executable argument"}))
+        return 2
+    import os
+    if not os.path.exists(exe):
+        print(json.dumps({"ok": False, "executable": exe,
+                          "error": "executable not found"}))
         return 2
 
-    sanitizer = shutil.which("compute-sanitizer")
-    if sanitizer is None:
-        result = {
-            "executable": str(args.executable),
-            "mode": args.mode,
-            "tool": args.tool,
-            "error": "compute-sanitizer not found on PATH",
-        }
-        print(json.dumps(result))
+    result = run_sanitizer(exe, args.mode, args.tool)
+    if result[0] is None:
+        print(json.dumps({"ok": False, "executable": exe,
+                          "mode": args.mode, "tool": args.tool,
+                          "error": result[1]}))
         return 2
 
-    process = subprocess.run([
-        sanitizer, "--tool", args.tool, "--error-exitcode", "1",
-        str(args.executable.resolve()), args.mode,
-    ], text=True, capture_output=True)
-
-    detected = process.returncode != 0
-    ok = detected == args.expect_detected
-
+    detected, combined = result
+    expect = args.expect_detected
+    match = (detected == expect)
     report = {
-        "executable": str(args.executable),
+        "ok": True,
+        "executable": exe,
         "mode": args.mode,
         "tool": args.tool,
-        "expect_detected": args.expect_detected,
+        "expected_detected": expect,
         "detected": detected,
-        "returncode": process.returncode,
-        "verdict": "match" if ok else "mismatch",
+        "verdict": "match" if match else "mismatch",
     }
-    print(json.dumps(report, indent=2))
-    return 0 if ok else 1
+    print(json.dumps(report))
+    if not match:
+        sys.stderr.write(combined + "\n")
+    return 0 if match else 1
 
 
 if __name__ == "__main__":

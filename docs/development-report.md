@@ -583,9 +583,9 @@ broken_sync  divergent __syncthreads (guarded by threadIdx.x == 0) -> synccheck
 broken_race  one thread writes a shared variable, others read it without sync -> racecheck
 ```
 
-The kernel is not a product: it only takes `--mode` and `--tool` hints and runs
-a single block of 128 threads over 256 elements. The breakages are independent
-of the earlier campaign logic.
+The kernel is not a product: it takes a positional `--mode` and an optional
+tool hint, and runs a single 128-thread block over a 256-element buffer. The
+breakages are independent of the earlier campaign logic.
 
 `tools/check_sanitizer.py` owns the verdict, not the C++ binary. It shells out
 to `compute-sanitizer --tool X --error-exitcode 1 <exe> <mode>`, then decides
