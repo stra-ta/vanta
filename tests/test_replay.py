@@ -29,6 +29,28 @@ ARTIFACT = {
     },
 }
 
+VECTOR_ADD_ARTIFACT = {
+    "schema": "vanta.failure.v0",
+    "kernel": "vector_add",
+    "implementation": "faulty_tail",
+    "input": {
+        "dtype": "float32",
+        "shape": [31],
+        "values": [1.0] * 31,
+    },
+    "params": {"a": 2.0},
+    "aux": {"y": [1.0] * 31},
+    "launch": {"block_threads": 32, "grid_blocks": 1},
+    "environment": {"gpu": "Tesla T4", "compute_capability": "7.5"},
+    "observed": {
+        "kind": "correctness_mismatch",
+        "index": 30,
+        "pattern": 0,
+        "expected": 3.0,
+        "actual": 0.0,
+    },
+}
+
 
 def _write(tmp_path, data):
     p = tmp_path / "artifact.json"
@@ -38,6 +60,18 @@ def _write(tmp_path, data):
 
 def test_load_artifact_ok(tmp_path):
     assert rf.load_artifact(_write(tmp_path, ARTIFACT))["kernel"] == "reduce_sum"
+
+
+def test_load_vector_add_artifact_ok(tmp_path):
+    assert (rf.load_artifact(_write(tmp_path, VECTOR_ADD_ARTIFACT))["kernel"]
+            == "vector_add")
+
+
+def test_load_vector_add_requires_aux_length(tmp_path):
+    bad = dict(VECTOR_ADD_ARTIFACT)
+    bad["aux"] = {"y": [1.0]}
+    with pytest.raises(ValueError):
+        rf.load_artifact(_write(tmp_path, bad))
 
 
 def test_load_artifact_missing_field(tmp_path):
@@ -105,6 +139,22 @@ def test_build_payload_shape():
     assert len(lines[3].split(" ")) == 31
 
 
+def test_build_vector_add_payload_shape():
+    payload = rf.build_payload(VECTOR_ADD_ARTIFACT)
+    lines = payload.strip().split("\n")
+    assert lines[0] == "faulty_tail"
+    assert lines[1] == "31"
+    assert lines[2] == "32"
+    assert lines[3] == "2.0"
+    assert len(lines[4].split(" ")) == 31
+    assert len(lines[5].split(" ")) == 31
+
+
+def test_classify_vector_add_same_failure():
+    result = {"expected": 3.0, "actual": 0.0}
+    assert rf.classify(VECTOR_ADD_ARTIFACT, result) == "same_failure"
+
+
 class _FakeProcess:
     def __init__(self, returncode, stdout, stderr=""):
         self.returncode = returncode
@@ -126,6 +176,21 @@ def test_main_same_failure_rc0(tmp_path, monkeypatch, capsys):
     out = json.loads(capsys.readouterr().out)
     assert out["classification"] == "same_failure"
     assert out["mismatch"] is True
+
+
+def test_main_vector_add_same_failure_rc0(tmp_path, monkeypatch, capsys):
+    art = _write(tmp_path, VECTOR_ADD_ARTIFACT)
+    exe = tmp_path / "fake"
+    exe.write_text("")
+
+    def fake_run(cmd, **kwargs):
+        return _FakeProcess(0, '{"expected": 3.0, "actual": 0.0}')
+
+    monkeypatch.setattr(rf.subprocess, "run", fake_run)
+    rc = rf.main([str(art), "--executable", str(exe), "--json"])
+    assert rc == 0
+    out = json.loads(capsys.readouterr().out)
+    assert out["classification"] == "same_failure"
 
 
 def test_main_infrastructure_failure_on_bad_json(tmp_path, monkeypatch, capsys):

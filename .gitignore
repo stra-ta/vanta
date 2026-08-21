@@ -5,6 +5,10 @@ build/
 
 # Local replays / scratch (keep committed campaign evidence)
 results/local/
+results/**/reduce_sum
+results/**/vector_add
+results/**/reduction_proof
+results/**/vector_add_proof
 
 # Python
 __pycache__/

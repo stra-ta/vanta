@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
-"""Colab entrypoint for the first Vanta reduction proof.
+"""Run the Vanta CUDA proof campaigns on a GPU-enabled Colab runtime.
 
-This script runs only on a GPU-enabled Colab runtime. It detects the
-environment, compiles the single reduction source with nvcc, runs the
-correct and faulty campaigns, replays the captured failure, and runs
-Compute Sanitizer memcheck. Every artifact is written under `results/`.
-
-It deliberately avoids CMake for now. When the repository version is
-stable, swap the nvcc invocation for a CMake build.
+Each kernel gets an isolated output directory under ``--out``. The aggregate
+``campaign_summary.json`` records every build, campaign, replay, and memcheck
+result. A nonzero exit status means at least one required step failed.
 
 Usage on Colab:
-    !python3 tools/colab_entry.py --source cuda/reduction_proof.cu \
-        --artifact failures/reduction-tail-v0.json --out results/first-campaign
+    !python3 tools/colab_entry.py --out results/second-campaign
+
+The legacy ``--source`` and ``--artifact`` options still override the
+reduction proof. Use ``--kernel reduce_sum`` to run only that proof.
 """
 
 from __future__ import annotations
@@ -23,6 +21,18 @@ import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+
+
+KERNELS = {
+    "reduce_sum": {
+        "source": Path("cuda/reduction_proof.cu"),
+        "artifact": Path("failures/reduction-tail-v0.json"),
+    },
+    "vector_add": {
+        "source": Path("cuda/vector_add_proof.cu"),
+        "artifact": Path("failures/vector_add-tail-v0.json"),
+    },
+}
 
 
 def run(command, **kwargs) -> subprocess.CompletedProcess:
@@ -59,12 +69,13 @@ def compile_source(nvcc: str, source: Path, output: Path, log: Path) -> bool:
         str(source), "-o", str(output),
     ])
     log.write_text(process.stdout + process.stderr)
-    print(process.stderr)
+    if process.stderr.strip():
+        print(process.stderr, file=sys.stderr)
     return process.returncode == 0
 
 
 def run_campaign(binary: Path, mode: str, log: Path) -> bool:
-    process = run([str(binary), mode])
+    process = run([str(binary.resolve()), mode], cwd=log.parent)
     log.write_text(process.stdout + process.stderr)
     print(process.stdout)
     if process.stderr.strip():
@@ -90,7 +101,7 @@ def replay_failure(binary: Path, artifact: Path, log: Path):
 def run_memcheck(binary: Path, log: Path) -> bool:
     process = run([
         require("compute-sanitizer"), "--tool", "memcheck",
-        "--error-exitcode", "1", str(binary), "correct",
+        "--error-exitcode", "1", str(binary.resolve()), "correct",
     ])
     log.write_text(process.stdout + process.stderr)
     print(process.stdout)
@@ -99,14 +110,61 @@ def run_memcheck(binary: Path, log: Path) -> bool:
     return process.returncode == 0
 
 
+def run_kernel(name: str, config: dict, out: Path) -> dict:
+    kernel_out = out / name
+    kernel_out.mkdir(parents=True, exist_ok=True)
+    source = Path(config["source"])
+    artifact = Path(config["artifact"])
+    binary = kernel_out / name
+
+    compile_ok = compile_source(require("nvcc"), source, binary,
+                                kernel_out / "build.log")
+    result = {
+        "source": str(source),
+        "artifact": str(artifact),
+        "compile_ok": compile_ok,
+        "correct_campaign_ok": False,
+        "faulty_campaign_detected": False,
+        "replay_classification": None,
+        "memcheck_ok": False,
+        "status": "fail",
+    }
+
+    if not compile_ok or not binary.exists():
+        for skipped_log in ("correct.log", "faulty.log", "replay.log",
+                            "memcheck.log"):
+            (kernel_out / skipped_log).write_text(
+                "SKIPPED: compilation did not produce an executable\n")
+        return result
+
+    result["correct_campaign_ok"] = run_campaign(
+        binary, "correct", kernel_out / "correct.log")
+    result["faulty_campaign_detected"] = run_campaign(
+        binary, "faulty", kernel_out / "faulty.log")
+    replay_ok, replay_class = replay_failure(
+        binary, artifact, kernel_out / "replay.log")
+    result["replay_classification"] = replay_class
+    result["memcheck_ok"] = run_memcheck(binary, kernel_out / "memcheck.log")
+    result["status"] = (
+        "pass"
+        if (result["compile_ok"] and result["correct_campaign_ok"]
+            and result["faulty_campaign_detected"] and replay_ok
+            and result["replay_classification"] == "same_failure"
+            and result["memcheck_ok"])
+        else "fail"
+    )
+    return result
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--source", type=Path,
-                        default=Path("cuda/reduction_proof.cu"))
-    parser.add_argument("--artifact", type=Path,
-                        default=Path("failures/reduction-tail-v0.json"))
+    parser.add_argument("--kernel", choices=["all", *KERNELS], default="all")
+    parser.add_argument("--source", type=Path, default=None,
+                        help="legacy reduction source override")
+    parser.add_argument("--artifact", type=Path, default=None,
+                        help="legacy reduction artifact override")
     parser.add_argument("--out", type=Path,
-                        default=Path("results/first-campaign"))
+                        default=Path("results/second-campaign"))
     args = parser.parse_args(argv)
 
     if shutil.which("nvidia-smi") is None:
@@ -114,60 +172,44 @@ def main(argv: list[str] | None = None) -> int:
               file=sys.stderr)
         return 2
 
+    selected = list(KERNELS) if args.kernel == "all" else [args.kernel]
+    configs = {name: dict(KERNELS[name]) for name in selected}
+    if args.source is not None:
+        configs["reduce_sum"]["source"] = args.source
+    if args.artifact is not None:
+        configs["reduce_sum"]["artifact"] = args.artifact
+
     out = args.out
     out.mkdir(parents=True, exist_ok=True)
-    binary = out / "reduction_proof"
-
     env = probe_environment()
     (out / "environment.json").write_text(json.dumps(env, indent=2))
 
-    compile_ok = compile_source(require("nvcc"), args.source, binary,
-                                out / "build.log")
-
-    if not compile_ok or not binary.exists():
-        summary = {
-            "schema": "vanta.campaign.v0",
-            "source": str(args.source),
-            "artifact": str(args.artifact),
-            "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
-            "compile_ok": compile_ok,
-            "correct_campaign_ok": False,
-            "faulty_campaign_detected": False,
-            "replay_classification": None,
-            "memcheck_ok": False,
-            "status": "fail",
-        }
-        (out / "campaign_summary.json").write_text(
-            json.dumps(summary, indent=2))
-        print("Vanta first-campaign status: fail (compile)")
-        return 1
-
-    correct_ok = run_campaign(binary, "correct", out / "correct.log")
-    faulty_ok = run_campaign(binary, "faulty", out / "faulty.log")
-    replay_ok, replay_class = replay_failure(binary, args.artifact,
-                                             out / "replay.log")
-    memcheck_ok = run_memcheck(binary, out / "memcheck.log")
-
-    status = "pass"
-    if not (compile_ok and correct_ok and faulty_ok and replay_ok
-            and memcheck_ok):
-        status = "fail"
+    kernel_results = {
+        name: run_kernel(name, config, out)
+        for name, config in configs.items()
+    }
+    compile_ok = all(result["compile_ok"] for result in kernel_results.values())
+    correct_ok = all(result["correct_campaign_ok"]
+                     for result in kernel_results.values())
+    faulty_ok = all(result["faulty_campaign_detected"]
+                    for result in kernel_results.values())
+    memcheck_ok = all(result["memcheck_ok"]
+                      for result in kernel_results.values())
+    status = "pass" if all(result["status"] == "pass"
+                            for result in kernel_results.values()) else "fail"
 
     summary = {
-        "schema": "vanta.campaign.v0",
-        "source": str(args.source),
-        "artifact": str(args.artifact),
+        "schema": "vanta.campaign.v1",
         "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
+        "kernels": kernel_results,
         "compile_ok": compile_ok,
         "correct_campaign_ok": correct_ok,
         "faulty_campaign_detected": faulty_ok,
-        "replay_classification": replay_class,
         "memcheck_ok": memcheck_ok,
         "status": status,
     }
     (out / "campaign_summary.json").write_text(json.dumps(summary, indent=2))
-
-    print("Vanta first-campaign status:", status)
+    print("Vanta campaign status:", status)
     return 0 if status == "pass" else 1
 
 

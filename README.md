@@ -7,10 +7,13 @@ and acceptably performant under documented measurement conditions.
 Vanta is not a CUDA tutorial, a BLAS replacement, a deep-learning framework,
 or a kernel collection. The test framework is the primary deliverable.
 
-## Current status: first proof
+## Current status
 
-The repository currently contains one milestone: a single-block sum
-reduction validated against a CPU double-precision reference.
+The first proof is complete and evidenced on a Tesla T4.
+The repository now also contains a multi-block reduction implementation and a
+second vector-add proof with matching correct, faulty, and replay modes.
+The new code needs to be run on Colab before its GPU results are treated as
+committed evidence.
 
 Proven on a Tesla T4 with CUDA 12.8:
 
@@ -33,12 +36,18 @@ defect:     faulty_tail drops the final element
 
 Replay classification: `same_failure`.
 
+The captured first-campaign evidence is under `results/first-campaign/`.
+It records 72/72 correct reduction cases, 64 faulty reduction mismatches,
+`same_failure` replay, and zero Compute Sanitizer errors.
+
 ## Architecture boundary
 
 ```text
-cuda/reduction_proof.cu      one CUDA program: correct + faulty + replay
-tools/replay_failure.py      JSON parsing, validation, classification
-tools/colab_entry.py         Colab runtime: build, run, sanitize
+cuda/reduction_proof.cu      multi-block reduction: correct + faulty + replay
+cuda/vector_add_proof.cu     vector add: correct + faulty + replay
+tools/replay_failure.py      JSON parsing, validation, kernel-aware replay
+tools/colab_entry.py         Colab runtime: build, run, sanitize both proofs
+CMakeLists.txt               optional CUDA build and CTest integration
 failures/                    captured counterexamples
 results/                     campaign artifacts
 ```
@@ -60,6 +69,14 @@ classifications (`same_failure`, `resolved`, `different_failure`,
 ## Run on a GPU machine
 
 ```bash
+cmake -S . -B build -DVANTA_ENABLE_CUDA=ON
+cmake --build build -j
+ctest --test-dir build --output-on-failure
+```
+
+For a direct reduction-only run:
+
+```bash
 nvcc -std=c++20 -O0 -lineinfo -arch=sm_75 \
     cuda/reduction_proof.cu -o build/reduction_proof
 
@@ -74,19 +91,28 @@ compute-sanitizer --tool memcheck --error-exitcode 1 \
     ./build/reduction_proof correct
 ```
 
-On Colab, clone this repository and run the entrypoint:
+The host-only CTest configuration works on the Mac development machine:
+
+```bash
+cmake -S . -B build-host -DVANTA_ENABLE_CUDA=OFF
+ctest --test-dir build-host --output-on-failure
+```
+
+On Colab, clone this repository and run the complete entrypoint:
 
 ```bash
 !git clone https://github.com/wheevu/vanta.git
 %cd vanta
-!python3 tools/colab_entry.py --source cuda/reduction_proof.cu \
-    --artifact failures/reduction-tail-v0.json --out results/first-campaign
+!python3 tools/colab_entry.py --out results/second-campaign
 ```
 
 ## Correctness model
 
-Each case compares the GPU result against a straightforward CPU sum in
-double precision. The tolerance is:
+Reduction cases compare the GPU result against a straightforward CPU sum in
+double precision.
+Vector-add cases compare every output element against the CPU formula
+`a*x[i] + y[i]`.
+Both use the same tolerance:
 
 ```text
 tol = 1e-5 * max(1.0, |expected|)
@@ -99,8 +125,6 @@ not in the kernel.
 
 ## Known limitations
 
-- One kernel only: single-block sum reduction.
-- Single-block launch only; no grid-stride or multi-block reduction yet.
 - No failure minimization.
 - No matrix multiplication or softmax.
 - No benchmarking or performance claims.

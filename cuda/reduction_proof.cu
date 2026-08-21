@@ -1,4 +1,4 @@
-// Vanta reduction proof: single-block sum reduction validation.
+// Vanta reduction proof: multi-block sum reduction validation.
 //
 // This file is intentionally one self-contained program. It is the first
 // Vanta artifact, not the final framework. It supports three modes:
@@ -22,6 +22,10 @@
 // Correctness evidence in this milestone comes from a straightforward
 // CPU double-precision sum. The comparison tolerance is documented in
 // the README and must not be silently loosened.
+//
+// The reduction is genuinely multi-block: each block reduces a tile to a
+// partial sum, then a second kernel reduces the partials. Single-block
+// launches are a subset of this path.
 
 #include <cuda_runtime.h>
 
@@ -36,25 +40,23 @@
 
 namespace {
 
-// Single-block reduction with a configurable defect.
-//
-// The faulty tail variant drops the final element. It is not a memory
-// bug; it is a logical error, which is why Compute Sanitizer may stay
-// clean while differential validation still catches it.
-__global__ void reduce_sum_kernel(const float* input, float* output, int n,
-                                   bool faulty) {
+// One block reduces its tile (strided load) into shared memory, then a
+// tree reduction, writing a single partial sum.
+__global__ void reduce_block(const float* input, float* partial, int n,
+                             bool faulty) {
     extern __shared__ float shared[];
 
     const int tid = threadIdx.x;
-    float local_sum = 0.0f;
+    const int block_start = blockIdx.x * blockDim.x;
+    float local = 0.0f;
 
-    for (int i = tid; i < n; i += blockDim.x) {
+    for (int i = block_start + tid; i < n; i += blockDim.x) {
         if (!faulty || i < n - 1) {
-            local_sum += input[i];
+            local += input[i];
         }
     }
 
-    shared[tid] = local_sum;
+    shared[tid] = local;
     __syncthreads();
 
     for (int stride = blockDim.x / 2; stride > 0; stride /= 2) {
@@ -65,7 +67,34 @@ __global__ void reduce_sum_kernel(const float* input, float* output, int n,
     }
 
     if (tid == 0) {
-        output[0] = shared[0];
+        partial[blockIdx.x] = shared[0];
+    }
+}
+
+// Second pass: reduce the block partials to a single sum.
+__global__ void reduce_partials(const float* partial, float* out,
+                                int num_partials) {
+    extern __shared__ float shared[];
+
+    const int tid = threadIdx.x;
+    float local = 0.0f;
+
+    for (int i = tid; i < num_partials; i += blockDim.x) {
+        local += partial[i];
+    }
+
+    shared[tid] = local;
+    __syncthreads();
+
+    for (int stride = blockDim.x / 2; stride > 0; stride /= 2) {
+        if (tid < stride) {
+            shared[tid] += shared[tid + stride];
+        }
+        __syncthreads();
+    }
+
+    if (tid == 0) {
+        out[0] = shared[0];
     }
 }
 
@@ -106,57 +135,76 @@ double tolerance_for(double expected) {
     return 1e-5 * std::max(1.0, std::abs(expected));
 }
 
-// Run one case. Returns true when the actual result matches the reference.
+// Run one case via the two-pass multi-block reduction. Returns true when
+// the GPU execution succeeded; actual_out holds the summed result.
 bool run_case(const std::vector<float>& input, int block_size, bool faulty,
               const cudaDeviceProp& device, double& actual_out) {
     const int n = static_cast<int>(input.size());
+    if (n <= 0 || block_size <= 0) {
+        return false;
+    }
+    const int grid = (n + block_size - 1) / block_size;
+
     float* device_input = nullptr;
+    float* device_partial = nullptr;
     float* device_output = nullptr;
+    float actual = 0.0f;
+    bool ok = true;
 
     if (!check_cuda(
             cudaMalloc(&device_input, input.size() * sizeof(float)),
             "cudaMalloc(input)")) {
         return false;
     }
-    if (!check_cuda(cudaMalloc(&device_output, sizeof(float)),
-                    "cudaMalloc(output)")) {
+    if (!check_cuda(cudaMalloc(&device_partial, grid * sizeof(float)),
+                    "cudaMalloc(partial)")) {
         cudaFree(device_input);
         return false;
     }
+    if (!check_cuda(cudaMalloc(&device_output, sizeof(float)),
+                    "cudaMalloc(output)")) {
+        cudaFree(device_input);
+        cudaFree(device_partial);
+        return false;
+    }
+
     if (!check_cuda(
             cudaMemcpy(device_input, input.data(),
                        input.size() * sizeof(float), cudaMemcpyHostToDevice),
             "cudaMemcpy(input)")) {
-        cudaFree(device_input);
-        cudaFree(device_output);
-        return false;
+        ok = false;
+        goto cleanup;
     }
 
-    reduce_sum_kernel<<<1, block_size, block_size * sizeof(float)>>>(
-        device_input, device_output, n, faulty);
-
-    if (!check_cuda(cudaDeviceSynchronize(), "cudaDeviceSynchronize")) {
-        cudaFree(device_input);
-        cudaFree(device_output);
-        return false;
+    reduce_block<<<grid, block_size, block_size * sizeof(float)>>>(
+        device_input, device_partial, n, faulty);
+    if (!check_cuda(cudaDeviceSynchronize(), "reduce_block")) {
+        ok = false;
+        goto cleanup;
     }
 
-    float actual = 0.0f;
+    reduce_partials<<<1, block_size, block_size * sizeof(float)>>>(
+        device_partial, device_output, grid);
+    if (!check_cuda(cudaDeviceSynchronize(), "reduce_partials")) {
+        ok = false;
+        goto cleanup;
+    }
+
     if (!check_cuda(
             cudaMemcpy(&actual, device_output, sizeof(float),
                        cudaMemcpyDeviceToHost),
             "cudaMemcpy(output)")) {
-        cudaFree(device_input);
-        cudaFree(device_output);
-        return false;
+        ok = false;
+        goto cleanup;
     }
-
-    cudaFree(device_input);
-    cudaFree(device_output);
-
     actual_out = static_cast<double>(actual);
+
+cleanup:
+    cudaFree(device_input);
+    cudaFree(device_partial);
+    cudaFree(device_output);
     (void)device;
-    return true;
+    return ok;
 }
 
 void write_failure(const std::vector<float>& input, int pattern, int block_size,

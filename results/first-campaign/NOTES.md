@@ -1,8 +1,10 @@
 # First-campaign evidence
 
-This directory holds the complete artifacts from the first Vanta reduction
-proof, produced by `tools/colab_entry.py` on a Colab Tesla T4 (CUDA 12.8)
-and committed from the exact `main` revision.
+This directory holds the complete historical artifacts from the first Vanta
+reduction proof, produced by the original reduction implementation through
+`tools/colab_entry.py` on a Colab Tesla T4 (CUDA 12.8).
+The current multi-block reduction and vector-add implementation should be run
+into `results/second-campaign/` before new results replace this evidence.
 
 ## Contents
 - `environment.json` - GPU / nvcc / Compute Sanitizer / Python versions.

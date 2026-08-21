@@ -1,0 +1,31 @@
+{
+  "schema": "vanta.failure.v0",
+  "kernel": "vector_add",
+  "implementation": "faulty_tail",
+  "input": {
+    "dtype": "float32",
+    "shape": [31],
+    "values": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+  },
+  "params": {
+    "a": 2
+  },
+  "aux": {
+    "y": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+  },
+  "launch": {
+    "block_threads": 32,
+    "grid_blocks": 1
+  },
+  "environment": {
+    "gpu": "Tesla T4",
+    "compute_capability": "7.5"
+  },
+  "observed": {
+    "kind": "correctness_mismatch",
+    "index": 30,
+    "pattern": 0,
+    "expected": 3,
+    "actual": 0
+  }
+}

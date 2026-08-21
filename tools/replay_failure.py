@@ -53,6 +53,18 @@ def load_artifact(path: Path) -> dict:
         raise ValueError("artifact input.shape must equal [len(values)]")
     if "block_threads" not in data["launch"]:
         raise ValueError("artifact launch.block_threads is required")
+
+    kernel = data.get("kernel")
+    if kernel == "vector_add":
+        params = data.get("params")
+        aux = data.get("aux")
+        if not isinstance(params, dict) or not isinstance(params.get("a"),
+                                                          (int, float)):
+            raise ValueError("vector_add artifact requires params.a (number)")
+        if not isinstance(aux, dict) or not isinstance(aux.get("y"), list):
+            raise ValueError("vector_add artifact requires aux.y (list)")
+        if len(aux["y"]) != len(values):
+            raise ValueError("vector_add aux.y length must equal input length")
     return data
 
 
@@ -60,14 +72,28 @@ def build_payload(artifact: dict) -> str:
     values = artifact["input"]["values"]
     n = len(values)
     block_threads = int(artifact["launch"]["block_threads"])
-    text = (
+
+    if artifact.get("kernel") == "vector_add":
+        a = float(artifact["params"]["a"])
+        y = artifact["aux"]["y"]
+        return (
+            f"{artifact['implementation']}\n"
+            f"{n}\n"
+            f"{block_threads}\n"
+            f"{a!r}\n"
+            + " ".join(repr(float(v)) for v in values)
+            + "\n"
+            + " ".join(repr(float(v)) for v in y)
+            + "\n"
+        )
+
+    return (
         f"{artifact['implementation']}\n"
         f"{n}\n"
         f"{block_threads}\n"
         + " ".join(repr(float(v)) for v in values)
         + "\n"
     )
-    return text
 
 
 def compute_mismatch(expected: float, actual: float) -> bool:
