@@ -59,11 +59,13 @@ __global__ void reduce_block(const float* input, float* partial, int n,
     shared[tid] = local;
     __syncthreads();
 
-    for (int stride = blockDim.x / 2; stride > 0; stride /= 2) {
-        if (tid < stride) {
-            shared[tid] += shared[tid + stride];
+    for (int active = blockDim.x; active > 1;) {
+        const int half = (active + 1) / 2;
+        if (tid < half && tid + half < active) {
+            shared[tid] += shared[tid + half];
         }
         __syncthreads();
+        active = half;
     }
 
     if (tid == 0) {
@@ -86,11 +88,13 @@ __global__ void reduce_partials(const float* partial, float* out,
     shared[tid] = local;
     __syncthreads();
 
-    for (int stride = blockDim.x / 2; stride > 0; stride /= 2) {
-        if (tid < stride) {
-            shared[tid] += shared[tid + stride];
+    for (int active = blockDim.x; active > 1;) {
+        const int half = (active + 1) / 2;
+        if (tid < half && tid + half < active) {
+            shared[tid] += shared[tid + half];
         }
         __syncthreads();
+        active = half;
     }
 
     if (tid == 0) {

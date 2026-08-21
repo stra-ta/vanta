@@ -48,17 +48,28 @@ def require(tool: str) -> str:
 
 
 def probe_environment() -> dict:
-    nvidia = run(["nvidia-smi", "--query-gpu=name,driver_version,memory.total",
-                  "--format=csv,noheader"])
-    nvcc = run([require("nvcc"), "--version"])
-    sanitizer = run([require("compute-sanitizer"), "--version"])
-    python = run([sys.executable, "--version"])
+    if shutil.which("nvidia-smi") is not None:
+        nvidia = run(["nvidia-smi", "--query-gpu=name,driver_version,memory.total",
+                      "--format=csv,noheader"])
+        gpu = nvidia.stdout.strip() or nvidia.stderr.strip()
+    else:
+        gpu = "nvidia-smi not found"
+
+    def version(tool: str) -> str:
+        path = shutil.which(tool)
+        if path is None:
+            return f"{tool} not found"
+        process = run([path, "--version"])
+        return process.stdout.strip() or process.stderr.strip()
+
+    python = subprocess.run([sys.executable, "--version"],
+                            text=True, capture_output=True)
     return {
         "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
-        "gpu": nvidia.stdout.strip(),
-        "nvcc": nvcc.stdout.strip(),
-        "compute_sanitizer": sanitizer.stdout.strip(),
-        "python": python.stdout.strip(),
+        "gpu": gpu,
+        "nvcc": version("nvcc"),
+        "compute_sanitizer": version("compute-sanitizer"),
+        "python": python.stdout.strip() or python.stderr.strip(),
     }
 
 
@@ -110,6 +121,28 @@ def run_memcheck(binary: Path, log: Path) -> bool:
     return process.returncode == 0
 
 
+def failed_kernel_result(name: str, config: dict, out: Path,
+                         error: str) -> dict:
+    kernel_out = out / name
+    kernel_out.mkdir(parents=True, exist_ok=True)
+    (kernel_out / "build.log").write_text(f"FAILED: {error}\n")
+    for skipped_log in ("correct.log", "faulty.log", "replay.log",
+                        "memcheck.log"):
+        (kernel_out / skipped_log).write_text(
+            f"SKIPPED: {error}\n")
+    return {
+        "source": str(config["source"]),
+        "artifact": str(config["artifact"]),
+        "compile_ok": False,
+        "correct_campaign_ok": False,
+        "faulty_campaign_detected": False,
+        "replay_classification": None,
+        "memcheck_ok": False,
+        "status": "fail",
+        "error": error,
+    }
+
+
 def run_kernel(name: str, config: dict, out: Path) -> dict:
     kernel_out = out / name
     kernel_out.mkdir(parents=True, exist_ok=True)
@@ -117,8 +150,12 @@ def run_kernel(name: str, config: dict, out: Path) -> dict:
     artifact = Path(config["artifact"])
     binary = kernel_out / name
 
-    compile_ok = compile_source(require("nvcc"), source, binary,
-                                kernel_out / "build.log")
+    try:
+        nvcc = require("nvcc")
+    except RuntimeError as exc:
+        return failed_kernel_result(name, config, out, str(exc))
+
+    compile_ok = compile_source(nvcc, source, binary, kernel_out / "build.log")
     result = {
         "source": str(source),
         "artifact": str(artifact),
@@ -144,7 +181,13 @@ def run_kernel(name: str, config: dict, out: Path) -> dict:
     replay_ok, replay_class = replay_failure(
         binary, artifact, kernel_out / "replay.log")
     result["replay_classification"] = replay_class
-    result["memcheck_ok"] = run_memcheck(binary, kernel_out / "memcheck.log")
+    try:
+        result["memcheck_ok"] = run_memcheck(binary,
+                                              kernel_out / "memcheck.log")
+    except RuntimeError as exc:
+        (kernel_out / "memcheck.log").write_text(f"FAILED: {exc}\n")
+        result["memcheck_ok"] = False
+        result["error"] = str(exc)
     result["status"] = (
         "pass"
         if (result["compile_ok"] and result["correct_campaign_ok"]
@@ -167,11 +210,6 @@ def main(argv: list[str] | None = None) -> int:
                         default=Path("results/second-campaign"))
     args = parser.parse_args(argv)
 
-    if shutil.which("nvidia-smi") is None:
-        print("ERROR: nvidia-smi not found. Select a GPU runtime in Colab.",
-              file=sys.stderr)
-        return 2
-
     selected = list(KERNELS) if args.kernel == "all" else [args.kernel]
     configs = {name: dict(KERNELS[name]) for name in selected}
     if args.source is not None:
@@ -184,10 +222,18 @@ def main(argv: list[str] | None = None) -> int:
     env = probe_environment()
     (out / "environment.json").write_text(json.dumps(env, indent=2))
 
-    kernel_results = {
-        name: run_kernel(name, config, out)
-        for name, config in configs.items()
-    }
+    if shutil.which("nvidia-smi") is None:
+        error = "nvidia-smi not found; select a GPU runtime in Colab"
+        print(f"ERROR: {error}", file=sys.stderr)
+        kernel_results = {
+            name: failed_kernel_result(name, config, out, error)
+            for name, config in configs.items()
+        }
+    else:
+        kernel_results = {
+            name: run_kernel(name, config, out)
+            for name, config in configs.items()
+        }
     compile_ok = all(result["compile_ok"] for result in kernel_results.values())
     correct_ok = all(result["correct_campaign_ok"]
                      for result in kernel_results.values())
@@ -210,6 +256,8 @@ def main(argv: list[str] | None = None) -> int:
     }
     (out / "campaign_summary.json").write_text(json.dumps(summary, indent=2))
     print("Vanta campaign status:", status)
+    if status != "pass" and shutil.which("nvidia-smi") is None:
+        return 2
     return 0 if status == "pass" else 1
 
 
