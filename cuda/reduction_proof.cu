@@ -50,7 +50,9 @@ __global__ void reduce_block(const float* input, float* partial, int n,
     const int block_start = blockIdx.x * blockDim.x;
     float local = 0.0f;
 
-    for (int i = block_start + tid; i < n; i += blockDim.x) {
+    // Grid-stride load: each element belongs to one block's partial sum.
+    for (int i = block_start + tid; i < n;
+         i += gridDim.x * blockDim.x) {
         if (!faulty || i < n - 1) {
             local += input[i];
         }
