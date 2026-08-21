@@ -223,6 +223,8 @@ def test_main_infrastructure_failure_on_nonzero(tmp_path, monkeypatch, capsys):
     assert out["classification"] == "infrastructure_failure"
 
 
+import minimize_failure as mf  # noqa: E402
+
 import colab_entry as ce  # noqa: E402
 
 
@@ -242,3 +244,106 @@ def test_colab_entry_compile_fail_writes_summary(tmp_path, monkeypatch):
     assert summary["status"] == "fail"
     assert summary["compile_ok"] is False
     assert summary["correct_campaign_ok"] is False
+
+
+# --- minimize_failure ------------------------------------------------------
+
+def test_find_minimal_prefix_returns_shortest_failing_prefix():
+    values = [1.0, 2.0, 3.0, 4.0, 5.0]
+
+    def still_fails(candidate):
+        # failure only present once we keep at least the first three elements
+        return len(candidate) >= 3
+
+    best, tested = mf.find_minimal_prefix(values, still_fails)
+    assert best == [1.0, 2.0, 3.0]
+    assert tested == len(values)
+
+
+def test_find_minimal_prefix_seed_must_fail():
+    values = [1.0, 2.0, 3.0]
+
+    def never_fails(_candidate):
+        return False
+
+    with pytest.raises(ValueError):
+        mf.find_minimal_prefix(values, never_fails)
+
+
+def test_candidate_artifact_updates_shape_and_observed():
+    result = {"expected": 12.0, "actual": 9.0}
+    out = mf.candidate_artifact(ARTIFACT, [2.0, 3.0, 7.0], result)
+    assert out["input"]["values"] == [2.0, 3.0, 7.0]
+    assert out["input"]["shape"] == [3]
+    assert out["observed"]["expected"] == 12.0
+    assert out["observed"]["actual"] == 9.0
+    # original artifact is not mutated
+    assert ARTIFACT["input"]["values"] == [1.0] * 31
+
+
+def test_replay_candidate_parses_json(tmp_path, monkeypatch):
+    exe = tmp_path / "fake"
+    exe.write_text("")
+
+    def fake_run(cmd, **kwargs):
+        assert cmd == [str(exe), "replay"]
+        return _FakeProcess(0, '{"expected": 5.0, "actual": 4.0}')
+
+    monkeypatch.setattr(mf.subprocess, "run", fake_run)
+    result = mf.replay_candidate(exe, ARTIFACT, [1.0] * 5)
+    assert result["expected"] == 5.0
+    assert result["actual"] == 4.0
+
+
+def test_replay_candidate_raises_on_bad_output(tmp_path, monkeypatch):
+    exe = tmp_path / "fake"
+    exe.write_text("")
+
+    def fake_run(cmd, **kwargs):
+        return _FakeProcess(0, "not json")
+
+    monkeypatch.setattr(mf.subprocess, "run", fake_run)
+    with pytest.raises(RuntimeError):
+        mf.replay_candidate(exe, ARTIFACT, [1.0] * 5)
+
+
+def test_main_minimizes_grid_overlap(tmp_path, monkeypatch):
+    # Simulate the pre-fix 54bad3f binary: single-block cases (n <= block 32)
+    # are correct, multi-block cases (n > 32) reproduce the overlap bug.
+    seed = {
+        "schema": "vanta.failure.v0",
+        "kernel": "reduce_sum",
+        "implementation": "faulty_tail",
+        "input": {"dtype": "float32", "shape": [255],
+                  "values": [1.0] * 255},
+        "launch": {"block_threads": 32, "grid_blocks": 8},
+        "environment": {"gpu": "Tesla T4", "compute_capability": "7.5"},
+        "observed": {"kind": "correctness_mismatch", "expected": 255.0,
+                     "actual": 8.0},
+    }
+    art = _write(tmp_path, seed)
+    runner = tmp_path / "fake"
+    runner.write_text("")
+
+    def fake_run(cmd, **kwargs):
+        payload = kwargs["input"]
+        lines = payload.strip().split("\n")
+        n = int(lines[1])
+        expected = float(n)
+        # bug surfaces only when more than one block is needed
+        actual = expected if n <= 32 else expected + 100.0
+        return _FakeProcess(0, json.dumps(
+            {"expected": expected, "actual": actual}))
+
+    monkeypatch.setattr(mf.subprocess, "run", fake_run)
+
+    out = tmp_path / "min.json"
+    rc = mf.main([str(art), "--executable", str(runner), "--out", str(out)])
+    assert rc == 0
+    result = json.loads(out.read_text())
+    assert result["input"]["shape"] == [33]
+    assert len(result["input"]["values"]) == 33
+    assert result["minimization"]["original_length"] == 255
+    assert result["minimization"]["minimized_length"] == 33
+    assert result["observed"]["expected"] == 33.0
+    assert result["observed"]["actual"] == 133.0

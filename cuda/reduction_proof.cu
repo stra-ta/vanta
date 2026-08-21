@@ -326,7 +326,10 @@ int run_replay() {
         std::cerr << "Invalid replay header\n";
         return 2;
     }
-    if (implementation != "faulty_tail") {
+    bool faulty = false;
+    if (implementation == "faulty_tail") {
+        faulty = true;
+    } else if (implementation != "correct") {
         std::cerr << "Unsupported implementation: " << implementation << '\n';
         return 2;
     }
@@ -353,7 +356,7 @@ int run_replay() {
               << '\n';
 
     double actual = 0.0;
-    if (!run_case(input, block_size, /*faulty=*/true, device, actual)) {
+    if (!run_case(input, block_size, faulty, device, actual)) {
         return 1;
     }
 

@@ -12,8 +12,11 @@ or a kernel collection. The test framework is the primary deliverable.
 The first proof is complete and evidenced on a Tesla T4.
 The repository now also contains a multi-block reduction implementation and a
 second vector-add proof with matching correct, faulty, and replay modes.
-The new code needs to be run on Colab before its GPU results are treated as
-committed evidence.
+The multi-block reduction and vector-add proofs are also evidenced by the
+passing second campaign under `results/second-campaign/`.
+
+The full development history is documented in
+[`docs/development-report.md`](docs/development-report.md).
 
 Proven on a Tesla T4 with CUDA 12.8:
 
@@ -47,8 +50,9 @@ cuda/reduction_proof.cu      multi-block reduction: correct + faulty + replay
 cuda/vector_add_proof.cu     vector add: correct + faulty + replay
 tools/replay_failure.py      JSON parsing, validation, kernel-aware replay
 tools/colab_entry.py         Colab runtime: build, run, sanitize both proofs
+tools/minimize_failure.py    reduce prefix search against a pre-fix binary
 CMakeLists.txt               optional CUDA build and CTest integration
-failures/                    captured counterexamples
+failures/                    captured counterexamples and minimization seeds
 results/                     campaign artifacts
 ```
 
@@ -106,6 +110,40 @@ On Colab, clone this repository and run the complete entrypoint:
 !python3 tools/colab_entry.py --out results/second-campaign
 ```
 
+## Minimize a real failure
+
+The first minimizer narrows a `reduce_sum` failure to the shortest input prefix
+that still diverges from the CPU expectation. Its first target is the historical
+multi-block grid-stride overlap bug fixed in `1c4b097`, introduced in `54bad3f`.
+
+The minimizer runs against a **pre-fix binary**, so it must execute where CUDA
+is available. It does not touch `main` and leaves the current sources intact.
+
+On Colab, check out the buggy revision, build only the reduction binary, and
+minimize the seed:
+
+```bash
+!git clone https://github.com/wheevu/vanta.git
+%cd vanta
+!git checkout 54bad3f
+!nvcc -std=c++20 -O0 -lineinfo -arch=sm_75 \
+    cuda/reduction_proof.cu -o build/reduction_sum
+!python3 tools/minimize_failure.py \
+    failures/reduction-grid-overlap-seed-v0.json \
+    --executable build/reduction_sum \
+    --out failures/reduction-grid-overlap-min-v0.json
+```
+
+The seed (`failures/reduction-grid-overlap-seed-v0.json`) is 255 ones with
+`block_threads=32`, which on the pre-fix binary overlaps tiles and diverges
+from the expected 255. The minimizer performs a linear prefix search and writes
+the shortest still-failing case plus a `minimization` provenance block to the
+output artifact.
+
+The search is intentionally linear, not binary: for arbitrary kernels a
+mismatch predicate is not assumed monotonic. Fewer GPU launches matters less
+than a trustworthy minimal case.
+
 ## Correctness model
 
 Reduction cases compare the GPU result against a straightforward CPU sum in
@@ -125,8 +163,16 @@ not in the kernel.
 
 ## Known limitations
 
-- No failure minimization.
-- No matrix multiplication or softmax.
+- Minimization covers `reduce_sum` 1D prefixes only. Other kernels and
+  structured (non-prefix) reductions are out of scope for the first tool.
+- Blind spots remain in the campaign: pattern 2 (`(i%7)-3`) at `N=32` and
+  `N=256` injects a defect on a zero-valued tail element, so the faulty
+  variant passes for 8 cases per kernel. The campaign needs redesign so every
+  injected defect is observable.
+- No matrix multiplication or softmax yet.
+- No operation-aware numerical tolerances yet. The fixed
+  `1e-5 * max(1, |expected|)` tolerance is fine for integer sums but will
+  need to become operation-aware before matmul/softmax.
 - No benchmarking or performance claims.
 - No GPU CI. Colab is the execution target, not an authority for
   performance or stability.
