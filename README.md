@@ -74,10 +74,13 @@ compute-sanitizer --tool memcheck --error-exitcode 1 \
     ./build/reduction_proof correct
 ```
 
-On Colab, use the entrypoint:
+On Colab, clone this repository and run the entrypoint:
 
 ```bash
-python3 tools/colab_entry.py --source cuda/reduction_proof.cu
+!git clone https://github.com/wheevu/vanta.git
+%cd vanta
+!python3 tools/colab_entry.py --source cuda/reduction_proof.cu \
+    --artifact failures/reduction-tail-v0.json --out results/first-campaign
 ```
 
 ## Correctness model
