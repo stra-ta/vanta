@@ -324,7 +324,14 @@ int run_replay() {
         std::cerr << "Invalid replay header\n";
         return 2;
     }
-    if (implementation != "faulty_tail") {
+    // Reproduction harness only: 54bad3f upstream rejected "correct". This
+    // branch keeps the grid-stride overlap defect (i += blockDim.x) but also
+    // accepts the correct replay path so the historical bug can be minimized
+    // in isolation. Do not merge into main.
+    bool faulty = false;
+    if (implementation == "faulty_tail") {
+        faulty = true;
+    } else if (implementation != "correct") {
         std::cerr << "Unsupported implementation: " << implementation << '\n';
         return 2;
     }
@@ -351,7 +358,7 @@ int run_replay() {
               << '\n';
 
     double actual = 0.0;
-    if (!run_case(input, block_size, /*faulty=*/true, device, actual)) {
+    if (!run_case(input, block_size, faulty, device, actual)) {
         return 1;
     }
 
