@@ -566,5 +566,50 @@ The captured matmul case is `failures/matmul-tile-v0.json` (N=32). Its values
 are computed with the same drop-last-term defect the kernel uses, so a GPU
 replay reproduces `same_failure` without a live CUDA run on the Mac.
 
+## Sanitizer proof
+
+The first two kernels only exercised Compute Sanitizer `memcheck` on their
+`correct` mode, which proves the infrastructure runs but never proves the
+sanitizer can catch a real defect. That is a blind spot: a green memcheck can
+mean "clean" or "nothing wrong to find".
+
+`cuda/sanitizer_proof.cu` closes it with deliberately broken kernels instead of
+relying on accidental product defects. It has four modes:
+
+```text
+correct      clean baseline, passes memcheck + racecheck + synccheck
+broken_oob   one thread writes one element past the allocation -> memcheck
+broken_sync  divergent __syncthreads (guarded by threadIdx.x == 0) -> synccheck
+broken_race  one thread writes a shared variable, others read it without sync -> racecheck
+```
+
+The kernel is not a product: it only takes `--mode` and `--tool` hints and runs
+a single block of 128 threads over 256 elements. The breakages are independent
+of the earlier campaign logic.
+
+`tools/check_sanitizer.py` owns the verdict, not the C++ binary. It shells out
+to `compute-sanitizer --tool X --error-exitcode 1 <exe> <mode>`, then decides
+whether the outcome matches the expectation: `correct` must stay clean, the
+`broken_*` modes must be detected (`--expect-detected`). It emits one JSON line
+and exits 0 only on a match, so CTest runs it directly. The host tests cover
+the decision logic by monkeypatching the sanitizer subprocess, including the
+mismatch case (expected detected but clean) and the missing-tool / missing-binary
+exit codes.
+
+`broken_oob` (out-of-bounds global write) and `broken_sync` (divergent
+`__syncthreads`) are reliably flagged by memcheck and synccheck respectively.
+`broken_race` is the construct most worth confirming on real silicon; if a
+given Compute Sanitizer build does not flag the unsynchronized shared-memory
+read, that variant is the one to adjust, not the verdict logic.
+
+## Current state
+
+The repository now has three product-style proofs (reduce_sum, vector_add,
+matmul), a replayable minimization of a real historical grid-stride bug, and a
+sanitizer proof that demonstrates both clean runs and caught defects. Host tests
+cover the Python layer (artifact schema, matcher/tolerance, minimizer, sanitizer
+verdict) without a GPU; the CUDA artifacts are validated on the Colab T4.
+
 The next useful extension is a GPU CI path that reruns the campaign without
 manual Colab steps.
+

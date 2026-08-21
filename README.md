@@ -51,8 +51,10 @@ It records 72/72 correct reduction cases, 64 faulty reduction mismatches,
 cuda/reduction_proof.cu      multi-block reduction: correct + faulty + replay
 cuda/vector_add_proof.cu     vector add: correct + faulty + replay
 cuda/matmul_proof.cu         tiled matmul: correct + faulty_tile + replay
+cuda/sanitizer_proof.cu      deliberately broken kernels for sanitizer proof
 tools/replay_failure.py      JSON parsing, validation, kernel-aware replay
 tools/colab_entry.py         Colab runtime: build, run, sanitize all proofs
+tools/check_sanitizer.py     sanitizer verdict interpretation (Python-owned)
 tools/minimize_failure.py    reduce prefix search against a pre-fix binary
 CMakeLists.txt               optional CUDA build and CTest integration
 failures/                    captured counterexamples and minimization seeds
@@ -122,7 +124,7 @@ nvcc -std=c++20 -O0 -lineinfo -arch=sm_75 \
     cuda/matmul_proof.cu -o build/matmul_proof
 
 ./build/matmul_proof correct
-./build/matmul_proof faulty
+./build/…… (etc.)
 
 python3 tools/replay_failure.py \
     failures/matmul-tile-v0.json \
@@ -130,6 +132,33 @@ python3 tools/replay_failure.py \
 
 compute-sanitizer --tool memcheck --error-exitcode 1 \
     ./build/matmul_proof correct
+```
+
+## Sanitizer proof
+
+`cuda/sanitizer_proof.cu` is not a product kernel. It proves the sanitizer
+workflow: a `correct` mode passes memcheck, racecheck, and synccheck, while
+three deliberately broken modes are each caught by the tool that targets their
+defect class:
+
+```text
+broken_oob    out-of-bounds global write   -> memcheck
+broken_sync   divergent __syncthreads       -> synccheck
+broken_race   unsynchronized shared memory -> racecheck
+```
+
+`tools/check_sanitizer.py` runs `compute-sanitizer` and decides whether the
+verdict matches the expectation (`--expect-detected` for broken modes, clean
+for `correct`). It exits 0 only on a match, so it drives CTest directly:
+
+```bash
+mkdir -p build
+nvcc -std=c++20 -O0 -lineinfo -arch=sm_75 \
+    cuda/sanitizer_proof.cu -o build/sanitizer_proof
+
+python3 tools/check_sanitizer.py \
+    --executable build/sanitizer_proof \
+    --mode broken_race --tool racecheck --expect-detected
 ```
 
 ## Minimize a real failure

@@ -28,6 +28,7 @@ if(VANTA_ENABLE_CUDA)
     add_executable(reduction_proof cuda/reduction_proof.cu)
     add_executable(vector_add_proof cuda/vector_add_proof.cu)
     add_executable(matmul_proof cuda/matmul_proof.cu)
+    add_executable(sanitizer_proof cuda/sanitizer_proof.cu)
 
     add_test(
         NAME reduction_correct
@@ -100,6 +101,52 @@ if(VANTA_ENABLE_CUDA)
             NAME matmul_memcheck
             COMMAND ${COMPUTE_SANITIZER_EXECUTABLE} --tool memcheck
                     --error-exitcode 1 $<TARGET_FILE:matmul_proof> correct
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        )
+
+        # Sanitizer proof: correct kernel stays clean on every tool; each
+        # broken variant is flagged by the tool that targets its defect class.
+        # Python owns the verdict (tools/check_sanitizer.py).
+        add_test(
+            NAME sanitizer_correct_memcheck
+            COMMAND ${Python3_EXECUTABLE} tools/check_sanitizer.py
+                    --executable $<TARGET_FILE:sanitizer_proof>
+                    --mode correct --tool memcheck
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        )
+        add_test(
+            NAME sanitizer_correct_racecheck
+            COMMAND ${Python3_EXECUTABLE} tools/check_sanitizer.py
+                    --executable $<TARGET_FILE:sanitizer_proof>
+                    --mode correct --tool racecheck
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        )
+        add_test(
+            NAME sanitizer_correct_synccheck
+            COMMAND ${Python3_EXECUTABLE} tools/check_sanitizer.py
+                    --executable $<TARGET_FILE:sanitizer_proof>
+                    --mode correct --tool synccheck
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        )
+        add_test(
+            NAME sanitizer_broken_oob_memcheck
+            COMMAND ${Python3_EXECUTABLE} tools/check_sanitizer.py
+                    --executable $<TARGET_FILE:sanitizer_proof>
+                    --mode broken_oob --tool memcheck --expect-detected
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        )
+        add_test(
+            NAME sanitizer_broken_race_racecheck
+            COMMAND ${Python3_EXECUTABLE} tools/check_sanitizer.py
+                    --executable $<TARGET_FILE:sanitizer_proof>
+                    --mode broken_race --tool racecheck --expect-detected
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        )
+        add_test(
+            NAME sanitizer_broken_sync_synccheck
+            COMMAND ${Python3_EXECUTABLE} tools/check_sanitizer.py
+                    --executable $<TARGET_FILE:sanitizer_proof>
+                    --mode broken_sync --tool synccheck --expect-detected
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         )
     endif()
