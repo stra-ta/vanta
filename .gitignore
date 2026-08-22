@@ -13,6 +13,7 @@ results/**/vector_add_proof/vector_add_proof
 results/**/matmul_proof/matmul_proof
 results/**/sanitizer_proof/sanitizer_proof
 results/**/sanitizer/sanitizer_proof
+results/**/subjects/**/*.cu
 
 # Python
 __pycache__/

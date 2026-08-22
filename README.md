@@ -56,6 +56,7 @@ tools/replay_failure.py      JSON parsing, validation, kernel-aware replay
 tools/colab_entry.py         Colab runtime: build, run, sanitize all proofs
 tools/check_sanitizer.py     sanitizer verdict interpretation (Python-owned)
 tools/minimize_failure.py    reduce prefix search against a pre-fix binary
+experiments/cuda-mutations/  controlled detection-boundary study protocol
 CMakeLists.txt               optional CUDA build and CTest integration
 failures/                    captured counterexamples and minimization seeds
 results/                     campaign artifacts
@@ -74,6 +75,27 @@ python3 -m pytest tests/ -q
 They cover artifact validation, the operation-aware mismatch tolerance, and the
 four replay classifications (`same_failure`, `resolved`, `different_failure`,
 `infrastructure_failure`).
+
+## Mutation-study protocol
+
+[`experiments/cuda-mutations/`](experiments/cuda-mutations/) contains a
+preregistered 18-mutant study across reduction, vector add, and tiled matmul.
+
+It derives each subject from a pinned canonical source plus one controlled
+transformation, then records differential, metamorphic, memcheck, racecheck,
+synccheck, replay, and applicable minimization outcomes separately.
+
+The core proofs stay unchanged.
+
+Run it on the CUDA host after the normal campaign:
+
+```bash
+python3 experiments/cuda-mutations/run_campaign.py \
+    --out results/cuda-mutation-campaign-v0
+```
+
+The protocol is implemented, but its detection matrix is not a finding until a
+GPU campaign produces committed evidence.
 
 ## Run on a GPU machine
 
