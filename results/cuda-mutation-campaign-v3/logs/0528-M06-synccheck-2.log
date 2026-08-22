@@ -1,0 +1,907 @@
+========= COMPUTE-SANITIZER
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (0,12,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (1,12,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (2,12,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (3,12,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (4,12,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (5,12,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (6,12,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (7,12,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (8,12,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (9,12,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (10,12,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (11,12,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (12,12,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (13,12,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (14,12,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (15,12,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (0,13,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (1,13,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (2,13,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (3,13,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (4,13,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (5,13,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (6,13,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (7,13,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (8,13,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (9,13,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (10,13,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (11,13,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (12,13,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (13,13,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (14,13,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (15,13,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (0,14,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (1,14,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (2,14,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (3,14,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (4,14,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (5,14,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (6,14,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (7,14,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (8,14,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (9,14,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (10,14,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (11,14,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (12,14,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (13,14,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (14,14,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (15,14,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (0,15,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (1,15,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (2,15,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (3,15,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (4,15,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (5,15,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (6,15,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (7,15,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (8,15,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (9,15,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (10,15,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (11,15,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (12,15,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (13,15,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (14,15,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (15,15,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (0,8,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (1,8,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (2,8,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (3,8,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (4,8,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (5,8,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (6,8,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (7,8,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (8,8,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (9,8,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (10,8,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (11,8,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (12,8,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (13,8,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (14,8,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (15,8,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (0,9,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (1,9,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (2,9,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (3,9,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (4,9,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (5,9,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (6,9,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (7,9,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (8,9,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (9,9,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (10,9,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (11,9,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (12,9,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (13,9,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (14,9,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (15,9,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (0,10,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (1,10,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (2,10,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Barrier error detected. Divergent thread(s) in block.
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x2f0 in matmul_proof.cu:66
+=========     by thread (3,10,0) in block (0,0,0)
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M06
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M06
+=========         Host Frame: main [0xbebf] in M06
+========= 
+========= Target application returned an error
+========= ERROR SUMMARY: 512 errors
+========= ERROR SUMMARY: 412 errors were not printed. Use --print-limit option to adjust the number of printed errors
+GPU: Tesla T4
+Compute capability: 7.5
+matmul_tiled: unspecified launch failure

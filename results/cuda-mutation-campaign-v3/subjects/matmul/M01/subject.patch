@@ -1,0 +1,11 @@
+--- a/matmul_proof.cu
++++ b/matmul_proof.cu
+@@ -63,7 +63,7 @@
+ 
+         for (int k = 0; k < TILE; ++k) {
+             const int global_k = t * TILE + k;
+-            if (!faulty || global_k < n - 1) {
++            if (global_k < n - 1) {
+                 acc += as[ty][k] * bs[k][tx];
+             }
+         }

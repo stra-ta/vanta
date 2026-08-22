@@ -1,0 +1,11 @@
+--- a/reduction_proof.cu
++++ b/reduction_proof.cu
+@@ -165,7 +165,7 @@
+             "cudaMalloc(input)")) {
+         return false;
+     }
+-    if (!check_cuda(cudaMalloc(&device_partial, grid * sizeof(float)),
++    if (!check_cuda(cudaMalloc(&device_partial, (grid - 1) * sizeof(float)),
+                     "cudaMalloc(partial)")) {
+         cudaFree(device_input);
+         return false;

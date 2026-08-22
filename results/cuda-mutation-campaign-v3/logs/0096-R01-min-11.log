@@ -1,0 +1,3 @@
+{"n":11,"block_threads":32,"expected":12.25,"actual":12.25}
+GPU: Tesla T4
+Compute capability: 7.5

@@ -1,0 +1,5 @@
+========= COMPUTE-SANITIZER
+{"n":65,"block_threads":32,"expected":75,"actual":114.75}
+========= ERROR SUMMARY: 0 errors
+GPU: Tesla T4
+Compute capability: 7.5

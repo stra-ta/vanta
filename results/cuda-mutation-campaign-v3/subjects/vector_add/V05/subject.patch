@@ -1,0 +1,11 @@
+--- a/vector_add_proof.cu
++++ b/vector_add_proof.cu
+@@ -33,7 +33,7 @@
+     if (i >= n) {
+         return;
+     }
+-    const float value = a * x[i] + y[i];
++    const float value = a * x[i] + a * y[i];
+     // The broken tail variant drops the final element (writes 0).
+     if (!faulty || i < n - 1) {
+         out[i] = value;

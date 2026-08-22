@@ -1,0 +1,11 @@
+--- a/vector_add_proof.cu
++++ b/vector_add_proof.cu
+@@ -29,7 +29,7 @@
+ 
+ __global__ void vector_add_kernel(float a, const float* x, const float* y,
+                                   float* out, int n, bool faulty) {
+-    const int i = blockIdx.x * blockDim.x + threadIdx.x;
++    const int i = threadIdx.x;
+     if (i >= n) {
+         return;
+     }

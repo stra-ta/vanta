@@ -1,0 +1,11 @@
+--- a/reduction_proof.cu
++++ b/reduction_proof.cu
+@@ -71,7 +71,7 @@
+     }
+ 
+     if (tid == 0) {
+-        partial[blockIdx.x] = shared[0];
++        partial[blockIdx.x] = 2.0f * shared[0];
+     }
+ }
+ 

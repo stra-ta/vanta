@@ -1,0 +1,16 @@
+{
+  "case": {
+    "a": 1.5,
+    "block_threads": 32,
+    "n": 1,
+    "x": [
+      3.0
+    ],
+    "y": [
+      -2.0
+    ]
+  },
+  "minimized_length": 1,
+  "original_length": 31,
+  "status": "prefix"
+}

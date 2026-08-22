@@ -1,0 +1,1107 @@
+========= COMPUTE-SANITIZER
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (0,8,0) in block (0,0,0)
+=========     Address 0x7e19a9001300 is out of bounds
+=========     and is 1 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (1,8,0) in block (0,0,0)
+=========     Address 0x7e19a9001304 is out of bounds
+=========     and is 5 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (2,8,0) in block (0,0,0)
+=========     Address 0x7e19a9001308 is out of bounds
+=========     and is 9 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (3,8,0) in block (0,0,0)
+=========     Address 0x7e19a900130c is out of bounds
+=========     and is 13 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (4,8,0) in block (0,0,0)
+=========     Address 0x7e19a9001310 is out of bounds
+=========     and is 17 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (5,8,0) in block (0,0,0)
+=========     Address 0x7e19a9001314 is out of bounds
+=========     and is 21 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (6,8,0) in block (0,0,0)
+=========     Address 0x7e19a9001318 is out of bounds
+=========     and is 25 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (7,8,0) in block (0,0,0)
+=========     Address 0x7e19a900131c is out of bounds
+=========     and is 29 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (8,8,0) in block (0,0,0)
+=========     Address 0x7e19a9001320 is out of bounds
+=========     and is 33 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (9,8,0) in block (0,0,0)
+=========     Address 0x7e19a9001324 is out of bounds
+=========     and is 37 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (10,8,0) in block (0,0,0)
+=========     Address 0x7e19a9001328 is out of bounds
+=========     and is 41 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (11,8,0) in block (0,0,0)
+=========     Address 0x7e19a900132c is out of bounds
+=========     and is 45 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (12,8,0) in block (0,0,0)
+=========     Address 0x7e19a9001330 is out of bounds
+=========     and is 49 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (13,8,0) in block (0,0,0)
+=========     Address 0x7e19a9001334 is out of bounds
+=========     and is 53 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (14,8,0) in block (0,0,0)
+=========     Address 0x7e19a9001338 is out of bounds
+=========     and is 57 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (15,8,0) in block (0,0,0)
+=========     Address 0x7e19a900133c is out of bounds
+=========     and is 61 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (0,9,0) in block (0,0,0)
+=========     Address 0x7e19a9001360 is out of bounds
+=========     and is 97 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (1,9,0) in block (0,0,0)
+=========     Address 0x7e19a9001364 is out of bounds
+=========     and is 101 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (2,9,0) in block (0,0,0)
+=========     Address 0x7e19a9001368 is out of bounds
+=========     and is 105 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (3,9,0) in block (0,0,0)
+=========     Address 0x7e19a900136c is out of bounds
+=========     and is 109 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (4,9,0) in block (0,0,0)
+=========     Address 0x7e19a9001370 is out of bounds
+=========     and is 113 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (5,9,0) in block (0,0,0)
+=========     Address 0x7e19a9001374 is out of bounds
+=========     and is 117 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (6,9,0) in block (0,0,0)
+=========     Address 0x7e19a9001378 is out of bounds
+=========     and is 121 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (7,9,0) in block (0,0,0)
+=========     Address 0x7e19a900137c is out of bounds
+=========     and is 125 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (8,9,0) in block (0,0,0)
+=========     Address 0x7e19a9001380 is out of bounds
+=========     and is 128 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (9,9,0) in block (0,0,0)
+=========     Address 0x7e19a9001384 is out of bounds
+=========     and is 124 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (10,9,0) in block (0,0,0)
+=========     Address 0x7e19a9001388 is out of bounds
+=========     and is 120 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (11,9,0) in block (0,0,0)
+=========     Address 0x7e19a900138c is out of bounds
+=========     and is 116 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (12,9,0) in block (0,0,0)
+=========     Address 0x7e19a9001390 is out of bounds
+=========     and is 112 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (13,9,0) in block (0,0,0)
+=========     Address 0x7e19a9001394 is out of bounds
+=========     and is 108 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (14,9,0) in block (0,0,0)
+=========     Address 0x7e19a9001398 is out of bounds
+=========     and is 104 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (15,9,0) in block (0,0,0)
+=========     Address 0x7e19a900139c is out of bounds
+=========     and is 100 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (0,10,0) in block (0,0,0)
+=========     Address 0x7e19a90013c0 is out of bounds
+=========     and is 64 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (1,10,0) in block (0,0,0)
+=========     Address 0x7e19a90013c4 is out of bounds
+=========     and is 60 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (2,10,0) in block (0,0,0)
+=========     Address 0x7e19a90013c8 is out of bounds
+=========     and is 56 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (3,10,0) in block (0,0,0)
+=========     Address 0x7e19a90013cc is out of bounds
+=========     and is 52 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (4,10,0) in block (0,0,0)
+=========     Address 0x7e19a90013d0 is out of bounds
+=========     and is 48 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (5,10,0) in block (0,0,0)
+=========     Address 0x7e19a90013d4 is out of bounds
+=========     and is 44 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (6,10,0) in block (0,0,0)
+=========     Address 0x7e19a90013d8 is out of bounds
+=========     and is 40 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (7,10,0) in block (0,0,0)
+=========     Address 0x7e19a90013dc is out of bounds
+=========     and is 36 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (8,10,0) in block (0,0,0)
+=========     Address 0x7e19a90013e0 is out of bounds
+=========     and is 32 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (9,10,0) in block (0,0,0)
+=========     Address 0x7e19a90013e4 is out of bounds
+=========     and is 28 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (10,10,0) in block (0,0,0)
+=========     Address 0x7e19a90013e8 is out of bounds
+=========     and is 24 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (11,10,0) in block (0,0,0)
+=========     Address 0x7e19a90013ec is out of bounds
+=========     and is 20 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (12,10,0) in block (0,0,0)
+=========     Address 0x7e19a90013f0 is out of bounds
+=========     and is 16 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (13,10,0) in block (0,0,0)
+=========     Address 0x7e19a90013f4 is out of bounds
+=========     and is 12 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (14,10,0) in block (0,0,0)
+=========     Address 0x7e19a90013f8 is out of bounds
+=========     and is 8 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (15,10,0) in block (0,0,0)
+=========     Address 0x7e19a90013fc is out of bounds
+=========     and is 4 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (8,7,0) in block (1,0,0)
+=========     Address 0x7e19a9001300 is out of bounds
+=========     and is 1 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (9,7,0) in block (1,0,0)
+=========     Address 0x7e19a9001304 is out of bounds
+=========     and is 5 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (10,7,0) in block (1,0,0)
+=========     Address 0x7e19a9001308 is out of bounds
+=========     and is 9 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (11,7,0) in block (1,0,0)
+=========     Address 0x7e19a900130c is out of bounds
+=========     and is 13 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (12,7,0) in block (1,0,0)
+=========     Address 0x7e19a9001310 is out of bounds
+=========     and is 17 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (13,7,0) in block (1,0,0)
+=========     Address 0x7e19a9001314 is out of bounds
+=========     and is 21 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (14,7,0) in block (1,0,0)
+=========     Address 0x7e19a9001318 is out of bounds
+=========     and is 25 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (15,7,0) in block (1,0,0)
+=========     Address 0x7e19a900131c is out of bounds
+=========     and is 29 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (0,8,0) in block (1,0,0)
+=========     Address 0x7e19a9001340 is out of bounds
+=========     and is 65 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (1,8,0) in block (1,0,0)
+=========     Address 0x7e19a9001344 is out of bounds
+=========     and is 69 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (2,8,0) in block (1,0,0)
+=========     Address 0x7e19a9001348 is out of bounds
+=========     and is 73 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (3,8,0) in block (1,0,0)
+=========     Address 0x7e19a900134c is out of bounds
+=========     and is 77 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (4,8,0) in block (1,0,0)
+=========     Address 0x7e19a9001350 is out of bounds
+=========     and is 81 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (5,8,0) in block (1,0,0)
+=========     Address 0x7e19a9001354 is out of bounds
+=========     and is 85 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (6,8,0) in block (1,0,0)
+=========     Address 0x7e19a9001358 is out of bounds
+=========     and is 89 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (7,8,0) in block (1,0,0)
+=========     Address 0x7e19a900135c is out of bounds
+=========     and is 93 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (8,8,0) in block (1,0,0)
+=========     Address 0x7e19a9001360 is out of bounds
+=========     and is 97 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (9,8,0) in block (1,0,0)
+=========     Address 0x7e19a9001364 is out of bounds
+=========     and is 101 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (10,8,0) in block (1,0,0)
+=========     Address 0x7e19a9001368 is out of bounds
+=========     and is 105 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (11,8,0) in block (1,0,0)
+=========     Address 0x7e19a900136c is out of bounds
+=========     and is 109 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (12,8,0) in block (1,0,0)
+=========     Address 0x7e19a9001370 is out of bounds
+=========     and is 113 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (13,8,0) in block (1,0,0)
+=========     Address 0x7e19a9001374 is out of bounds
+=========     and is 117 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (14,8,0) in block (1,0,0)
+=========     Address 0x7e19a9001378 is out of bounds
+=========     and is 121 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (15,8,0) in block (1,0,0)
+=========     Address 0x7e19a900137c is out of bounds
+=========     and is 125 bytes after the nearest allocation at 0x7e19a9000a00 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (0,9,0) in block (1,0,0)
+=========     Address 0x7e19a90013a0 is out of bounds
+=========     and is 96 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (1,9,0) in block (1,0,0)
+=========     Address 0x7e19a90013a4 is out of bounds
+=========     and is 92 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (2,9,0) in block (1,0,0)
+=========     Address 0x7e19a90013a8 is out of bounds
+=========     and is 88 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (3,9,0) in block (1,0,0)
+=========     Address 0x7e19a90013ac is out of bounds
+=========     and is 84 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (4,9,0) in block (1,0,0)
+=========     Address 0x7e19a90013b0 is out of bounds
+=========     and is 80 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (5,9,0) in block (1,0,0)
+=========     Address 0x7e19a90013b4 is out of bounds
+=========     and is 76 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (6,9,0) in block (1,0,0)
+=========     Address 0x7e19a90013b8 is out of bounds
+=========     and is 72 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (7,9,0) in block (1,0,0)
+=========     Address 0x7e19a90013bc is out of bounds
+=========     and is 68 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (8,9,0) in block (1,0,0)
+=========     Address 0x7e19a90013c0 is out of bounds
+=========     and is 64 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (9,9,0) in block (1,0,0)
+=========     Address 0x7e19a90013c4 is out of bounds
+=========     and is 60 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (10,9,0) in block (1,0,0)
+=========     Address 0x7e19a90013c8 is out of bounds
+=========     and is 56 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (11,9,0) in block (1,0,0)
+=========     Address 0x7e19a90013cc is out of bounds
+=========     and is 52 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (12,9,0) in block (1,0,0)
+=========     Address 0x7e19a90013d0 is out of bounds
+=========     and is 48 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (13,9,0) in block (1,0,0)
+=========     Address 0x7e19a90013d4 is out of bounds
+=========     and is 44 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (14,9,0) in block (1,0,0)
+=========     Address 0x7e19a90013d8 is out of bounds
+=========     and is 40 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1e0 in matmul_proof.cu:61
+=========     by thread (15,9,0) in block (1,0,0)
+=========     Address 0x7e19a90013dc is out of bounds
+=========     and is 36 bytes before the nearest allocation at 0x7e19a9001400 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1f0 in matmul_proof.cu:60
+=========     by thread (0,8,0) in block (0,1,0)
+=========     Address 0x7e19a9000900 is out of bounds
+=========     and is 1 bytes after the nearest allocation at 0x7e19a9000000 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1f0 in matmul_proof.cu:60
+=========     by thread (1,8,0) in block (0,1,0)
+=========     Address 0x7e19a9000904 is out of bounds
+=========     and is 5 bytes after the nearest allocation at 0x7e19a9000000 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1f0 in matmul_proof.cu:60
+=========     by thread (2,8,0) in block (0,1,0)
+=========     Address 0x7e19a9000908 is out of bounds
+=========     and is 9 bytes after the nearest allocation at 0x7e19a9000000 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1f0 in matmul_proof.cu:60
+=========     by thread (3,8,0) in block (0,1,0)
+=========     Address 0x7e19a900090c is out of bounds
+=========     and is 13 bytes after the nearest allocation at 0x7e19a9000000 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1f0 in matmul_proof.cu:60
+=========     by thread (4,8,0) in block (0,1,0)
+=========     Address 0x7e19a9000910 is out of bounds
+=========     and is 17 bytes after the nearest allocation at 0x7e19a9000000 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1f0 in matmul_proof.cu:60
+=========     by thread (5,8,0) in block (0,1,0)
+=========     Address 0x7e19a9000914 is out of bounds
+=========     and is 21 bytes after the nearest allocation at 0x7e19a9000000 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1f0 in matmul_proof.cu:60
+=========     by thread (6,8,0) in block (0,1,0)
+=========     Address 0x7e19a9000918 is out of bounds
+=========     and is 25 bytes after the nearest allocation at 0x7e19a9000000 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1f0 in matmul_proof.cu:60
+=========     by thread (7,8,0) in block (0,1,0)
+=========     Address 0x7e19a900091c is out of bounds
+=========     and is 29 bytes after the nearest allocation at 0x7e19a9000000 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1f0 in matmul_proof.cu:60
+=========     by thread (8,8,0) in block (0,1,0)
+=========     Address 0x7e19a9000920 is out of bounds
+=========     and is 33 bytes after the nearest allocation at 0x7e19a9000000 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1f0 in matmul_proof.cu:60
+=========     by thread (9,8,0) in block (0,1,0)
+=========     Address 0x7e19a9000924 is out of bounds
+=========     and is 37 bytes after the nearest allocation at 0x7e19a9000000 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1f0 in matmul_proof.cu:60
+=========     by thread (10,8,0) in block (0,1,0)
+=========     Address 0x7e19a9000928 is out of bounds
+=========     and is 41 bytes after the nearest allocation at 0x7e19a9000000 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::matmul_tiled(const float *, const float *, float *, int, bool)+0x1f0 in matmul_proof.cu:60
+=========     by thread (11,8,0) in block (0,1,0)
+=========     Address 0x7e19a900092c is out of bounds
+=========     and is 45 bytes after the nearest allocation at 0x7e19a9000000 of size 2,304 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::matmul_tiled(float const*, float const*, float*, int, bool) [0xc229] in M03
+=========         Host Frame: (anonymous namespace)::run_matmul(std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, std::vector<float, std::allocator<float> >&) [0xa402] in M03
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba2e] in M03
+=========         Host Frame: main [0xbebf] in M03
+========= 
+========= Target application returned an error
+========= ERROR SUMMARY: 188 errors
+========= ERROR SUMMARY: 88 errors were not printed. Use --print-limit option to adjust the number of printed errors
+GPU: Tesla T4
+Compute capability: 7.5
+matmul_tiled: unspecified launch failure

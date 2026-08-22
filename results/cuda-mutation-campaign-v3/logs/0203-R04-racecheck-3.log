@@ -1,0 +1,8 @@
+========= COMPUTE-SANITIZER
+========= Warning: Race reported between Write access at <unnamed>::reduce_block(const float *, float *, int, bool)+0x280 in reduction_proof.cu:61
+=========     and Read access at <unnamed>::reduce_block(const float *, float *, int, bool)+0x350 in reduction_proof.cu:66 [192 hazards]
+========= 
+{"n":65,"block_threads":32,"expected":75,"actual":75}
+========= RACECHECK SUMMARY: 1 hazard displayed (0 errors, 1 warning)
+GPU: Tesla T4
+Compute capability: 7.5

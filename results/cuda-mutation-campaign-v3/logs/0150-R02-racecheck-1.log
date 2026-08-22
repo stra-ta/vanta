@@ -1,0 +1,5 @@
+========= COMPUTE-SANITIZER
+{"n":33,"block_threads":32,"expected":36.75,"actual":33.75}
+========= RACECHECK SUMMARY: 0 hazards displayed (0 errors, 0 warnings)
+GPU: Tesla T4
+Compute capability: 7.5

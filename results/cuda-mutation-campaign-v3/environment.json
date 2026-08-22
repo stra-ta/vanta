@@ -1,0 +1,43 @@
+{
+  "baseline_commit": "7b376a63c63ca74ec33ab943c022e3e92a3ab07b",
+  "compiler_flags": [
+    "-std=c++20",
+    "-O0",
+    "-lineinfo",
+    "-arch=sm_75"
+  ],
+  "probes": {
+    "compute_sanitizer": {
+      "command": [
+        "compute-sanitizer",
+        "--version"
+      ],
+      "elapsed_seconds": 0.02459437500056083,
+      "log": "results/cuda-mutation-campaign-v3/logs/0004-environment-sanitizer.log",
+      "raw_output_sha256": "921fd6b0823a1ddbaa9ac576b368cdaf4047971437c01c39ee940619f67d18e5",
+      "returncode": 0,
+      "timeout": false
+    },
+    "nvcc": {
+      "command": [
+        "nvcc",
+        "--version"
+      ],
+      "elapsed_seconds": 0.008397998999498668,
+      "log": "results/cuda-mutation-campaign-v3/logs/0003-environment-nvcc.log",
+      "raw_output_sha256": "68f8b0a1301428031e307cf5260142a517bff25cc232a09eae2734be475d721f",
+      "returncode": 0,
+      "timeout": false
+    },
+    "nvidia_smi": {
+      "command": [
+        "nvidia-smi"
+      ],
+      "elapsed_seconds": 0.17881372699957865,
+      "log": "results/cuda-mutation-campaign-v3/logs/0002-environment-gpu.log",
+      "raw_output_sha256": "1b1ca6315aa568e83f3742b5f5eb883426c6665c7292d66ad4bda2b8e8b97724",
+      "returncode": 0,
+      "timeout": false
+    }
+  }
+}

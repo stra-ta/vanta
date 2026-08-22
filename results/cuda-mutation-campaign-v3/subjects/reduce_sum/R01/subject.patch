@@ -1,0 +1,11 @@
+--- a/reduction_proof.cu
++++ b/reduction_proof.cu
+@@ -52,7 +52,7 @@
+ 
+     // Grid-stride load: each element belongs to one block's partial sum.
+     for (int i = block_start + tid; i < n;
+-         i += gridDim.x * blockDim.x) {
++         i += blockDim.x) {
+         if (!faulty || i < n - 1) {
+             local += input[i];
+         }

@@ -1,0 +1,10 @@
+--- a/matmul_proof.cu
++++ b/matmul_proof.cu
+@@ -59,7 +59,6 @@
+         const int b_row = t * TILE + ty;
+         as[ty][tx] = (row < n && a_col < n) ? a[row * n + a_col] : 0.0f;
+         bs[ty][tx] = (col < n && b_row < n) ? b[b_row * n + col] : 0.0f;
+-        __syncthreads();
+ 
+         for (int k = 0; k < TILE; ++k) {
+             const int global_k = t * TILE + k;

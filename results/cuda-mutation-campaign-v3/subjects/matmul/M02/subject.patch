@@ -1,0 +1,11 @@
+--- a/matmul_proof.cu
++++ b/matmul_proof.cu
+@@ -52,7 +52,7 @@
+     const int col = blockIdx.x * TILE + tx;
+ 
+     float acc = 0.0f;
+-    const int tiles = (n + TILE - 1) / TILE;
++    const int tiles = n / TILE;
+ 
+     for (int t = 0; t < tiles; ++t) {
+         const int a_col = t * TILE + tx;

@@ -1,0 +1,10 @@
+--- a/reduction_proof.cu
++++ b/reduction_proof.cu
+@@ -59,7 +59,6 @@
+     }
+ 
+     shared[tid] = local;
+-    __syncthreads();
+ 
+     for (int active = blockDim.x; active > 1;) {
+         const int half = (active + 1) / 2;

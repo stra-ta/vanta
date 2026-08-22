@@ -1,0 +1,41 @@
+========= COMPUTE-SANITIZER
+========= Invalid __global__ read of size 4 bytes
+=========     at <unnamed>::vector_add_kernel(float, const float *, const float *, float *, int, bool)+0x90 in vector_add_proof.cu:36
+=========     by thread (1,0,0) in block (1,0,0)
+=========     Address 0x7f0b5d000084 is out of bounds
+=========     and is 1 bytes after the nearest allocation at 0x7f0b5d000000 of size 132 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::vector_add_kernel(float, float const*, float const*, float*, int, bool) [0xc2e8] in V02
+=========         Host Frame: (anonymous namespace)::run_case(float, std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, std::vector<float, std::allocator<float> >&) [0xa295] in V02
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba9b] in V02
+=========         Host Frame: main [0xbf4b] in V02
+========= 
+========= Program hit cudaErrorLaunchFailure (error 719) due to "unspecified launch failure" on CUDA API call to cudaDeviceSynchronize.
+=========     Saved host backtrace up to driver entry point at error
+=========         Host Frame: (anonymous namespace)::run_case(float, std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, std::vector<float, std::allocator<float> >&) [0xa29a] in V02
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba9b] in V02
+=========         Host Frame: main [0xbf4b] in V02
+========= 
+========= Program hit cudaErrorLaunchFailure (error 719) due to "unspecified launch failure" on CUDA API call to cudaFree.
+=========     Saved host backtrace up to driver entry point at error
+=========         Host Frame: (anonymous namespace)::run_case(float, std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, std::vector<float, std::allocator<float> >&) [0xa332] in V02
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba9b] in V02
+=========         Host Frame: main [0xbf4b] in V02
+========= 
+========= Program hit cudaErrorLaunchFailure (error 719) due to "unspecified launch failure" on CUDA API call to cudaFree.
+=========     Saved host backtrace up to driver entry point at error
+=========         Host Frame: (anonymous namespace)::run_case(float, std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, std::vector<float, std::allocator<float> >&) [0xa33e] in V02
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba9b] in V02
+=========         Host Frame: main [0xbf4b] in V02
+========= 
+========= Program hit cudaErrorLaunchFailure (error 719) due to "unspecified launch failure" on CUDA API call to cudaFree.
+=========     Saved host backtrace up to driver entry point at error
+=========         Host Frame: (anonymous namespace)::run_case(float, std::vector<float, std::allocator<float> > const&, std::vector<float, std::allocator<float> > const&, int, bool, std::vector<float, std::allocator<float> >&) [0xa34a] in V02
+=========         Host Frame: (anonymous namespace)::run_replay() [0xba9b] in V02
+=========         Host Frame: main [0xbf4b] in V02
+========= 
+========= Target application returned an error
+========= ERROR SUMMARY: 5 errors
+GPU: Tesla T4
+Compute capability: 7.5
+vector_add_kernel: unspecified launch failure

@@ -1,0 +1,41 @@
+========= COMPUTE-SANITIZER
+========= Invalid __global__ write of size 4 bytes
+=========     at <unnamed>::reduce_block(const float *, float *, int, bool)+0x410 in reduction_proof.cu:74
+=========     by thread (0,0,0) in block (2,0,0)
+=========     Address 0x788c63000208 is out of bounds
+=========     and is 1 bytes after the nearest allocation at 0x788c63000200 of size 8 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: (anonymous namespace)::reduce_block(float const*, float*, int, bool) [0xbda2] in R06
+=========         Host Frame: (anonymous namespace)::run_case(std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, double&) [0xa2c2] in R06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xb631] in R06
+=========         Host Frame: main [0xba5b] in R06
+========= 
+========= Program hit cudaErrorLaunchFailure (error 719) due to "unspecified launch failure" on CUDA API call to cudaDeviceSynchronize.
+=========     Saved host backtrace up to driver entry point at error
+=========         Host Frame: (anonymous namespace)::run_case(std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, double&) [0xa2c7] in R06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xb631] in R06
+=========         Host Frame: main [0xba5b] in R06
+========= 
+========= Program hit cudaErrorLaunchFailure (error 719) due to "unspecified launch failure" on CUDA API call to cudaFree.
+=========     Saved host backtrace up to driver entry point at error
+=========         Host Frame: (anonymous namespace)::run_case(std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, double&) [0xa3e6] in R06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xb631] in R06
+=========         Host Frame: main [0xba5b] in R06
+========= 
+========= Program hit cudaErrorLaunchFailure (error 719) due to "unspecified launch failure" on CUDA API call to cudaFree.
+=========     Saved host backtrace up to driver entry point at error
+=========         Host Frame: (anonymous namespace)::run_case(std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, double&) [0xa3f2] in R06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xb631] in R06
+=========         Host Frame: main [0xba5b] in R06
+========= 
+========= Program hit cudaErrorLaunchFailure (error 719) due to "unspecified launch failure" on CUDA API call to cudaFree.
+=========     Saved host backtrace up to driver entry point at error
+=========         Host Frame: (anonymous namespace)::run_case(std::vector<float, std::allocator<float> > const&, int, bool, cudaDeviceProp const&, double&) [0xa3fe] in R06
+=========         Host Frame: (anonymous namespace)::run_replay() [0xb631] in R06
+=========         Host Frame: main [0xba5b] in R06
+========= 
+========= Target application returned an error
+========= ERROR SUMMARY: 5 errors
+GPU: Tesla T4
+Compute capability: 7.5
+reduce_block: unspecified launch failure
