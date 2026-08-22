@@ -369,7 +369,8 @@ tests/
 results/
   first-campaign/           Historical reduction-only evidence.
   second-campaign/          Final two-kernel evidence.
-  notebook-evidence/        Original exploratory notebooks and outputs.
+  third-campaign/           T4 product-kernel and sanitizer evidence.
+  notebook-evidence/        Pointer to archived exploratory notebook release.
 
 CMakeLists.txt              Host and CUDA CTest configuration.
 README.md                   Short project entrypoint.
@@ -613,4 +614,3 @@ verdict) without a GPU; the CUDA artifacts are validated on the Colab T4.
 
 The next useful extension is a GPU CI path that reruns the campaign without
 manual Colab steps.
-

@@ -1,0 +1,8 @@
+# GitHub Linguist statistics describe Vanta's primary implementation surface.
+# Tests and experimental harnesses remain tracked and reviewed, but are not
+# product kernel sources.
+tests/** -linguist-detectable
+experiments/** -linguist-detectable
+
+# Notebook exports are generated evidence artifacts, not implementation source.
+results/notebook-evidence/*.ipynb linguist-generated=true
