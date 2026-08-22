@@ -1,0 +1,91 @@
+{
+  "schema": "vanta.campaign.v1",
+  "recorded_at_utc": "2026-08-22T02:34:19.404618+00:00",
+  "kernels": {
+    "reduce_sum": {
+      "source": "cuda/reduction_proof.cu",
+      "artifact": "failures/reduction-tail-v0.json",
+      "compile_ok": true,
+      "correct_campaign_ok": true,
+      "faulty_campaign_detected": true,
+      "replay_classification": "same_failure",
+      "memcheck_ok": true,
+      "status": "pass"
+    },
+    "vector_add": {
+      "source": "cuda/vector_add_proof.cu",
+      "artifact": "failures/vector_add-tail-v0.json",
+      "compile_ok": true,
+      "correct_campaign_ok": true,
+      "faulty_campaign_detected": true,
+      "replay_classification": "same_failure",
+      "memcheck_ok": true,
+      "status": "pass"
+    },
+    "matmul": {
+      "source": "cuda/matmul_proof.cu",
+      "artifact": "failures/matmul-tile-v0.json",
+      "compile_ok": true,
+      "correct_campaign_ok": true,
+      "faulty_campaign_detected": true,
+      "replay_classification": "same_failure",
+      "memcheck_ok": true,
+      "status": "pass"
+    }
+  },
+  "sanitizer": {
+    "source": "cuda/sanitizer_proof.cu",
+    "compile_ok": true,
+    "cases": [
+      {
+        "mode": "correct",
+        "tool": "memcheck",
+        "expect_detected": false,
+        "returncode": 0,
+        "ok": true
+      },
+      {
+        "mode": "correct",
+        "tool": "racecheck",
+        "expect_detected": false,
+        "returncode": 0,
+        "ok": true
+      },
+      {
+        "mode": "correct",
+        "tool": "synccheck",
+        "expect_detected": false,
+        "returncode": 0,
+        "ok": true
+      },
+      {
+        "mode": "broken_oob",
+        "tool": "memcheck",
+        "expect_detected": true,
+        "returncode": 0,
+        "ok": true
+      },
+      {
+        "mode": "broken_race",
+        "tool": "racecheck",
+        "expect_detected": true,
+        "returncode": 0,
+        "ok": true
+      },
+      {
+        "mode": "broken_sync",
+        "tool": "synccheck",
+        "expect_detected": true,
+        "returncode": 0,
+        "ok": true
+      }
+    ],
+    "status": "pass"
+  },
+  "compile_ok": true,
+  "correct_campaign_ok": true,
+  "faulty_campaign_detected": true,
+  "memcheck_ok": true,
+  "sanitizer_ok": true,
+  "status": "pass"
+}

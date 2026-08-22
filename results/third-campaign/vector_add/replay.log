@@ -1,0 +1,10 @@
+{
+  "artifact": "failures/vector_add-tail-v0.json",
+  "classification": "same_failure",
+  "mismatch": true,
+  "recorded_actual": 0.0,
+  "replayed_actual": 0.0,
+  "replayed_expected": 3.0,
+  "block_threads": 32,
+  "n": 31
+}

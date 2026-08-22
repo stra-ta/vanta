@@ -1,0 +1,24 @@
+{
+  "schema": "vanta.failure.v0",
+  "kernel": "reduce_sum",
+  "implementation": "faulty_tail",
+  "input": {
+    "dtype": "float32",
+    "shape": [31],
+    "values": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+  },
+  "launch": {
+    "block_threads": 32,
+    "grid_blocks": 1
+  },
+  "environment": {
+    "gpu": "Tesla T4",
+    "compute_capability": "7.5"
+  },
+  "observed": {
+    "kind": "correctness_mismatch",
+    "pattern": 0,
+    "expected": 31,
+    "actual": 30
+  }
+}

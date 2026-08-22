@@ -1,0 +1,49 @@
+{
+  "source": "cuda/sanitizer_proof.cu",
+  "compile_ok": true,
+  "cases": [
+    {
+      "mode": "correct",
+      "tool": "memcheck",
+      "expect_detected": false,
+      "returncode": 0,
+      "ok": true
+    },
+    {
+      "mode": "correct",
+      "tool": "racecheck",
+      "expect_detected": false,
+      "returncode": 0,
+      "ok": true
+    },
+    {
+      "mode": "correct",
+      "tool": "synccheck",
+      "expect_detected": false,
+      "returncode": 0,
+      "ok": true
+    },
+    {
+      "mode": "broken_oob",
+      "tool": "memcheck",
+      "expect_detected": true,
+      "returncode": 0,
+      "ok": true
+    },
+    {
+      "mode": "broken_race",
+      "tool": "racecheck",
+      "expect_detected": true,
+      "returncode": 0,
+      "ok": true
+    },
+    {
+      "mode": "broken_sync",
+      "tool": "synccheck",
+      "expect_detected": true,
+      "returncode": 0,
+      "ok": true
+    }
+  ],
+  "status": "pass"
+}

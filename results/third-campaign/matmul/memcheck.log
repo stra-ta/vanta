@@ -1,0 +1,22 @@
+========= COMPUTE-SANITIZER
+GPU: Tesla T4
+Compute capability: 7.5
+PASS n=16 pattern=0 max_error=0
+PASS n=16 pattern=1 max_error=0
+PASS n=16 pattern=2 max_error=0
+PASS n=24 pattern=0 max_error=0
+PASS n=24 pattern=1 max_error=0
+PASS n=24 pattern=2 max_error=0
+PASS n=32 pattern=0 max_error=0
+PASS n=32 pattern=1 max_error=0
+PASS n=32 pattern=2 max_error=0
+PASS n=64 pattern=0 max_error=0
+PASS n=64 pattern=1 max_error=0
+PASS n=64 pattern=2 max_error=0
+PASS n=128 pattern=0 max_error=0
+PASS n=128 pattern=1 max_error=0
+PASS n=128 pattern=2 max_error=0
+pass_count=15
+mismatch_count=0
+correct kernel: PASS
+========= ERROR SUMMARY: 0 errors

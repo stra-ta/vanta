@@ -1,0 +1,10 @@
+{
+  "artifact": "failures/matmul-tile-v0.json",
+  "classification": "same_failure",
+  "mismatch": true,
+  "recorded_actual": 9.0,
+  "replayed_max_error": 9.0,
+  "reference_scale": 6.0,
+  "block_threads": 16,
+  "n": 32
+}

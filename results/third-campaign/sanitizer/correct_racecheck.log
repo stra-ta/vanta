@@ -1,0 +1,1 @@
+{"ok": true, "executable": "/content/vanta/results/third-campaign/sanitizer/sanitizer_proof", "mode": "correct", "tool": "racecheck", "expected_detected": false, "detected": false, "returncode": 0, "verdict": "match"}

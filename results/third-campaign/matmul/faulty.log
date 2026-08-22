@@ -1,0 +1,20 @@
+GPU: Tesla T4
+Compute capability: 7.5
+MISMATCH n=16 pattern=0 scale=0 max_error=1
+MISMATCH n=16 pattern=1 scale=82 max_error=7
+MISMATCH n=16 pattern=2 scale=519 max_error=63
+MISMATCH n=24 pattern=0 scale=0 max_error=1
+MISMATCH n=24 pattern=1 scale=120 max_error=9
+MISMATCH n=24 pattern=2 scale=786 max_error=81
+MISMATCH n=32 pattern=0 scale=0 max_error=1
+MISMATCH n=32 pattern=1 scale=162 max_error=8
+MISMATCH n=32 pattern=2 scale=1020 max_error=72
+MISMATCH n=64 pattern=0 scale=0 max_error=1
+MISMATCH n=64 pattern=1 scale=322 max_error=7
+MISMATCH n=64 pattern=2 scale=2037 max_error=63
+MISMATCH n=128 pattern=0 scale=0 max_error=1
+MISMATCH n=128 pattern=1 scale=642 max_error=8
+MISMATCH n=128 pattern=2 scale=4083 max_error=72
+pass_count=0
+mismatch_count=15
+faulty kernel correctly detected: PASS
