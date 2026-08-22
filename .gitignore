@@ -7,13 +7,19 @@ build/
 results/local/
 results/**/reduce_sum/reduce_sum
 results/**/vector_add/vector_add
+results/**/matmul/matmul
 results/**/reduction_proof/reduction_proof
 results/**/vector_add_proof/vector_add_proof
+results/**/matmul_proof/matmul_proof
+results/**/sanitizer_proof/sanitizer_proof
+results/**/sanitizer/sanitizer_proof
 
 # Python
 __pycache__/
 *.pyc
 
-# Allow committed campaign logs under results/
-!results/first-campaign/*.log
+# Allow committed campaign evidence (logs + json) under results/
 !results/first-campaign/*.json
+!results/first-campaign/*.log
+!results/third-campaign/**/*.json
+!results/third-campaign/**/*.log
