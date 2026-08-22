@@ -90,12 +90,22 @@ The core proofs stay unchanged.
 Run it on the CUDA host after the normal campaign:
 
 ```bash
+# v1 protocol (original preregistration; its T4 evidence is preserved as-is)
 python3 experiments/cuda-mutations/run_campaign.py \
     --out results/cuda-mutation-campaign-v1
+
+# v2 protocol (revised R03/R05 after the v1 T4 outcome)
+python3 experiments/cuda-mutations/run_campaign.py \
+    --manifest experiments/cuda-mutations/manifest-v2.json \
+    --out results/cuda-mutation-campaign-v2
 ```
 
-The protocol is implemented, but its detection matrix is not a finding until a
-GPU campaign produces committed evidence.
+The v1 campaign completed on a Tesla T4 with clean baselines and 16 of 18
+mutants killed. `R03` was an equivalent mutation and survived; `R05`
+deadlocked under instrumentation and was recorded as an infrastructure
+failure, never as detection. The v2 manifest replaces exactly those two
+subjects. Its matrix is not a finding until a GPU campaign produces committed
+evidence.
 
 ## Run on a GPU machine
 

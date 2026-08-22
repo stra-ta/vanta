@@ -9,6 +9,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 RUNNER_PATH = ROOT / "experiments" / "cuda-mutations" / "run_campaign.py"
 MANIFEST_PATH = ROOT / "experiments" / "cuda-mutations" / "manifest.json"
+MANIFEST_V2_PATH = ROOT / "experiments" / "cuda-mutations" / "manifest-v2.json"
 SPEC = importlib.util.spec_from_file_location("mutation_campaign", RUNNER_PATH)
 campaign = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader is not None
@@ -145,6 +146,70 @@ def test_generated_markdown_has_all_detector_columns():
     }])
     assert "| Differential | Metamorphic | memcheck | racecheck | synccheck | Status |" in matrix
     assert "| R01 | detected | no_signal | no_signal | no_signal | no_signal | killed |" in matrix
+
+
+def test_v2_manifest_differs_from_v1_only_in_study_id_and_replaced_mutants():
+    v1 = campaign.load_manifest(MANIFEST_PATH)
+    v2 = campaign.load_manifest(MANIFEST_V2_PATH)
+    assert v2["study_id"] == "cuda-mutations-t4-v2"
+    allowed = {"study_id"}
+    replaced = {"R03", "R05"}
+    for key in ("schema", "repetitions"):
+        assert v2[key] == v1[key]
+    assert [item["id"] for item in v2["mutations"]] == [item["id"] for item in v1["mutations"]]
+    for old, new in zip(v1["mutations"], v2["mutations"]):
+        if old["id"] in replaced:
+            continue
+        assert old == new, f"unexpected v2 change in {old['id']}"
+        allowed.add(old["id"])
+    assert allowed | replaced >= set(allowed)
+
+
+def test_v2_manifest_transformations_anchor_to_canonical_sources():
+    manifest = campaign.load_manifest(MANIFEST_V2_PATH)
+    for mutation in manifest["mutations"]:
+        source = (ROOT / "cuda" / campaign.KERNELS[mutation["kernel"]]).read_text()
+        transform = mutation["transformation"]
+        assert source.count(transform["old"]) == transform["expected_matches"]
+        adapted = (campaign.adapt_vector_replay(source)
+                   if mutation["kernel"] == "vector_add" else source)
+        derived = campaign.apply_transformation(adapted, transform)
+        assert derived != adapted
+
+
+def test_v2_r03_is_a_non_equivalent_deterministic_scaling_fault():
+    manifest = campaign.load_manifest(MANIFEST_V2_PATH)
+    r03 = next(item for item in manifest["mutations"] if item["id"] == "R03")
+    assert r03["taxon"] != "odd_reduction_bound"
+    source = (ROOT / "cuda" / "reduction_proof.cu").read_text()
+    derived = campaign.apply_transformation(source, r03["transformation"])
+    assert derived.count("partial[blockIdx.x] = 2.0f * shared[0];") == 1
+    assert r03["eligible_tools"] == []
+    assert r03["minimization"] == "prefix"
+
+
+def test_v2_r05_keeps_valid_barrier_and_adds_invalid_syncwarp_mask():
+    manifest = campaign.load_manifest(MANIFEST_V2_PATH)
+    r05 = next(item for item in manifest["mutations"] if item["id"] == "R05")
+    source = (ROOT / "cuda" / "reduction_proof.cu").read_text()
+    derived = campaign.apply_transformation(source, r05["transformation"])
+    # The valid post-load block barrier is retained before the fault.
+    assert derived.count("shared[tid] = local;\n    __syncthreads();") == 2
+    assert "__syncwarp(lower_half);" in derived
+    assert "(tid % warpSize) <= warpSize / 2" in derived
+    assert r05["eligible_tools"] == ["synccheck"]
+    assert r05["run_tools"] == ["synccheck"]
+    assert r05["not_applicable_reason"]
+
+
+def test_runner_still_rejects_unknown_study_ids():
+    with pytest.raises(ValueError, match="study_id must be one of"):
+        campaign.validate_manifest({
+            "schema": "vanta.mutation-manifest.v1",
+            "study_id": "cuda-mutations-t4-v9",
+            "repetitions": 3,
+            "mutations": [],
+        })
 
 
 def test_main_returns_two_when_cuda_tools_are_unavailable(monkeypatch, capsys):

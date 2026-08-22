@@ -19,6 +19,8 @@ from pathlib import Path
 from typing import Any
 
 
+STUDY_IDS = ("cuda-mutations-t4-v1", "cuda-mutations-t4-v2")
+
 ROOT = Path(__file__).resolve().parents[2]
 KERNELS = {
     "reduce_sum": "reduction_proof.cu",
@@ -63,8 +65,8 @@ def atomic_json(path: Path, value: Any) -> None:
 def validate_manifest(manifest: dict[str, Any]) -> None:
     if manifest.get("schema") != "vanta.mutation-manifest.v1":
         raise ValueError("manifest schema must be vanta.mutation-manifest.v1")
-    if manifest.get("study_id") != "cuda-mutations-t4-v1":
-        raise ValueError("manifest study_id must be cuda-mutations-t4-v1")
+    if manifest.get("study_id") not in STUDY_IDS:
+        raise ValueError(f"manifest study_id must be one of {', '.join(STUDY_IDS)}")
     if manifest.get("repetitions") != 3:
         raise ValueError("manifest repetitions must be 3")
     mutations = manifest.get("mutations")
@@ -607,7 +609,7 @@ def main(argv: list[str] | None = None) -> int:
             if (resumed.get("schema") != "vanta.cuda-mutation-campaign.v1" or
                     resumed.get("study_id") != manifest["study_id"] or
                     resumed.get("manifest_sha256") != manifest_hash):
-                raise ValueError("existing campaign does not match this v1 manifest")
+                raise ValueError("existing campaign does not match this manifest")
             prior_commands = resumed.get("commands")
             if not isinstance(prior_commands, list):
                 raise ValueError("existing campaign has no command ledger")

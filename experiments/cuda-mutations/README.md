@@ -15,10 +15,35 @@ The canonical proofs are never edited to add mutation selectors.
 `manifest.json` preregisters 18 mutations, six for each product proof:
 
 ```text
-reduce_sum  historical stride, tail, reduction bound, shared sync, barrier, OOB partial
+reduce_sum  historical stride, tail, partial scaling, shared sync, syncwarp mask, OOB partial
 vector_add  launch floor, bound, block index, OOB read, scalar, operand order
 matmul      K tail, tile count, edge guard, B index, tile sync, barrier
 ```
+
+### v1 outcome and v2 revision
+
+The v1 campaign ran to completion on a Tesla T4 and is preserved as raw,
+unmodified evidence. It produced three clean baselines and 16 killed mutants,
+with two preregistration defects:
+
+- `R03` (`odd_reduction_bound`) survived because it was an equivalent mutation.
+  For the power-of-two block sizes the corpus exercises, `tid < half` already
+  implies `tid + half < active`, so changing `<` to `<=` cannot alter execution.
+- `R05` (`divergent_barrier`) deadlocked every probe, including synccheck.
+  The runner recorded bounded timeouts and classified it
+  `infrastructure_failure`. A timeout is never treated as detection.
+
+`manifest-v2.json` (`study_id: cuda-mutations-t4-v2`) replaces exactly those
+two subjects and changes nothing else:
+
+- `R03` becomes `partial_sum_scaling`: the first-pass write doubles the partial
+  sum. Deterministic, memory-safe, and detected by differential comparison.
+- `R05` becomes `invalid_syncwarp_mask`: after the valid post-load barrier,
+  lane 16 calls `__syncwarp` with a mask that does not include itself.
+  Synccheck-only execution. A targeted T4 probe must confirm termination and
+  detection before the full campaign runs.
+
+v1 results are never resumed or overwritten with the v2 manifest.
 
 The runner executes independent CPU differential comparison, metamorphic
 relations, memcheck, racecheck, synccheck, deterministic replay, and prefix
@@ -27,8 +52,14 @@ minimization where the failure predicate is suitable.
 ## Run on a CUDA host
 
 ```bash
+# v1 protocol (original preregistration)
 python3 experiments/cuda-mutations/run_campaign.py \
     --out results/cuda-mutation-campaign-v1
+
+# v2 protocol (revised R03/R05)
+python3 experiments/cuda-mutations/run_campaign.py \
+    --manifest experiments/cuda-mutations/manifest-v2.json \
+    --out results/cuda-mutation-campaign-v2
 ```
 
 The host must provide `nvcc`, `nvidia-smi`, and `compute-sanitizer`.
