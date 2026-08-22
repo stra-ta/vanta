@@ -19,7 +19,7 @@ from pathlib import Path
 from typing import Any
 
 
-STUDY_IDS = ("cuda-mutations-t4-v1", "cuda-mutations-t4-v2")
+STUDY_IDS = ("cuda-mutations-t4-v1", "cuda-mutations-t4-v2", "cuda-mutations-t4-v3")
 
 ROOT = Path(__file__).resolve().parents[2]
 KERNELS = {

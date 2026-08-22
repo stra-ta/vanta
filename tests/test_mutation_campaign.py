@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RUNNER_PATH = ROOT / "experiments" / "cuda-mutations" / "run_campaign.py"
 MANIFEST_PATH = ROOT / "experiments" / "cuda-mutations" / "manifest.json"
 MANIFEST_V2_PATH = ROOT / "experiments" / "cuda-mutations" / "manifest-v2.json"
+MANIFEST_V3_PATH = ROOT / "experiments" / "cuda-mutations" / "manifest-v3.json"
 SPEC = importlib.util.spec_from_file_location("mutation_campaign", RUNNER_PATH)
 campaign = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader is not None
@@ -200,6 +201,34 @@ def test_v2_r05_keeps_valid_barrier_and_adds_invalid_syncwarp_mask():
     assert r05["eligible_tools"] == ["synccheck"]
     assert r05["run_tools"] == ["synccheck"]
     assert r05["not_applicable_reason"]
+
+
+def test_v3_manifest_differs_from_v2_only_in_study_id_and_r05():
+    v2 = campaign.load_manifest(MANIFEST_V2_PATH)
+    v3 = campaign.load_manifest(MANIFEST_V3_PATH)
+    assert v3["study_id"] == "cuda-mutations-t4-v3"
+    assert [item["id"] for item in v3["mutations"]] == [item["id"] for item in v2["mutations"]]
+    for old, new in zip(v2["mutations"], v3["mutations"]):
+        if old["id"] == "R05":
+            continue
+        assert old == new, f"unexpected v3 change in {old['id']}"
+
+
+def test_v3_r05_uses_warp_aligned_divergent_barriers_and_synccheck_only():
+    manifest = campaign.load_manifest(MANIFEST_V3_PATH)
+    r05 = next(item for item in manifest["mutations"] if item["id"] == "R05")
+    source = (ROOT / "cuda" / "reduction_proof.cu").read_text()
+    derived = campaign.apply_transformation(source, r05["transformation"])
+    assert "if (tid < warpSize) {" in derived
+    assert "if (tid >= warpSize) {" in derived
+    assert "__syncwarp" not in derived
+    # The split is warp-aligned, so a single-warp launch keeps one valid barrier.
+    assert r05["trigger"] == {"n": 257, "block_threads": 128}
+    assert r05["eligible_tools"] == ["synccheck"]
+    assert r05["run_tools"] == ["synccheck"]
+    assert r05["not_applicable_reason"]
+    case = campaign.trigger_case("reduce_sum", r05["trigger"])
+    assert case["block_threads"] >= 64
 
 
 def test_runner_still_rejects_unknown_study_ids():

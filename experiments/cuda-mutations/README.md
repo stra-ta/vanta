@@ -45,6 +45,23 @@ two subjects and changes nothing else:
 
 v1 results are never resumed or overwritten with the v2 manifest.
 
+### v3 revision
+
+The v2 T4 probe accepted `R03` but rejected the replacement `R05`
+(`invalid_syncwarp_mask`): synccheck reported 34 invalid-argument barrier
+errors, but the uninstrumented program itself failed with an illegal
+instruction, so the fault is a direct runtime failure rather than a
+synccheck-only diagnostic boundary. The probe is preserved as rejected
+evidence.
+
+`manifest-v3.json` (`study_id: cuda-mutations-t4-v3`) differs from v2 only in
+`R05`, which becomes `warp_divergent_barrier`: inside the reduction loop, the
+lower warp and the upper warps reach two different `__syncthreads()` sites.
+The split is warp-aligned (a single-warp launch keeps one valid barrier), so
+the fault is active only at the preregistered trigger (`n=257`,
+`block_threads=128`). Synccheck-only execution; a targeted probe must confirm
+clean termination and 3/3 detection before the full campaign runs.
+
 The runner executes independent CPU differential comparison, metamorphic
 relations, memcheck, racecheck, synccheck, deterministic replay, and prefix
 minimization where the failure predicate is suitable.
@@ -60,6 +77,11 @@ python3 experiments/cuda-mutations/run_campaign.py \
 python3 experiments/cuda-mutations/run_campaign.py \
     --manifest experiments/cuda-mutations/manifest-v2.json \
     --out results/cuda-mutation-campaign-v2
+
+# v3 protocol (revised R05)
+python3 experiments/cuda-mutations/run_campaign.py \
+    --manifest experiments/cuda-mutations/manifest-v3.json \
+    --out results/cuda-mutation-campaign-v3
 ```
 
 The host must provide `nvcc`, `nvidia-smi`, and `compute-sanitizer`.

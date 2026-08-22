@@ -98,14 +98,21 @@ python3 experiments/cuda-mutations/run_campaign.py \
 python3 experiments/cuda-mutations/run_campaign.py \
     --manifest experiments/cuda-mutations/manifest-v2.json \
     --out results/cuda-mutation-campaign-v2
+
+# v3 protocol (revised R05 after the v2 probe outcome)
+python3 experiments/cuda-mutations/run_campaign.py \
+    --manifest experiments/cuda-mutations/manifest-v3.json \
+    --out results/cuda-mutation-campaign-v3
 ```
 
 The v1 campaign completed on a Tesla T4 with clean baselines and 16 of 18
 mutants killed. `R03` was an equivalent mutation and survived; `R05`
 deadlocked under instrumentation and was recorded as an infrastructure
-failure, never as detection. The v2 manifest replaces exactly those two
-subjects. Its matrix is not a finding until a GPU campaign produces committed
-evidence.
+failure, never as detection. The v2 probe accepted the revised `R03` but
+rejected its `R05` replacement: the invalid `__syncwarp` mask crashed the
+uninstrumented program, so it was not a synccheck-only boundary. The v3
+manifest replaces that subject with a warp-aligned divergent-barrier fault.
+Its matrix is not a finding until a GPU campaign produces committed evidence.
 
 ## Run on a GPU machine
 
