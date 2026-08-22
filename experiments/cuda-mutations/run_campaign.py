@@ -39,6 +39,14 @@ def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def as_text(value: str | bytes | None) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, bytes):
+        return value.decode("utf-8", errors="replace")
+    return value
+
+
 def atomic_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, temporary = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
@@ -55,8 +63,8 @@ def atomic_json(path: Path, value: Any) -> None:
 def validate_manifest(manifest: dict[str, Any]) -> None:
     if manifest.get("schema") != "vanta.mutation-manifest.v1":
         raise ValueError("manifest schema must be vanta.mutation-manifest.v1")
-    if manifest.get("study_id") != "cuda-mutations-t4-v0":
-        raise ValueError("manifest study_id must be cuda-mutations-t4-v0")
+    if manifest.get("study_id") != "cuda-mutations-t4-v1":
+        raise ValueError("manifest study_id must be cuda-mutations-t4-v1")
     if manifest.get("repetitions") != 3:
         raise ValueError("manifest repetitions must be 3")
     mutations = manifest.get("mutations")
@@ -90,6 +98,16 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
         if not isinstance(item.get("eligible_tools"), list) or any(
                 tool not in TOOLS for tool in item["eligible_tools"]):
             raise ValueError(f"invalid eligible_tools for {item['id']}")
+        run_tools = item.get("run_tools", list(TOOLS))
+        if not isinstance(run_tools, list) or not run_tools or any(
+                tool not in TOOLS for tool in run_tools):
+            raise ValueError(f"invalid run_tools for {item['id']}")
+        if not set(item["eligible_tools"]).issubset(run_tools):
+            raise ValueError(f"eligible_tools must be executed for {item['id']}")
+        if set(run_tools) != set(TOOLS):
+            if not isinstance(item.get("not_applicable_reason"), str) or not item[
+                    "not_applicable_reason"]:
+                raise ValueError(f"missing not_applicable_reason for {item['id']}")
         if item.get("minimization") not in ("prefix", "not_applicable"):
             raise ValueError(f"invalid minimization for {item['id']}")
 
@@ -250,24 +268,28 @@ class Campaign:
         self.sequence += 1
         log = self.out / "logs" / f"{self.sequence:04d}-{label}.log"
         log.parent.mkdir(parents=True, exist_ok=True)
+        print(f"[{self.sequence:04d}] {label}", flush=True)
         started = time.monotonic()
         try:
             process = subprocess.run(command, input=stdin, text=True, capture_output=True,
-                                     timeout=self.timeout, cwd=ROOT, check=False)
+                                      timeout=self.timeout, cwd=ROOT, check=False)
             result = {"command": command, "returncode": process.returncode,
-                      "stdout": process.stdout, "stderr": process.stderr,
+                      "stdout": as_text(process.stdout), "stderr": as_text(process.stderr),
                       "timeout": False}
         except subprocess.TimeoutExpired as error:
             result = {"command": command, "returncode": None,
-                      "stdout": error.stdout or "", "stderr": error.stderr or "",
+                      "stdout": as_text(error.stdout), "stderr": as_text(error.stderr),
                       "timeout": True}
-        raw = str(result["stdout"]) + str(result["stderr"])
+        raw = result["stdout"] + result["stderr"]
         log.write_text(raw, encoding="utf-8")
         evidence = {key: value for key, value in result.items() if key not in ("stdout", "stderr")}
         evidence.update({"log": str(log), "raw_output_sha256": sha256_text(raw),
                          "elapsed_seconds": time.monotonic() - started})
         self.commands.append(evidence)
         result.update(evidence)
+        outcome = "timeout" if result["timeout"] else f"rc={result['returncode']}"
+        print(f"[{self.sequence:04d}] {label}: {outcome} "
+              f"{result['elapsed_seconds']:.1f}s", flush=True)
         return result
 
     def actual(self, binary: Path, kernel: str, case: dict[str, Any], label: str) -> dict[str, Any]:
@@ -462,15 +484,39 @@ def minimize_prefix(campaign: Campaign, binary: Path, kernel: str, case: dict[st
 def summarize_verdicts(checks: dict[str, Any], sanitizer: dict[str, list[dict[str, Any]]]) -> str:
     verdicts = [item["verdict"] for group in checks.values() for item in group]
     verdicts.extend(item["verdict"] for group in sanitizer.values() for item in group)
-    sanitizer_flaky = any(len({item["verdict"] for item in group}) > 1
-                          for group in sanitizer.values())
+    sanitizer_flaky = any(
+        len({item["verdict"] for item in group if item["verdict"] != "not_applicable"}) > 1
+        for group in sanitizer.values())
     if sanitizer_flaky:
         return "flaky"
     if "detected" in verdicts:
         return "killed"
-    if verdicts and all(verdict == "no_signal" for verdict in verdicts):
+    meaningful = [verdict for verdict in verdicts if verdict != "not_applicable"]
+    if meaningful and all(verdict == "no_signal" for verdict in meaningful):
         return "survived"
     return "infrastructure_failure"
+
+
+def run_sanitizers(campaign: Campaign, binary: Path, kernel: str, subject: str,
+                   case: dict[str, Any], repetitions: int,
+                   eligible_tools: list[str], run_tools: list[str] | tuple[str, ...] = TOOLS,
+                   not_applicable_reason: str | None = None) -> dict[str, list[dict[str, Any]]]:
+    """Run safe tool pairings and make skipped pairings visible in the matrix."""
+    selected = set(run_tools)
+    outcomes: dict[str, list[dict[str, Any]]] = {}
+    for tool in TOOLS:
+        if tool not in selected:
+            outcomes[tool] = [{
+                "verdict": "not_applicable",
+                "eligible": False,
+                "reason": not_applicable_reason,
+            }]
+            continue
+        outcomes[tool] = [dict(
+            campaign.sanitizer(binary, tool, case, kernel, f"{subject}-{tool}-{rep}"),
+            eligible=tool in eligible_tools,
+        ) for rep in range(1, repetitions + 1)]
+    return outcomes
 
 
 def detection_matrix(results: list[dict[str, Any]]) -> str:
@@ -529,9 +575,11 @@ def require_cuda() -> bool:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, default=Path(__file__).with_name("manifest.json"))
-    parser.add_argument("--out", type=Path, default=ROOT / "results" / "cuda-mutation-campaign-v0")
+    parser.add_argument("--out", type=Path, default=ROOT / "results" / "cuda-mutation-campaign-v1")
     parser.add_argument("--build-dir", type=Path, default=ROOT / "build" / "cuda-mutations")
     parser.add_argument("--only", nargs="+", metavar="ID")
+    parser.add_argument("--resume", action="store_true",
+                        help="reuse completed subjects from a matching campaign.json")
     parser.add_argument("--timeout", type=float, default=60.0)
     args = parser.parse_args(argv)
     if args.timeout <= 0:
@@ -549,10 +597,29 @@ def main(argv: list[str] | None = None) -> int:
         args.out.mkdir(parents=True, exist_ok=True)
         args.build_dir.mkdir(parents=True, exist_ok=True)
         campaign = Campaign(args.out, args.build_dir, args.timeout, manifest["repetitions"])
+        campaign_path = args.out / "campaign.json"
+        resumed: dict[str, Any] | None = None
+        manifest_hash = sha256_file(args.manifest)
+        if campaign_path.exists():
+            if not args.resume:
+                raise ValueError(f"{campaign_path} exists; use --resume or choose a new --out")
+            resumed = json.loads(campaign_path.read_text(encoding="utf-8"))
+            if (resumed.get("schema") != "vanta.cuda-mutation-campaign.v1" or
+                    resumed.get("study_id") != manifest["study_id"] or
+                    resumed.get("manifest_sha256") != manifest_hash):
+                raise ValueError("existing campaign does not match this v1 manifest")
+            prior_commands = resumed.get("commands")
+            if not isinstance(prior_commands, list):
+                raise ValueError("existing campaign has no command ledger")
+            campaign.commands = prior_commands
+            campaign.sequence = len(prior_commands)
+            print(f"resuming {campaign_path}", flush=True)
         revision_result = campaign.run(["git", "rev-parse", "HEAD"], "revision")
         if revision_result["returncode"] != 0 or revision_result["timeout"]:
             raise RuntimeError("git rev-parse HEAD failed")
         revision = str(revision_result["stdout"]).strip()
+        if resumed is not None and resumed.get("baseline_commit") != revision:
+            raise ValueError("existing campaign was recorded from a different baseline commit")
         environment = {
             "nvidia_smi": campaign.run(["nvidia-smi"], "environment-gpu"),
             "nvcc": campaign.run(["nvcc", "--version"], "environment-nvcc"),
@@ -573,15 +640,30 @@ def main(argv: list[str] | None = None) -> int:
         adapted = dict(sources)
         adapted["vector_add"] = adapt_vector_replay(sources["vector_add"])
         adapter_hash = sha256_text(adapted["vector_add"])
-        results: list[dict[str, Any]] = []
-        campaign_doc: dict[str, Any] = {
-            "schema": "vanta.cuda-mutation-campaign.v0", "study_id": manifest["study_id"],
-            "baseline_commit": revision, "manifest_sha256": sha256_file(args.manifest),
-            "compiler_flags": list(FLAGS), "vector_replay_adapter_sha256": adapter_hash,
-            "environment_path": str(args.out / "environment.json"),
-            "baselines": [], "mutants": results, "commands": campaign.commands,
-        }
+        if resumed is None:
+            results: list[dict[str, Any]] = []
+            campaign_doc: dict[str, Any] = {
+                "schema": "vanta.cuda-mutation-campaign.v1", "study_id": manifest["study_id"],
+                "baseline_commit": revision, "manifest_sha256": manifest_hash,
+                "compiler_flags": list(FLAGS), "vector_replay_adapter_sha256": adapter_hash,
+                "environment_path": str(args.out / "environment.json"),
+                "baselines": [], "mutants": results, "commands": campaign.commands,
+            }
+        else:
+            campaign_doc = resumed
+            campaign_doc["commands"] = campaign.commands
+            campaign_doc["environment_path"] = str(args.out / "environment.json")
+            results = campaign_doc["mutants"]
         for kernel in KERNELS:
+            baseline_id = f"{kernel}-baseline"
+            prior_baseline = next((item for item in campaign_doc["baselines"]
+                                   if item.get("id") == baseline_id), None)
+            if prior_baseline is not None:
+                if prior_baseline.get("status") != "survived":
+                    print(f"saved baseline is not clean: {kernel}", file=sys.stderr)
+                    return 1
+                print(f"[resume] {baseline_id}", flush=True)
+                continue
             source = write_subject(args.out, kernel, "baseline", sources[kernel], adapted[kernel], None)
             binary = args.build_dir / f"{kernel}-baseline"
             compile_result = campaign.compile(source, binary, f"{kernel}-baseline-compile")
@@ -600,10 +682,10 @@ def main(argv: list[str] | None = None) -> int:
             else:
                 baseline["binary_sha256"] = sha256_file(binary)
                 baseline["checks"] = run_checks(campaign, binary, kernel, f"{kernel}-baseline")
-                baseline["sanitizer"] = {tool: [campaign.sanitizer(
-                    binary, tool, differential_cases(kernel)[0], kernel,
-                    f"{kernel}-baseline-{tool}-{rep}") for rep in range(1, manifest["repetitions"] + 1)]
-                    for tool in TOOLS}
+                baseline["sanitizer"] = run_sanitizers(
+                    campaign, binary, kernel, f"{kernel}-baseline",
+                    differential_cases(kernel)[0], manifest["repetitions"],
+                    list(TOOLS))
                 baseline["status"] = summarize_verdicts(baseline["checks"], baseline["sanitizer"])
             campaign_doc["baselines"].append(baseline)
             atomic_json(args.out / "campaign.json", campaign_doc)
@@ -612,6 +694,13 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"baseline failed: {kernel}", file=sys.stderr)
                 return 1
         for mutation in selected:
+            prior_result = next((item for item in results
+                                 if item.get("id") == mutation["id"]), None)
+            if prior_result is not None:
+                if prior_result.get("status") in ("killed", "survived", "flaky"):
+                    print(f"[resume] {mutation['id']}", flush=True)
+                    continue
+                results.remove(prior_result)
             kernel = mutation["kernel"]
             base = adapted[kernel]
             # Check the preregistered anchor against HEAD before any shared replay adaptation.
@@ -661,10 +750,11 @@ def main(argv: list[str] | None = None) -> int:
                 else:
                     result["minimization"] = {"status": "not_applicable"}
                 trigger = trigger_case(kernel, mutation["trigger"])
-                result["sanitizer"] = {tool: [dict(campaign.sanitizer(
-                    binary, tool, trigger, kernel, f"{mutation['id']}-{tool}-{rep}"),
-                    eligible=tool in mutation["eligible_tools"])
-                    for rep in range(1, manifest["repetitions"] + 1)] for tool in TOOLS}
+                result["sanitizer"] = run_sanitizers(
+                    campaign, binary, kernel, mutation["id"], trigger,
+                    manifest["repetitions"], mutation["eligible_tools"],
+                    mutation.get("run_tools", TOOLS),
+                    mutation.get("not_applicable_reason"))
                 result["status"] = summarize_verdicts(result["checks"], result["sanitizer"])
                 if result.get("failure_replay", {}).get("classification") == "unstable_failure":
                     result["status"] = "flaky"

@@ -1,4 +1,6 @@
 import importlib.util
+import json
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -17,7 +19,7 @@ def test_manifest_has_preregistered_kernel_counts_and_ids():
     manifest = campaign.load_manifest(MANIFEST_PATH)
     mutations = manifest["mutations"]
     assert manifest["schema"] == "vanta.mutation-manifest.v1"
-    assert manifest["study_id"] == "cuda-mutations-t4-v0"
+    assert manifest["study_id"] == "cuda-mutations-t4-v1"
     assert manifest["repetitions"] == 3
     assert [item["id"] for item in mutations] == list(campaign.REQUIRED_IDS)
     assert {kernel: sum(item["kernel"] == kernel for item in mutations)
@@ -88,6 +90,40 @@ def test_sanitizer_parser_handles_clean_mixed_case_summary_and_crash_text():
         "========= RACECHECK SUMMARY: 1 hazard displayed (1 error, 0 warnings)")
     assert campaign.sanitizer_detected("========= MEMCHECK SUMMARY: 2 errors")
     assert not campaign.sanitizer_detected("segmentation fault\nprocess exited 7")
+
+
+def test_timeout_output_is_normalized_before_it_reaches_json(monkeypatch, tmp_path):
+    def timed_out(*_args, **_kwargs):
+        raise subprocess.TimeoutExpired(["fake"], 1, output=b"partial", stderr=b"error")
+
+    monkeypatch.setattr(campaign.subprocess, "run", timed_out)
+    runner = campaign.Campaign(tmp_path, tmp_path / "build", 1.0, 3)
+    result = runner.run(["fake"], "timeout-test")
+    assert result["timeout"] is True
+    assert result["stdout"] == "partial"
+    assert result["stderr"] == "error"
+    json.dumps(result)
+    assert (tmp_path / "logs" / "0001-timeout-test.log").read_text() == "partialerror"
+
+
+def test_invalid_barrier_mutants_run_synccheck_only():
+    manifest = campaign.load_manifest(MANIFEST_PATH)
+    for mutation_id in ("R05", "M06"):
+        mutation = next(item for item in manifest["mutations"] if item["id"] == mutation_id)
+        assert mutation["eligible_tools"] == ["synccheck"]
+        assert mutation["run_tools"] == ["synccheck"]
+        assert mutation["not_applicable_reason"]
+
+
+def test_not_applicable_tools_do_not_make_a_clean_subject_infrastructure_failure():
+    checks = {"differential": [{"verdict": "no_signal"}],
+              "metamorphic": [{"verdict": "no_signal"}]}
+    sanitizer = {
+        "memcheck": [{"verdict": "not_applicable"}],
+        "racecheck": [{"verdict": "not_applicable"}],
+        "synccheck": [{"verdict": "no_signal"}],
+    }
+    assert campaign.summarize_verdicts(checks, sanitizer) == "survived"
 
 
 def test_local_cpu_references_and_operation_aware_tolerance():

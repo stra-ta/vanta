@@ -91,7 +91,7 @@ Run it on the CUDA host after the normal campaign:
 
 ```bash
 python3 experiments/cuda-mutations/run_campaign.py \
-    --out results/cuda-mutation-campaign-v0
+    --out results/cuda-mutation-campaign-v1
 ```
 
 The protocol is implemented, but its detection matrix is not a finding until a

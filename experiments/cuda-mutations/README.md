@@ -28,7 +28,7 @@ minimization where the failure predicate is suitable.
 
 ```bash
 python3 experiments/cuda-mutations/run_campaign.py \
-    --out results/cuda-mutation-campaign-v0
+    --out results/cuda-mutation-campaign-v1
 ```
 
 The host must provide `nvcc`, `nvidia-smi`, and `compute-sanitizer`.
@@ -38,6 +38,11 @@ The initial protocol targets the T4 evidence environment (`sm_75`).
 The runner returns zero when every baseline is clean and the campaign completes.
 
 Mutants that survive are an experimental result, not a process failure.
+
+Use `--resume` only with the same baseline commit and manifest hash.
+
+The runner resumes completed subjects and reruns incomplete or infrastructure-
+failed subjects.
 
 ## Reproducibility boundary
 
@@ -76,6 +81,12 @@ It does not mean the mutant is correct, memory-safe, race-free, or equivalent.
 
 Sanitizer eligibility is recorded separately because memcheck, racecheck, and
 synccheck observe different defect classes.
+
+The deliberately invalid-barrier subjects run synccheck only.
+
+Their memcheck and racecheck cells are `not_applicable`, because instrumenting
+an intentional block-barrier violation with a non-synchronization tool can
+deadlock rather than produce a meaningful observation.
 
 The report should emphasize unique kills, overlaps, survivors, flaky outcomes,
 and known blind spots rather than a single score.
