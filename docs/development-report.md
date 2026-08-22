@@ -579,8 +579,9 @@ relying on accidental product defects. It has four modes:
 ```text
 correct      clean baseline, passes memcheck + racecheck + synccheck
 broken_oob   one thread writes one element past the allocation -> memcheck
-broken_sync  divergent __syncthreads (guarded by threadIdx.x == 0) -> synccheck
-broken_race  one thread writes a shared variable, others read it without sync -> racecheck
+broken_sync  lower/upper block halves take different __syncthreads -> synccheck
+broken_race  each thread writes its own shared slot then reads a
+             neighbor's slot with no __syncthreads (RAW race)     -> racecheck
 ```
 
 The kernel is not a product: it takes a positional mode argument and an

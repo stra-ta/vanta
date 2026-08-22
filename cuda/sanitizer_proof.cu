@@ -47,26 +47,30 @@ __global__ void k_oob(int *g) {
 __global__ void k_sync(int *g) {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i >= N) return;
-    g[i] = i;
-    // Divergent barrier: only thread 0 reaches __syncthreads while the rest of
-    // the block continue. synccheck must flag the unsynchronized barrier.
-    if (threadIdx.x == 0) {
+    // Divergent barriers: the lower and upper halves of the block take
+    // different __syncthreads() calls, so some threads in the block skip each
+    // barrier. synccheck must flag both as unsynchronized barriers.
+    __shared__ int s;
+    if (threadIdx.x < BLOCK / 2) {
         __syncthreads();
     }
-    g[i] = g[i] + 1;
+    s = i;
+    if (threadIdx.x >= BLOCK / 2) {
+        __syncthreads();
+    }
+    g[i] = i + s;
 }
 
 __global__ void k_race(int *g) {
-    __shared__ int shared_value;
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if (i >= N) return;
-    // Thread 0 writes shared_value; every other thread reads it with no
-    // __syncthreads between the write and the read. racecheck must flag the
-    // unsynchronized shared-memory hazard.
-    if (threadIdx.x == 0) {
-        shared_value = 7;
-    }
-    int v = shared_value;
+    // Each thread writes its own shared slot, then reads a neighbor's slot
+    // that another thread just wrote, with no __syncthreads between the write
+    // and the read. This is a cross-thread RAW race on shared memory that
+    // racecheck must flag.
+    __shared__ int s[BLOCK];
+    s[threadIdx.x] = threadIdx.x * 2;
+    int v = s[(threadIdx.x + 1) % BLOCK];
     g[i] = i + v;
 }
 

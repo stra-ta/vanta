@@ -142,9 +142,9 @@ mode passes memcheck, racecheck, and synccheck, while three deliberately broken
 modes are each caught by the tool that targets their defect class:
 
 ```text
-broken_oob    out-of-bounds global write   -> memcheck
-broken_sync   divergent __syncthreads       -> synccheck
-broken_race   unsynchronized shared memory -> racecheck
+broken_oob    out-of-bounds global write              -> memcheck
+broken_sync   divergent half-block __syncthreads      -> synccheck
+broken_race   cross-thread shared-memory RAW race     -> racecheck
 ```
 
 `tools/check_sanitizer.py` runs `compute-sanitizer` and decides whether the
