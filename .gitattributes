@@ -6,3 +6,11 @@ experiments/** -linguist-detectable
 
 # Notebook exports are generated evidence artifacts, not implementation source.
 results/notebook-evidence/*.ipynb linguist-generated=true
+
+# CUDA is the product language; harness Python/Shell are not counted toward primary language.
+*.cu linguist-language=Cuda
+*.cuh linguist-language=Cuda
+tools/** linguist-vendored
+tools/** -linguist-detectable
+scripts/** linguist-vendored
+scripts/** -linguist-detectable
