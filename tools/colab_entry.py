@@ -15,7 +15,9 @@ reduction proof. Use ``--kernel reduce_sum`` to run only that proof.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import platform
 import shutil
 import subprocess
 import sys
@@ -79,12 +81,38 @@ def probe_environment() -> dict:
 
     python = subprocess.run([sys.executable, "--version"],
                             text=True, capture_output=True)
+    cpu = platform.processor()
+    microcode = ""
+    cpuinfo = Path("/proc/cpuinfo")
+    if cpuinfo.exists():
+        for line in cpuinfo.read_text(encoding="utf-8", errors="replace").splitlines():
+            if line.lower().startswith(("model name", "hardware", "processor")) and ":" in line and not cpu:
+                cpu = line.split(":", 1)[1].strip()
+            if line.lower().startswith("microcode") and ":" in line and not microcode:
+                microcode = line.split(":", 1)[1].strip()
+    commit = run(["git", "rev-parse", "HEAD"])
+    status = run(["git", "status", "--porcelain", "--untracked-files=all"])
+    kernel_cmdline = ""
+    cmdline = Path("/proc/cmdline")
+    if cmdline.exists():
+        kernel_cmdline = cmdline.read_text(encoding="utf-8", errors="replace").strip()
     return {
         "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
         "gpu": gpu,
         "nvcc": version("nvcc"),
         "compute_sanitizer": version("compute-sanitizer"),
         "python": python.stdout.strip() or python.stderr.strip(),
+        "commit_sha": commit.stdout.strip(),
+        "dirty_tree": bool(status.stdout),
+        "status_sha256": hashlib.sha256(status.stdout.encode()).hexdigest(),
+        "architecture": platform.machine(),
+        "kernel": platform.release(),
+        "cpu": cpu,
+        "microcode": microcode,
+        "kernel_cmdline": kernel_cmdline,
+        "numa_nodes": sorted(path.name for path in Path("/sys/devices/system/node").glob("node[0-9]*")),
+        "compiler_flags": ["-std=c++20", "-O0", "-lineinfo", "-arch=sm_75"],
+        "build_type": "cuda-O0",
     }
 
 
@@ -136,7 +164,7 @@ def run_memcheck(binary: Path, log: Path) -> bool:
     return process.returncode == 0
 
 
-def run_sanitizer_proof(nvcc: str, out: Path) -> dict:
+def run_sanitizer_proof(nvcc: str, out: Path, provenance: dict) -> dict:
     """Build the sanitizer proof and run every (mode, tool) verdict check."""
     kernel_out = out / "sanitizer"
     kernel_out.mkdir(parents=True, exist_ok=True)
@@ -174,11 +202,12 @@ def run_sanitizer_proof(nvcc: str, out: Path) -> dict:
         "compile_ok": compile_ok,
         "cases": cases,
         "status": "pass" if all_ok else "fail",
+        "provenance": provenance,
     }
 
 
 def failed_kernel_result(name: str, config: dict, out: Path,
-                          error: str) -> dict:
+                          error: str, provenance: dict) -> dict:
     kernel_out = out / name
     kernel_out.mkdir(parents=True, exist_ok=True)
     (kernel_out / "build.log").write_text(f"FAILED: {error}\n")
@@ -196,10 +225,11 @@ def failed_kernel_result(name: str, config: dict, out: Path,
         "memcheck_ok": False,
         "status": "fail",
         "error": error,
+        "provenance": provenance,
     }
 
 
-def run_kernel(name: str, config: dict, out: Path) -> dict:
+def run_kernel(name: str, config: dict, out: Path, provenance: dict) -> dict:
     kernel_out = out / name
     kernel_out.mkdir(parents=True, exist_ok=True)
     source = Path(config["source"])
@@ -209,7 +239,7 @@ def run_kernel(name: str, config: dict, out: Path) -> dict:
     try:
         nvcc = require("nvcc")
     except RuntimeError as exc:
-        return failed_kernel_result(name, config, out, str(exc))
+        return failed_kernel_result(name, config, out, str(exc), provenance)
 
     compile_ok = compile_source(nvcc, source, binary, kernel_out / "build.log")
     result = {
@@ -221,6 +251,7 @@ def run_kernel(name: str, config: dict, out: Path) -> dict:
         "replay_classification": None,
         "memcheck_ok": False,
         "status": "fail",
+        "provenance": provenance,
     }
 
     if not compile_ok or not binary.exists():
@@ -264,6 +295,8 @@ def main(argv: list[str] | None = None) -> int:
                         help="legacy reduction artifact override")
     parser.add_argument("--out", type=Path,
                         default=Path("results/second-campaign"))
+    parser.add_argument("--seed", type=int, default=2026,
+                        help="seed recorded in campaign provenance")
     args = parser.parse_args(argv)
 
     selected = list(KERNELS) if args.kernel == "all" else [args.kernel]
@@ -276,33 +309,38 @@ def main(argv: list[str] | None = None) -> int:
     out = args.out
     out.mkdir(parents=True, exist_ok=True)
     env = probe_environment()
+    env["seed"] = args.seed
+    provenance = dict(env)
+    provenance["commands_path"] = str(out / "campaign_summary.json")
+    provenance["command_line"] = [sys.executable, *sys.argv[1:]]
     (out / "environment.json").write_text(json.dumps(env, indent=2))
 
     if shutil.which("nvidia-smi") is None:
         error = "nvidia-smi not found; select a GPU runtime in Colab"
         print(f"ERROR: {error}", file=sys.stderr)
         kernel_results = {
-            name: failed_kernel_result(name, config, out, error)
+                name: failed_kernel_result(name, config, out, error, provenance)
             for name, config in configs.items()
         }
         sanitizer_result = {
             "source": "cuda/sanitizer_proof.cu",
             "compile_ok": False, "cases": [], "status": "fail",
-            "error": error,
+            "error": error, "provenance": provenance,
         }
     else:
         kernel_results = {
-            name: run_kernel(name, config, out)
+            name: run_kernel(name, config, out, provenance)
             for name, config in configs.items()
         }
         try:
             nvcc = require("nvcc")
-            sanitizer_result = run_sanitizer_proof(nvcc, out)
+            sanitizer_result = run_sanitizer_proof(nvcc, out, provenance)
         except RuntimeError as exc:
             sanitizer_result = {
                 "source": "cuda/sanitizer_proof.cu",
                 "compile_ok": False, "cases": [], "status": "fail",
                 "error": str(exc),
+                "provenance": provenance,
             }
     (out / "sanitizer_summary.json").write_text(
         json.dumps(sanitizer_result, indent=2))
@@ -323,6 +361,8 @@ def main(argv: list[str] | None = None) -> int:
     summary = {
         "schema": "vanta.campaign.v1",
         "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
+        "provenance": provenance,
+        "command_line": [sys.executable, *sys.argv[1:]],
         "kernels": kernel_results,
         "sanitizer": sanitizer_result,
         "compile_ok": compile_ok,

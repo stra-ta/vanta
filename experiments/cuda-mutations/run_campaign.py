@@ -9,6 +9,7 @@ import hashlib
 import json
 import math
 import os
+import platform
 import re
 import shutil
 import subprocess
@@ -29,6 +30,7 @@ KERNELS = {
 }
 TOOLS = ("memcheck", "racecheck", "synccheck")
 FLAGS = ("-std=c++20", "-O0", "-lineinfo", "-arch=sm_75")
+DEFAULT_SEED = 2026
 REQUIRED_IDS = tuple(f"R{i:02d}" for i in range(1, 7)) + tuple(
     f"V{i:02d}" for i in range(1, 7)) + tuple(f"M{i:02d}" for i in range(1, 7))
 
@@ -220,19 +222,20 @@ def literal_values(n: int, seed: int) -> list[float]:
     return [base[(index + seed) % len(base)] for index in range(n)]
 
 
-def differential_cases(kernel: str) -> list[dict[str, Any]]:
+def differential_cases(kernel: str, seed: int = 0) -> list[dict[str, Any]]:
     if kernel == "reduce_sum":
-        return [{"n": n, "block_threads": block, "values": literal_values(n, seed)}
-                for n, block, seed in ((31, 32, 0), (33, 32, 1), (65, 32, 2),
-                                        (257, 128, 3))]
+        return [{"n": n, "block_threads": block, "values": literal_values(n, case_seed + seed)}
+                for n, block, case_seed in ((31, 32, 0), (33, 32, 1), (65, 32, 2),
+                                             (257, 128, 3))]
     if kernel == "vector_add":
         return [{"n": n, "block_threads": block, "a": a,
-                 "x": literal_values(n, x_seed), "y": literal_values(n, y_seed)}
+                 "x": literal_values(n, x_seed + seed),
+                 "y": literal_values(n, y_seed + seed)}
                 for n, block, a, x_seed, y_seed in ((31, 32, 1.5, 0, 4),
                                                      (33, 32, -2.0, 1, 5),
                                                      (65, 32, 0.75, 2, 6))]
-    return [{"n": n, "block_threads": 16, "a": literal_values(n * n, left),
-             "b": literal_values(n * n, right)}
+    return [{"n": n, "block_threads": 16, "a": literal_values(n * n, left + seed),
+             "b": literal_values(n * n, right + seed)}
             for n, left, right in ((16, 0, 3), (24, 1, 5))]
 
 
@@ -258,11 +261,13 @@ def expected_for(kernel: str, case: dict[str, Any]) -> Any:
 
 
 class Campaign:
-    def __init__(self, out: Path, build_dir: Path, timeout: float, repetitions: int):
+    def __init__(self, out: Path, build_dir: Path, timeout: float, repetitions: int,
+                 seed: int = DEFAULT_SEED):
         self.out = out
         self.build_dir = build_dir
         self.timeout = timeout
         self.repetitions = repetitions
+        self.seed = seed
         self.commands: list[dict[str, Any]] = []
         self.sequence = 0
 
@@ -367,10 +372,10 @@ def transpose(values: list[float], n: int) -> list[float]:
 
 
 def run_metamorphic(campaign: Campaign, binary: Path, kernel: str,
-                    subject: str) -> list[dict[str, Any]]:
+                    subject: str, seed: int = 0) -> list[dict[str, Any]]:
     if kernel == "reduce_sum":
-        base = literal_values(33, 0)
-        other = literal_values(17, 4)
+        base = literal_values(33, seed)
+        other = literal_values(17, 4 + seed)
         base_case = {"n": 33, "block_threads": 32, "values": base}
         return [
             property_check(campaign, binary, kernel, subject, "permutation", [
@@ -392,7 +397,7 @@ def run_metamorphic(campaign: Campaign, binary: Path, kernel: str,
             ], lambda values, n: values_match(kernel, values[0], values[1], n)),
         ]
     if kernel == "vector_add":
-        x, y, a = literal_values(33, 0), literal_values(33, 4), 1.5
+        x, y, a = literal_values(33, seed), literal_values(33, 4 + seed), 1.5
         base_case = {"n": 33, "block_threads": 32, "a": a, "x": x, "y": y}
         shifted = [value + 2.25 for value in y]
         first, second = 16, 17
@@ -418,10 +423,10 @@ def run_metamorphic(campaign: Campaign, binary: Path, kernel: str,
             ], lambda values, n: values_match(kernel, values[0], values[1], n)),
         ]
     n = 24
-    matrix = literal_values(n * n, 2)
+    matrix = literal_values(n * n, 2 + seed)
     identity = [1.0 if row == col else 0.0 for row in range(n) for col in range(n)]
     zero = [0.0] * (n * n)
-    a, b = literal_values(n * n, 1), literal_values(n * n, 5)
+    a, b = literal_values(n * n, 1 + seed), literal_values(n * n, 5 + seed)
     return [
         property_check(campaign, binary, kernel, subject, "zero", [
             {"n": n, "block_threads": 16, "a": matrix, "b": zero},
@@ -437,16 +442,17 @@ def run_metamorphic(campaign: Campaign, binary: Path, kernel: str,
     ]
 
 
-def run_checks(campaign: Campaign, binary: Path, kernel: str, subject: str) -> dict[str, Any]:
+def run_checks(campaign: Campaign, binary: Path, kernel: str, subject: str,
+               seed: int = 0) -> dict[str, Any]:
     return {
         "differential": [campaign.replay(binary, kernel, case, f"{subject}-diff-{index}")
-                           for index, case in enumerate(differential_cases(kernel), 1)],
-        "metamorphic": run_metamorphic(campaign, binary, kernel, subject),
+                           for index, case in enumerate(differential_cases(kernel, seed), 1)],
+        "metamorphic": run_metamorphic(campaign, binary, kernel, subject, seed),
     }
 
 
-def trigger_case(kernel: str, trigger: dict[str, int]) -> dict[str, Any]:
-    for case in differential_cases(kernel):
+def trigger_case(kernel: str, trigger: dict[str, int], seed: int = 0) -> dict[str, Any]:
+    for case in differential_cases(kernel, seed):
         if case["n"] == trigger["n"] and case["block_threads"] == trigger["block_threads"]:
             return case
     raise ValueError(f"trigger {trigger} is not represented by the shared corpus")
@@ -462,7 +468,7 @@ def repeated_failure(campaign: Campaign, binary: Path, kernel: str, case: dict[s
 
 
 def minimize_prefix(campaign: Campaign, binary: Path, kernel: str, case: dict[str, Any],
-                    subject: str) -> dict[str, Any]:
+                    subject: str, seed: int = 0) -> dict[str, Any]:
     values_key = "values" if kernel == "reduce_sum" else "x" if kernel == "vector_add" else None
     if values_key is None:
         return {"status": "not_applicable"}
@@ -497,6 +503,17 @@ def summarize_verdicts(checks: dict[str, Any], sanitizer: dict[str, list[dict[st
     if meaningful and all(verdict == "no_signal" for verdict in meaningful):
         return "survived"
     return "infrastructure_failure"
+
+
+def classify_result(status: str, mutation_id: str, study_id: str) -> str:
+    """Separate detection, equivalent survival, true survival, and tool failure."""
+    if status == "killed":
+        return "detected_defect"
+    if status == "survived":
+        if study_id == "cuda-mutations-t4-v1" and mutation_id == "R03":
+            return "equivalent_mutant"
+        return "true_survivor"
+    return "tool_failure"
 
 
 def run_sanitizers(campaign: Campaign, binary: Path, kernel: str, subject: str,
@@ -535,6 +552,9 @@ def detection_matrix(results: list[dict[str, Any]]) -> str:
             mem=group_verdict(sanitizer.get("memcheck", [])),
             race=group_verdict(sanitizer.get("racecheck", [])),
             sync=group_verdict(sanitizer.get("synccheck", [])), status=result.get("status", "not_run")))
+    lines.extend(["", "## Classification", "", "| Subject | Classification |", "| --- | --- |"])
+    for result in results:
+        lines.append(f"| {result['id']} | {result.get('classification', 'not_classified')} |")
     return "\n".join(lines) + "\n"
 
 
@@ -574,6 +594,66 @@ def require_cuda() -> bool:
     return True
 
 
+def git_metadata() -> dict[str, Any]:
+    status = subprocess.run(
+        ["git", "status", "--porcelain", "--untracked-files=all"],
+        cwd=ROOT, text=True, capture_output=True, check=False)
+    diff = subprocess.run(
+        ["git", "diff", "--no-ext-diff", "--binary"],
+        cwd=ROOT, text=True, capture_output=True, check=False)
+    status_text = status.stdout
+    return {
+        "dirty_tree": bool(status_text),
+        "status_sha256": sha256_text(status_text),
+        "diff_sha256": sha256_text(diff.stdout),
+    }
+
+
+def host_metadata() -> dict[str, Any]:
+    cpu_model = platform.processor()
+    microcode = ""
+    cpuinfo = Path("/proc/cpuinfo")
+    if cpuinfo.exists():
+        for line in cpuinfo.read_text(encoding="utf-8", errors="replace").splitlines():
+            if line.lower().startswith(("model name", "hardware", "processor")) and ":" in line:
+                candidate = line.split(":", 1)[1].strip()
+                if candidate:
+                    cpu_model = candidate
+            if line.lower().startswith("microcode") and ":" in line and not microcode:
+                microcode = line.split(":", 1)[1].strip()
+    kernel_cmdline = ""
+    cmdline = Path("/proc/cmdline")
+    if cmdline.exists():
+        kernel_cmdline = cmdline.read_text(encoding="utf-8", errors="replace").strip()
+    numa_nodes = sorted(path.name for path in Path("/sys/devices/system/node").glob("node[0-9]*"))
+    return {
+        "architecture": platform.machine(),
+        "kernel": platform.release(),
+        "cpu": cpu_model,
+        "microcode": microcode,
+        "kernel_cmdline": kernel_cmdline,
+        "numa_nodes": numa_nodes,
+        "python": platform.python_version(),
+    }
+
+
+def artifact_provenance(revision: str, seed: int, git: dict[str, Any],
+                        output: Path) -> dict[str, Any]:
+    return {
+        "commit_sha": revision,
+        "dirty_tree": git["dirty_tree"],
+        "status_sha256": git["status_sha256"],
+        "diff_sha256": git["diff_sha256"],
+        "compiler": "nvcc",
+        "compiler_flags": list(FLAGS),
+        "build_type": "cuda-O0",
+        "seed": seed,
+        "environment_path": str(output / "environment.json"),
+        "commands_path": str(output / "campaign.json"),
+        "command_line": [sys.executable, *sys.argv[1:]],
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, default=Path(__file__).with_name("manifest.json"))
@@ -583,6 +663,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--resume", action="store_true",
                         help="reuse completed subjects from a matching campaign.json")
     parser.add_argument("--timeout", type=float, default=60.0)
+    parser.add_argument("--seed", type=int, default=DEFAULT_SEED,
+                        help="seed recorded in artifacts and used to rotate corpus values")
     args = parser.parse_args(argv)
     if args.timeout <= 0:
         parser.error("--timeout must be positive")
@@ -598,7 +680,7 @@ def main(argv: list[str] | None = None) -> int:
             selected = [item for item in selected if item["id"] in set(args.only)]
         args.out.mkdir(parents=True, exist_ok=True)
         args.build_dir.mkdir(parents=True, exist_ok=True)
-        campaign = Campaign(args.out, args.build_dir, args.timeout, manifest["repetitions"])
+        campaign = Campaign(args.out, args.build_dir, args.timeout, manifest["repetitions"], args.seed)
         campaign_path = args.out / "campaign.json"
         resumed: dict[str, Any] | None = None
         manifest_hash = sha256_file(args.manifest)
@@ -622,6 +704,9 @@ def main(argv: list[str] | None = None) -> int:
         revision = str(revision_result["stdout"]).strip()
         if resumed is not None and resumed.get("baseline_commit") != revision:
             raise ValueError("existing campaign was recorded from a different baseline commit")
+        git = git_metadata()
+        host = host_metadata()
+        provenance = artifact_provenance(revision, args.seed, git, args.out)
         environment = {
             "nvidia_smi": campaign.run(["nvidia-smi"], "environment-gpu"),
             "nvcc": campaign.run(["nvcc", "--version"], "environment-nvcc"),
@@ -630,6 +715,8 @@ def main(argv: list[str] | None = None) -> int:
         }
         atomic_json(args.out / "environment.json", {
             "baseline_commit": revision,
+            "provenance": provenance,
+            "host": host,
             "probes": {
                 name: {key: result[key] for key in (
                     "command", "returncode", "timeout", "log",
@@ -647,6 +734,7 @@ def main(argv: list[str] | None = None) -> int:
             campaign_doc: dict[str, Any] = {
                 "schema": "vanta.cuda-mutation-campaign.v1", "study_id": manifest["study_id"],
                 "baseline_commit": revision, "manifest_sha256": manifest_hash,
+                "provenance": provenance,
                 "compiler_flags": list(FLAGS), "vector_replay_adapter_sha256": adapter_hash,
                 "environment_path": str(args.out / "environment.json"),
                 "baselines": [], "mutants": results, "commands": campaign.commands,
@@ -678,15 +766,16 @@ def main(argv: list[str] | None = None) -> int:
                         "adapter_patch_sha256": (sha256_file(source.with_name("adapter.patch"))
                                                  if kernel == "vector_add" else None),
                         "source": str(source), "binary": str(binary),
-                        "binary_sha256": None, "compile": compile_result}
+                        "binary_sha256": None, "compile": compile_result,
+                        "provenance": provenance}
             if compile_result["returncode"] != 0 or compile_result["timeout"]:
                 baseline["status"] = "infrastructure_failure"
             else:
                 baseline["binary_sha256"] = sha256_file(binary)
-                baseline["checks"] = run_checks(campaign, binary, kernel, f"{kernel}-baseline")
+                baseline["checks"] = run_checks(campaign, binary, kernel, f"{kernel}-baseline", args.seed)
                 baseline["sanitizer"] = run_sanitizers(
                     campaign, binary, kernel, f"{kernel}-baseline",
-                    differential_cases(kernel)[0], manifest["repetitions"],
+                    differential_cases(kernel, args.seed)[0], manifest["repetitions"],
                     list(TOOLS))
                 baseline["status"] = summarize_verdicts(baseline["checks"], baseline["sanitizer"])
             campaign_doc["baselines"].append(baseline)
@@ -721,12 +810,13 @@ def main(argv: list[str] | None = None) -> int:
                        "derived_source_sha256": sha256_text(derived),
                        "subject_patch": str(source.with_name("subject.patch")),
                        "subject_patch_sha256": sha256_file(source.with_name("subject.patch")),
-                       "binary_sha256": None, "compile": compile_result}
+                       "binary_sha256": None, "compile": compile_result,
+                       "provenance": provenance}
             if compile_result["returncode"] != 0 or compile_result["timeout"]:
                 result["status"] = "infrastructure_failure"
             else:
                 result["binary_sha256"] = sha256_file(binary)
-                result["checks"] = run_checks(campaign, binary, kernel, mutation["id"])
+                result["checks"] = run_checks(campaign, binary, kernel, mutation["id"], args.seed)
                 first = next((item for item in result["checks"]["differential"]
                               if item["verdict"] == "detected"), None)
                 if first:
@@ -736,6 +826,7 @@ def main(argv: list[str] | None = None) -> int:
                         "mutation_id": mutation["id"],
                         "kernel": kernel,
                         "baseline_commit": revision,
+                        "provenance": provenance,
                         "case": first["case"],
                         "expected": first["expected"],
                         "actual": first["actual"],
@@ -743,15 +834,16 @@ def main(argv: list[str] | None = None) -> int:
                     result["failure_artifact"] = str(failure_path)
                     result["failure_replay"] = repeated_failure(
                         campaign, binary, kernel, first["case"], mutation["id"])
-                    result["minimization"] = (minimize_prefix(campaign, binary, kernel, first["case"], mutation["id"])
+                    result["minimization"] = (minimize_prefix(campaign, binary, kernel, first["case"], mutation["id"], args.seed)
                                                if mutation["minimization"] == "prefix" else {"status": "not_applicable"})
                     if result["minimization"].get("status") == "prefix":
+                        result["minimization"]["provenance"] = provenance
                         minimized_path = args.out / "mutants" / mutation["id"] / "minimized.json"
                         atomic_json(minimized_path, result["minimization"])
                         result["minimization_artifact"] = str(minimized_path)
                 else:
                     result["minimization"] = {"status": "not_applicable"}
-                trigger = trigger_case(kernel, mutation["trigger"])
+                trigger = trigger_case(kernel, mutation["trigger"], args.seed)
                 result["sanitizer"] = run_sanitizers(
                     campaign, binary, kernel, mutation["id"], trigger,
                     manifest["repetitions"], mutation["eligible_tools"],
@@ -760,6 +852,11 @@ def main(argv: list[str] | None = None) -> int:
                 result["status"] = summarize_verdicts(result["checks"], result["sanitizer"])
                 if result.get("failure_replay", {}).get("classification") == "unstable_failure":
                     result["status"] = "flaky"
+                result["classification"] = classify_result(
+                    result["status"], mutation["id"], manifest["study_id"])
+            if "classification" not in result:
+                result["classification"] = classify_result(
+                    result["status"], mutation["id"], manifest["study_id"])
             results.append(result)
             atomic_json(args.out / "campaign.json", campaign_doc)
             (args.out / "detection-matrix.md").write_text(detection_matrix(results), encoding="utf-8")

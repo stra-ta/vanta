@@ -174,7 +174,7 @@ It is historical evidence for the original reduction implementation.
 
 The project was moved into a public GitHub repository:
 
-<https://github.com/wheevu/vanta>
+<https://github.com/stra-ta/vanta>
 
 The repository gained a Colab entrypoint,
 [`tools/colab_entry.py`](../tools/colab_entry.py), which performs the full

@@ -406,6 +406,44 @@ def test_find_minimal_prefix_seed_must_fail():
         mf.find_minimal_prefix(values, never_fails)
 
 
+def test_find_minimal_dimension_and_value_shrink_are_deterministic():
+    dimension, dimension_tests = mf.find_minimal_dimension(
+        8, [7, 6, 5, 4, 3, 2, 1], lambda value: value >= 3)
+    assert dimension == 3
+    assert dimension_tests == 8
+
+    values, value_tests = mf.shrink_values(
+        [4.0, 3.0, 2.0], lambda candidate: sum(candidate) >= 5.0)
+    assert values == [0.0, 3.0, 2.0]
+    assert value_tests == 4
+
+
+def test_matrix_dimension_shrink_uses_top_left_submatrices():
+    a = [float(value) for value in range(1, 17)]
+    b = [float(value) for value in range(17, 33)]
+    observed = []
+
+    def still_fails(candidate_a, candidate_b, n):
+        observed.append((candidate_a, candidate_b, n))
+        return n >= 2
+
+    minimized_a, minimized_b, n, tested = mf.minimize_matrix_dimension(
+        a, b, 4, still_fails)
+    assert n == 2
+    assert minimized_a == [1.0, 2.0, 5.0, 6.0]
+    assert minimized_b == [17.0, 18.0, 21.0, 22.0]
+    assert tested == 4
+    assert observed[0][2] == 4
+
+
+def test_launch_dimension_shrink_prefers_smallest_failing_configuration():
+    launch, tested = mf.minimize_launch_dimensions(
+        {"block_threads": 4, "grid_blocks": 2},
+        lambda candidate: candidate["block_threads"] * candidate["grid_blocks"] >= 2)
+    assert launch == {"block_threads": 1, "grid_blocks": 2}
+    assert tested == 5
+
+
 def test_candidate_artifact_updates_shape_and_observed():
     result = {"expected": 12.0, "actual": 9.0}
     out = mf.candidate_artifact(ARTIFACT, [2.0, 3.0, 7.0], result)

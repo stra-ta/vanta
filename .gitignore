@@ -20,6 +20,8 @@ __pycache__/
 *.pyc
 
 # Allow committed campaign evidence (logs + json) under results/
+!results/README.md
+!results/manifest.json
 !results/first-campaign/*.json
 !results/first-campaign/*.log
 !results/third-campaign/**/*.json
