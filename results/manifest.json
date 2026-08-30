@@ -1,0 +1,18 @@
+{
+  "schema": "stra-ta.results-manifest.v1",
+  "repository": "stra-ta/vanta",
+  "status": "convention",
+  "description": "Required fields for committed Vanta result artifacts.",
+  "required_provenance": [
+    "commit_sha",
+    "dirty_tree",
+    "compiler",
+    "kernel",
+    "cpu",
+    "architecture",
+    "build_type",
+    "seed",
+    "command_line"
+  ],
+  "artifacts": []
+}
