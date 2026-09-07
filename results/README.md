@@ -16,6 +16,9 @@ Generated tables must be regenerated from their JSON source and must not be edit
 
 GPU results must identify GPU model, compute capability, driver, runtime, and toolkit in the environment file.
 
+Campaigns recorded by a runner that predates provenance and host capture may lack dirty-tree status, seed, command line, host kernel, or CPU model.
+Such campaigns must declare the gap in their environment file instead of backfilling unlogged fields, and their generated tables stay protocol, not promotable evidence, until a capturing runner re-records them.
+
 Host-only tests are functional evidence.
 
 They are not GPU correctness, sanitizer, or performance evidence.

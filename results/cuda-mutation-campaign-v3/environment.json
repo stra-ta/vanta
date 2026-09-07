@@ -6,6 +6,33 @@
     "-lineinfo",
     "-arch=sm_75"
   ],
+  "gpu_model": "Tesla T4",
+  "compute_capability": "7.5",
+  "driver_version": "580.82.07",
+  "nvidia_smi_cuda_version_string": "CUDA Version: 13.0",
+  "cuda_driver_api_version": "13.0",
+  "cuda_driver_api_note": "Driver-supported CUDA API level from the nvidia-smi header; not the installed toolkit.",
+  "toolkit_version": "12.8.1",
+  "toolkit_note": "nvcc reports release 12.8 V12.8.93 built Fri Feb 21 2025 (see logs/0003-environment-nvcc.log), consistent with PyPI nvidia-cuda-nvcc-cu12==12.8.93.",
+  "compile_arch": "sm_75",
+  "compute_sanitizer_version": "2025.1.0.0",
+  "provenance_notes": {
+    "gpu_model_sources": [
+      "logs/0002-environment-gpu.log (nvidia-smi: Tesla T4)",
+      "per-case stderr in campaign.json and raw replay logs (GPU: Tesla T4)"
+    ],
+    "compute_capability_source": "per-case stderr in campaign.json and raw replay logs (Compute capability: 7.5)",
+    "driver_source": "logs/0002-environment-gpu.log (Driver Version: 580.82.07)",
+    "cuda_api_source": "logs/0002-environment-gpu.log header string (CUDA Version: 13.0); recorded verbatim above and parsed as cuda_driver_api_version to tolerate legacy and UMD-style header renames",
+    "toolkit_source": "logs/0003-environment-nvcc.log (release 12.8, V12.8.93, Feb 21 build)",
+    "compile_arch_source": "compiler_flags (-arch=sm_75) and per-subject nvcc commands in campaign.json"
+  },
+  "provenance_gaps": [
+    "dirty-tree status: not logged by the recording runner (ledger holds git rev-parse HEAD only)",
+    "exact campaign command line: not logged",
+    "seed flag: not logged (corpus values reproduce seed 0 under the current differential_cases, forensically only)",
+    "host kernel, CPU model, host architecture: recording runner predates host capture"
+  ],
   "probes": {
     "compute_sanitizer": {
       "command": [
