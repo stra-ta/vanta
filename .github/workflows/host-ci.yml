@@ -2,7 +2,6 @@ name: Host CI
 
 on:
   push:
-    branches: [main]
   pull_request:
 
 jobs:
@@ -10,11 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-      - name: Validate results manifest
-        run: python3 ../.github/scripts/validate_manifest.py results/manifest.json || python3 /Users/nguyenhuyvu/projects/stra-ta/.github/scripts/validate_manifest.py results/manifest.json || echo "no manifest"
-
       - name: Set up Python
-        uses: actions/setup-python@a26af69ea43b2e2ff601ac7d1334b8134ab1d1ae # v5
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.11"
 
